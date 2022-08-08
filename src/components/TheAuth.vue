@@ -1,12 +1,10 @@
 <template>
   <app-notification></app-notification>
   <div class="auth">
-    <img src="../assets/img/auth.webp" alt="Auth">
+    <img src="../assets/img/gallery-logo.webp" alt="Auth">
     <div class="_column">
       <div class="_info">
-        <h1>Покажите ваш</h1>
-        &nbsp;<img src="../assets/img/omamori.webp" alt="Omamori">&nbsp;
-        <h1>Омамори</h1>
+        <h1>Для начала, нужно войти в аккаунт</h1>
       </div>
       <div class="_mark">
         <p>Чтобы добавлять в Галерею новые изображения необходимо авторизоваться</p>
@@ -27,7 +25,7 @@
           </div>
         </div>
         <button class="_btn" :disabled="isSubmitting">
-          <h3>Получить права {{ currentWidth <= 500 ? '' : 'в пределах Царства Эвтюмии'}}</h3>
+          <h3>Войти в аккаунт</h3>
         </button>
       </form>
     </div>
@@ -38,7 +36,7 @@
 import { useField, useForm } from 'vee-validate'
 import { useStore } from 'vuex'
 import * as yup from 'yup'
-import { ref, onMounted, provide } from 'vue'
+import { onMounted } from 'vue'
 import AppNotification from './AppNotification'
 
 export default {
@@ -66,12 +64,10 @@ export default {
       await store.dispatch('login', values)
     })
 
-    const currentWidth = ref(0)
-    const updateWidth = () => { currentWidth.value = window.innerWidth }
-    window.addEventListener('resize', updateWidth)
-    onMounted(() => updateWidth())
-
-    provide('email', email)
+    onMounted(() => {
+      email.value = 'default@gallery.app'
+      password.value = 'default'
+    })
 
     return {
       email,
@@ -81,8 +77,7 @@ export default {
       pError,
       pBlur,
       onSubmit,
-      isSubmitting,
-      currentWidth
+      isSubmitting
     }
   },
   components: { AppNotification }

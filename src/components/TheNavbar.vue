@@ -1,11 +1,7 @@
 <template>
   <div class="navbar">
     <app-link :isHome="true" />
-    <a v-if="!$store.getters.isAuthenticated" class="link" href="https://t.me/apocalypsecore">
-      <div class="_img-wrapper"><img src="../assets/img/telegram.webp" alt="To Home"></div>
-      <h3>Попросить Омамори</h3>
-    </a>
-    <div v-else class="navbar__account">
+    <div v-if="$store.getters.isAuthenticated" class="navbar__account">
       <h3>{{ userName }}</h3>
       <h3>|</h3>
       <div class="_img-wrapper">
@@ -17,23 +13,18 @@
 
 <script>
 import AppLink from './AppLink'
-import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
-import { inject } from 'vue'
 
 export default {
   components: { AppLink },
   setup () {
     const store = useStore()
-    const router = useRouter()
-    const email = inject('email')
     const userName = store.getters.email
       ? store.getters.email.split('@')[0]
-      : email.split('@')[0]
+      : 'default'
 
     const logout = () => {
       store.commit('logout')
-      router.push('/')
     }
 
     return { logout, userName }
@@ -53,7 +44,7 @@ export default {
     @include all-cent;
     gap: $space;
     padding: $space;
-    background: linear-gradient(90deg, rgba(96,69,164,0.7) 10%, rgba(255,255,255,0.2) 100%);
+    background: linear-gradient(90deg, rgba(62,80,130, 0.7) 10%, rgba(255,255,255,0.2) 100%);
 
     img {
       max-height: 20px;

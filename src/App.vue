@@ -21,9 +21,15 @@
   position: fixed;
   height: 100vh;
   width: 100vw;
-  background: url('./assets/img/main-background.webp') center no-repeat;
+  background: url('./assets/img/bg.webp') center no-repeat;
   background-size: cover;
+  filter: brightness(0.8);
   z-index: -1;
+
+  @media (max-width: $extra-medium) {
+    background: url('./assets/img/bg-mob.webp') center no-repeat;
+    background-size: cover;
+  }
 }
 
 .route {

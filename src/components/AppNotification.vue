@@ -1,10 +1,8 @@
 <template>
   <div v-if="$store.getters.getErrorMessage" class="notification">
-    <img src="../assets/img/notf.webp" alt="Error">
     <div class="notification__text"><h3>{{ $store.getters.getErrorMessage }}</h3></div>
   </div>
   <div v-if="$store.getters.getMessage" class="notification">
-    <img src="../assets/img/notf.webp" alt="Error">
     <div class="notification__text"><h3>{{ $store.getters.getMessage }}</h3></div>
   </div>
 </template>

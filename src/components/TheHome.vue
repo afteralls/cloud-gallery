@@ -3,9 +3,9 @@
     <div class="main__text">
       <h1>Добро пожаловать в Царство Эвтюмии</h1>
       <p>Самая потрясающая галерея искусства из ныне существующих</p>
-      <div class="br">
+      <!-- <div class="br">
         <img v-for="count in 3" :key="count" src="../assets/img/electro.webp" alt="Electro">
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
@@ -35,7 +35,6 @@ export default {
   flex-direction: column;
   height: 100vh;
   width: 100vw;
-  background: url('../assets/img/main.webp') center no-repeat;
   background-size: cover;
 
   &__text {
@@ -73,7 +72,6 @@ export default {
   }
 
   @media (max-width: $extra-medium) {
-    background: url('../assets/img/main-mob.webp') center no-repeat;
     background-size: cover;
   }
 }

@@ -1,6 +1,6 @@
 <template>
   <div class="not-found">
-    <img src="../assets/img/not-found.webp" alt="Not-Found">
+    <img src="../assets/img/gallery-logo.webp" alt="Not-Found">
     <div class="not-found__info _column">
       <h1>Вы вышли за пределы Царства Эвтюмии</h1>
       <p>Всемогущий Сёгун не властвует здесь...</p>
