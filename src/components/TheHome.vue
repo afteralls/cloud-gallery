@@ -1,11 +1,10 @@
 <template>
   <div class="main">
+    <div class="main__img"><img src="../assets/img/gallery-logo.webp" alt="Штрих-код"></div>
     <div class="main__text">
-      <h1>Добро пожаловать в Царство Эвтюмии</h1>
-      <p>Самая потрясающая галерея искусства из ныне существующих</p>
-      <!-- <div class="br">
-        <img v-for="count in 3" :key="count" src="../assets/img/electro.webp" alt="Electro">
-      </div> -->
+      <h1>Вы на главной странице Галереи</h1>
+      <p>Попробуйте загрузить все изображения сразу или воспользуйтесь поиском по специальным тегам</p>
+      <div class="br"><p>Теги</p></div>
     </div>
   </div>
 </template>
@@ -32,23 +31,33 @@ export default {
 .main {
   @include all-cent;
   position: relative;
+  gap: $space;
   flex-direction: column;
   height: 100vh;
   width: 100vw;
   background-size: cover;
 
+  &__img {
+    z-index: 2;
+    transform: translateY(70px);
+
+    img {
+      max-height: 200px;
+      width: auto;
+    }
+  }
+
   &__text {
     display: flex;
     flex-direction: column;
     text-align: center;
-    position: absolute;
     gap: $space;
-    bottom: $space;
     background: rgba(255,255,255,0.2);
     backdrop-filter: blur(10px);
     padding: $space;
+    padding-top: $space * 4;
 
-    h1 {
+    p {
       padding: 0 ($space * 2);
     }
 
@@ -77,26 +86,20 @@ export default {
 }
 
 .br {
-  @include all-cent;
+  text-transform: uppercase;
   position: relative;
-  gap: $space;
-
-  img {
-    max-width: 50px;
-    height: auto;
-  }
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  letter-spacing: 4px;
 
   &::before {
     content: '';
     position: absolute;
     width: 70px;
     height: 5px;
-    background-color: $eColor;
-    margin-left: -270px;
-
-    @media (max-width: $extra-medium) {
-      margin-left: -240px;
-    }
+    background-color: $sColor;
+    margin-left: -140px;
   }
 
   &::after {
@@ -104,18 +107,8 @@ export default {
     position: absolute;
     width: 70px;
     height: 5px;
-    background-color: $eColor;
-    margin-right: -270px;
-
-    @media (max-width: $extra-medium) {
-      margin-right: -240px;
-    }
-  }
-
-  @media (max-width: $extra-medium) {
-    img {
-      max-width: 40px;
-    }
+    background-color: $sColor;
+    margin-right: -140px;
   }
 }
 </style>

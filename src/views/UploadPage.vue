@@ -1,8 +1,8 @@
 <template>
   <div class="layout">
     <the-navbar />
-    <the-auth v-if="!$store.getters.isAuthenticated" />
-    <the-upload v-else />
+      <the-auth v-if="!$store.getters.isAuthenticated" />
+      <the-upload v-else />
   </div>
 </template>
 

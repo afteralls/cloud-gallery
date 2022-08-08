@@ -6,7 +6,7 @@ import NotFoundPage from '../views/NotFoundPage'
 const routes = [
   {
     path: '/home',
-    name: 'Главная | Plane of Euthymia',
+    name: 'Галерея',
     component: GalleryPage,
     alias: '/'
   },
@@ -17,7 +17,7 @@ const routes = [
   },
   {
     path: '/:notFound(.*)',
-    name: 'Вы вышли за границы возможного',
+    name: 'Уп-с... Кажется, вы потерялись',
     component: NotFoundPage
   }
 ]

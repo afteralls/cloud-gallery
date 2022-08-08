@@ -22,7 +22,7 @@
           <div :class="['_notf', {'_notf-v': !hError && hashtags}]">
             <p>*&nbsp;</p><small>{{ hError || 'Введите общие хештеги'}}</small>
           </div>
-          <input type="text" placeholder="#EiMiko #Raiden #Yae" v-model="hashtags" @blur="hBlur">
+          <input type="text" placeholder="#Mount #Art" v-model="hashtags" @blur="hBlur">
         </div>
         <div class="_column">
           <input
@@ -329,7 +329,7 @@ input[type="checkbox"]:checked + label::after {
     left: 0;
     top: 0;
     width: 100%;
-    background-color: $eColor;
+    background-color: $mColor;
     transition: width $transition;
     z-index: 1;
     display: flex;
@@ -356,7 +356,7 @@ input[type="checkbox"]:checked + label::after {
     box-sizing: border-box;
     height: 100%;
     border-radius: $br-rad;
-    border: 3px dashed $eColor;
+    border: 3px dashed $mColor;
     transition: $transition;
     padding: $space;
   }

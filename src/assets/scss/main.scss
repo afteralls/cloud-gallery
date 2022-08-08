@@ -3,7 +3,7 @@
 @import './globalStyles';
 
 ._mark {
-  border-left: 5px solid $eColor; 
+  border-left: 5px solid $mColor; 
   padding-left: $space;
 }
 
@@ -52,12 +52,12 @@
   height: 50px;
   border: none;
   padding: $space;
-  background-color: rgba(177,136,212,1);
+  background-color: $sColor;
   font-family: 'Montserrat', sans-serif;
   transition: $transition;
 
   &:hover {
-    background-color: $eColor;
+    background-color: $mColor;
   }
 
   img {

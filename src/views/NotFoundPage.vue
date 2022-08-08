@@ -1,34 +1,46 @@
 <template>
-  <div class="not-found">
-    <img src="../assets/img/gallery-logo.webp" alt="Not-Found">
-    <div class="not-found__info _column">
-      <h1>Вы вышли за пределы Царства Эвтюмии</h1>
-      <p>Всемогущий Сёгун не властвует здесь...</p>
-      <app-link :isHome="true" />
-    </div>
+<div class="not-found">
+  <img src="../assets/img/gallery-logo.webp" alt="Штрих-код">
+  <div class="not-found__info">
+    <h1>Уп-с... Кажется, вы потерялись</h1>
+    <p>Страница, которую вы пытались найти, не найдена</p>
+    <router-link class="link" style="max-width: 200px;" to="/">
+      <div class="_img-wrapper"><img src="../assets/img/arrow-left.webp" alt="To Home"></div>
+      <h3>На Главную</h3>
+    </router-link>
   </div>
+</div>
 </template>
-
-<script>
-import AppLink from '../components/AppLink.vue'
-
-export default {
-  components: { AppLink }
-}
-</script>
 
 <style lang="scss">
 @import '../assets/scss/main';
 
 .not-found {
   @include all-cent;
+  @include glass-effect;
+  padding: $space;
   gap: $space;
-  max-width: 700px;
+  max-width: 800px;
   margin: $space;
+
+  &__info {
+    display: flex;
+    justify-content: center;
+    gap: $space;
+    flex-direction: column;
+
+    @media (max-width: $extra-medium) {
+      text-align: center;
+      align-items: center;
+    }
+  }
+
+  h1, h2, h3, p {
+    margin: 0;
+  }
 
   @media (max-width: $extra-medium) {
     flex-direction: column;
-    text-align: center;
   }
 
   img {

@@ -6,7 +6,7 @@
           @blur="prBlur"
           type="text"
           v-model="hash"
-          :placeholder="currentWidth > 500 ? '#EiMiko #Raiden #Yae' : '#Ei #Miko'"
+          placeholder="#Mount #Art"
         >
         <button class="_btn" @click="print">
           <div class="_img-wrapper"><img src="../assets/img/search.webp" alt="Search"></div>
@@ -195,7 +195,7 @@ export default {
 
   img {
     height: 150px;
-    width: 150px;
+    width: auto;
     object-fit: cover;
     border-radius: $br-rad;
     transition: $transition;
