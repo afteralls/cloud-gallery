@@ -1,0 +1,62 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap');
+@import './variables';
+@import './mixins';
+
+body {
+  margin: 0; padding: 0;
+  box-sizing: border-box;
+  font-family: 'Montserrat', sans-serif;
+
+  h1, h2, h3, p {
+    margin: 0;
+  }
+}
+
+#app {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+}
+
+input[type="checkbox"] {
+  display: none;
+}
+
+label {
+  padding-left: $space;
+  position: relative;
+  transition: $transition;
+  cursor: pointer;
+}
+
+label::before {
+  content: '';
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  vertical-align: middle;
+  margin-left: -$space;
+  margin-right: $space;
+  border-radius: 10px;
+  background-color: rgb(255, 255, 255);
+}
+
+::selection {
+  background-color: #4f13af33;
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+select:hover, input:hover, button:hover {
+  box-shadow: 0 0 15px 5px rgba(0, 0, 0, 0.2);
+}
+
+input {
+  border-radius: $br-rad;
+  height: 50px;
+  @include tag-settings;
+  transition: 1s ease;
+}

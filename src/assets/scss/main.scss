@@ -1,0 +1,67 @@
+@import './variables';
+@import './mixins';
+@import './globalStyles';
+
+._mark {
+  border-left: 5px solid $eColor; 
+  padding-left: $space;
+}
+
+._invalid {
+  input {
+    box-shadow: 0 0 15px 5px rgba(255, 0, 0, 0.2);
+  }
+}
+
+._column {
+  display: flex;
+  flex-direction: column;
+  gap: $space;
+}
+
+._row {
+  display: flex;
+  gap: $space;
+  align-items: center;
+}
+
+._notf {
+  display: flex;
+
+  p {
+    font-weight: bold;
+    margin: 0;
+    color: red;
+  }
+
+  &-v {
+    p {
+      color: green;
+    }
+  }
+}
+
+._img-wrapper {
+  @include all-cent;
+}
+
+._btn {
+  @include all-cent;
+  gap: $space / 2;
+  border-radius: $br-rad;
+  height: 50px;
+  border: none;
+  padding: $space;
+  background-color: rgba(177,136,212,1);
+  font-family: 'Montserrat', sans-serif;
+  transition: $transition;
+
+  &:hover {
+    background-color: $eColor;
+  }
+
+  img {
+    max-height: 20px;
+    width: auto;
+  }
+}
