@@ -58,5 +58,6 @@ input {
   border-radius: $br-rad;
   height: 50px;
   @include tag-settings;
+  background-color: white;
   transition: 1s ease;
 }

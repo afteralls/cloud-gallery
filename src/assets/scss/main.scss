@@ -45,6 +45,21 @@
   @include all-cent;
 }
 
+._tag-wrapper {
+  @include all-cent;
+  gap: 5px;
+  flex-wrap:wrap;
+  max-width: 208px;
+}
+
+._tag {
+  padding: 5px;
+  border-radius: 5px;
+  background: white;
+	backdrop-filter: blur(10px);
+  cursor: pointer;
+}
+
 ._btn {
   @include all-cent;
   gap: $space / 2;

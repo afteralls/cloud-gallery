@@ -3,9 +3,7 @@
   <div class="auth">
     <img src="../assets/img/gallery-logo.webp" alt="Auth">
     <div class="_column">
-      <div class="_info">
-        <h1>Для начала, нужно войти в аккаунт</h1>
-      </div>
+      <div class="_info"><h1>Для начала, нужно войти в аккаунт</h1></div>
       <div class="_mark">
         <p>Чтобы добавлять в Галерею новые изображения необходимо авторизоваться</p>
       </div>
@@ -114,6 +112,7 @@ export default {
 
     @media (max-width: $small) {
       font-size: 0.6em;
+      text-align: center;
     }
   }
 

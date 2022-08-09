@@ -1,19 +1,29 @@
 <template>
-  <app-notification></app-notification>
+  <app-notification/>
   <div class="upload">
     <div class="preview">
       <div class="preview__wrapper" v-if="imagesPrewiew.length > 0 && files.length > 0">
         <div class="_row">
-          <div @click.prevent="removeImage" class="preview__image-wrapper" v-for="img in imagesPrewiew" :key="img" v-html="img"></div>
+          <div
+            @click.prevent="removeImage"
+            class="preview__image-wrapper"
+            v-for="img in imagesPrewiew"
+            :key="img"
+            v-html="img"
+          ></div>
           <div class="preview__space">&nbsp;</div>
         </div>
       </div>
-      <p v-else> Окно для предпросмотра выбранных файлов, но вы их ещё не загрузили...</p>
+      <div v-else>
+        <p> Окно для предпросмотра выбранных файлов, но вы их ещё не загрузили...</p>
+        <br>
+        <small>(Удерживайте Shift для горизонтального скролла)</small>
+      </div>
     </div>
     <div class="upload__row">
       <div class="dragzone" v-bind="getRootProps()">
         <div :class="['dragzone__wrapper', { 'dragzone__wrapper-act': isDragActive }]">
-          <input v-bind="getInputProps({accept: ['.jpg', '.webp', '.webp', '.jpeg', '.gif']})">
+          <input v-bind="getInputProps({accept: ['.jpg', '.webp', '.webp', '.jpeg']})">
           <p>{{ isDragActive ? 'Можете бросать' : 'Кликнете на область или перетащите сюда необходимые файлы' }}</p>
         </div>
       </div>
@@ -22,7 +32,15 @@
           <div :class="['_notf', {'_notf-v': !hError && hashtags}]">
             <p>*&nbsp;</p><small>{{ hError || 'Введите общие хештеги'}}</small>
           </div>
-          <input type="text" placeholder="#Mount #Art" v-model="hashtags" @blur="hBlur">
+          <input
+            id="tags"
+            type="text"
+            placeholder="#Mount #Art"
+            v-model="hashtags"
+            @blur="hBlur"
+            @click.prevent.once="hashtags = ''"
+            @focus="setTags"
+          >
         </div>
         <div class="_column">
           <input
@@ -49,6 +67,8 @@ import AppNotification from './AppNotification'
 import { useField, useForm } from 'vee-validate'
 import * as yup from 'yup'
 import Compressor from 'compressorjs'
+import tippy from 'tippy.js'
+import 'tippy.js/dist/tippy.css'
 
 export default {
   setup () {
@@ -100,7 +120,7 @@ export default {
             }
 
             imagesPrewiew.value.push(`
-              <div class="preview__remove" data-name="${file.name}">&times</div>
+              <div class="preview__remove" data-name="${file.name}">&times;</div>
               <img src="${e.target.result}" alt="${file.name}">
               <div class="preview__info">
                 ${res}
@@ -116,6 +136,13 @@ export default {
 
     onMounted(() => {
       wrapper = document.querySelector('.preview')
+      tippy('#tags', {
+        content: store.getters.template,
+        arrow: false,
+        allowHTML: true,
+        interactive: true,
+        trigger: 'focus'
+      })
     })
 
     const removeImage = e => {
@@ -126,7 +153,6 @@ export default {
         block.classList.add('hide')
         setTimeout(() => {
           imagesPrewiew.value = imagesPrewiew.value.filter(file => !file.match(name))
-          console.log(imagesPrewiew)
         }, 300)
       } catch (e) {}
     }
@@ -175,6 +201,19 @@ export default {
       }
     }
 
+    const setTags = () => {
+      const upd = (e) => {
+        if (e.target.dataset.tag && !hashtags.value.includes(e.target.dataset.tag)) {
+          hashtags.value += e.target.dataset.tag + ' '
+        }
+      }
+
+      setTimeout(() => {
+        const tagsWrapper = document.querySelector('._tag-wrapper')
+        tagsWrapper.addEventListener('click', e => { upd(e) })
+      }, 1)
+    }
+
     const uploadHandler = handleSubmit(() => {
       document.querySelectorAll('.preview__remove').forEach(e => e.remove())
       const previewInfo = wrapper.querySelectorAll('.preview__info')
@@ -198,7 +237,8 @@ export default {
       hError,
       hBlur,
       isSubmitting,
-      compress
+      compress,
+      setTags
     }
   },
   components: { AppNotification }

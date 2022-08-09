@@ -16,9 +16,9 @@ export default {
   actions: {
     setNotification ({ commit }, message) {
       commit('setNotification', message)
-      setInterval(() => {
+      setTimeout(() => {
         commit('clearNotification')
-      }, 5000)
+      }, 3000)
     }
   }
 }

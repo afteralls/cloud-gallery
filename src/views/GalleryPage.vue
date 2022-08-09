@@ -1,10 +1,14 @@
 <template>
   <div class="gallery">
+    <app-notification/>
     <div :class="['sidebar', {_invalid: prError}]">
       <form class="sidebar__form" @submit.prevent="print" :class="{'_notf-v': !prError && hash}">
         <input
           @blur="prBlur"
+          @click.prevent.once="hash = ''"
+          @focus="setTags"
           type="text"
+          id="hash"
           v-model="hash"
           placeholder="#Mount #Art"
         >
@@ -21,20 +25,25 @@
       <h3 v-if="currentWidth > 500">|</h3>
       <app-link :isUpload="true" :currentWidth="currentWidth" />
     </div>
-    <the-home v-if="result.length === 0" />
-    <lightgallery
-      v-else
-      :settings="{ speed: 150, plugins: plg, licenseKey: '7EC452A9-0CFD441C-BD984C7C-17C8456E' }" :onInit="onInit"
-    >
-      <a
-        v-for="image in result"
-        :key="image.name"
-        class="lightgallery-vue__item"
-        :data-src="image.src"
-        :data-hash="image.hashtags"
-        :data-sub-html="'<h4>Hashtags: '+ image.hashtags + ' | @' + image.uploader + '</h4>'"
-      ><img :src="image.src"></a>
-    </lightgallery>
+    <Transition name="route" mode="out-in">
+      <the-home v-if="result.length === 0" />
+      <lightgallery
+        v-else
+        :settings="{ speed: 150, plugins: plg, licenseKey: '7EC452A9-0CFD441C-BD984C7C-17C8456E' }" :onInit="onInit"
+      >
+        <a
+          v-for="image in result"
+          :key="image.name"
+          class="lightgallery-vue__item"
+          :data-src="image.src"
+          :data-hash="image.hashtags"
+          :data-sub-html="'<h4>Hashtags: '+ image.hashtags + ' | @' + image.uploader + '</h4>'"
+        >
+          <div @contextmenu.prevent="delImage" class="lightgallery-vue__remove" :data-name="image.name">&times;</div>
+          <img :src="image.src">
+        </a>
+      </lightgallery>
+    </Transition>
     <div v-if="result.length !== 0" class="space">&nbsp;</div>
   </div>
 </template>
@@ -47,18 +56,26 @@ import lgThumbnail from 'lightgallery/plugins/thumbnail'
 import lgFullScreen from 'lightgallery/plugins/fullscreen'
 import lgZoom from 'lightgallery/plugins/zoom'
 import 'lightgallery/scss/lightgallery.scss'
-import { getStorage, ref as fRef, listAll, getDownloadURL } from 'firebase/storage'
-import { ref, onMounted } from 'vue'
+import AppNotification from '../components/AppNotification'
+import { getStorage, ref as fRef, listAll, getDownloadURL, deleteObject } from 'firebase/storage'
+import { ref, onBeforeMount, onMounted } from 'vue'
 import { useField, useForm } from 'vee-validate'
 import * as yup from 'yup'
+import tippy from 'tippy.js'
+import 'tippy.js/dist/tippy.css'
+import { useStore } from 'vuex'
 
 export default {
-  components: { TheHome, AppLink, Lightgallery },
+  components: { TheHome, AppLink, Lightgallery, AppNotification },
   setup () {
     const storage = getStorage()
+    const store = useStore()
     const collection = ref([])
     const result = ref([])
+    const hashs = ref([])
+    const template = ref('')
     const { handleSubmit } = useForm()
+    let galleryWrapper = null
     const { value: hash, errorMessage: prError, handleBlur: prBlur } = useField(
       'hash',
       yup
@@ -74,25 +91,29 @@ export default {
     const onInit = (detail) => { lightGallery = detail.instance }
 
     const getImages = async () => {
-      const res = await listAll(listRef)
-      res.items.forEach(async el => {
-        const res = el.name
+      const result = await listAll(listRef)
+      let allHts = ''
+      result.items.forEach(async el => {
+        const hts = el.name
           .split('--')[0]
           .toString()
           .split('#')
           .slice(1)
           .map(h => '#' + h.trim())
           .join(' ')
+        allHts += hts + ' '
         const uploader = el.name
           .split('--')[1]
           .toString()
         collection.value.push({
           name: el.name,
           src: await getDownloadURL(el),
-          hashtags: res,
+          hashtags: hts,
           uploader
         })
       })
+      const ress = allHts.split(' ')
+      hashs.value = new Set(ress.slice(0, ress.length - 1))
     }
 
     const print = handleSubmit(() => {
@@ -113,10 +134,15 @@ export default {
         } else if (currentHashs.length === 1) {
           if (allHashs.includes(currentHashs[0])) { result.value.push(el) }
         }
+        if (result.value.length === 0) {
+          store.dispatch('setNotification', 'Никаких совпадений не нашлось, попробуйте поискать по-другому')
+        }
       })
 
+      hash.value = ''
       setTimeout(() => {
         lightGallery.refresh()
+        galleryWrapper = document.querySelector('.lightgallery-vue')
       }, 1000)
     })
 
@@ -125,15 +151,73 @@ export default {
       result.value = [...collection.value]
       setTimeout(() => {
         lightGallery.refresh()
+        galleryWrapper = document.querySelector('.lightgallery-vue')
       }, 1000)
+    }
+
+    const setTags = () => {
+      const upd = (e) => {
+        if (e.target.dataset.tag && !hash.value.includes(e.target.dataset.tag)) {
+          hash.value += e.target.dataset.tag + ' '
+        }
+      }
+
+      setTimeout(() => {
+        const tagsWrapper = document.querySelector('._tag-wrapper')
+        tagsWrapper.addEventListener('click', e => { upd(e) })
+      }, 1)
+    }
+
+    const delImage = e => {
+      const { name } = e.target.dataset
+      const desertRef = fRef(storage, `images/${name}`)
+      deleteObject(desertRef).then(() => {
+        store.dispatch('setNotification', 'Изображение успешно удалено')
+      }).catch(() => {
+        store.dispatch('setNotification', 'Уп-с... Не удалось удалить изображение')
+      })
+      try {
+        const block = galleryWrapper
+          .querySelector(`[data-name="${name}"]`)
+          .closest('.lightgallery-vue__item')
+        block.classList.add('hide')
+        setTimeout(() => {
+          result.value.forEach((f, i) => {
+            if (f.name === name) { result.value.splice(i, 1) }
+          })
+          collection.value.forEach((f, i) => {
+            if (f.name === name) { collection.value.splice(i, 1) }
+          })
+          galleryWrapper.removeChild(block)
+        }, 300)
+      } catch (e) {}
     }
 
     const currentWidth = ref(0)
     const updateWidth = () => { currentWidth.value = window.innerWidth }
     window.addEventListener('resize', updateWidth)
-    onMounted(() => { getImages(); updateWidth() })
 
-    return { result, print, onInit, plg, hash, printAll, prBlur, prError, currentWidth }
+    onBeforeMount(async () => {
+      await getImages()
+
+      hashs.value.forEach(el => {
+        template.value += `<small class="_tag" data-tag="${el}">${el}</small>`
+      })
+      const tempRes = `<div class="_tag-wrapper">${template.value}</div>`
+      localStorage.setItem('template', tempRes)
+
+      tippy('#hash', {
+        content: tempRes,
+        arrow: false,
+        allowHTML: true,
+        interactive: true,
+        trigger: 'focus'
+      })
+    })
+
+    onMounted(() => { updateWidth() })
+
+    return { result, print, onInit, plg, hash, printAll, prBlur, prError, currentWidth, setTags, delImage }
   }
 }
 </script>
@@ -183,14 +267,24 @@ export default {
 .lightgallery-vue {
   display: flex;
   align-items: flex-start;
-  justify-content: space-around;
+  justify-content: center;
   width: calc(100% - 30px);
-  gap: 5px;
+  gap: $space;
   flex-wrap: wrap;
   margin-top: 110px;
 
   &__item {
     @include all-cent;
+    position: relative;
+  }
+
+  &__item.hide {
+    transform: scale(0);
+    transition: transform 0.3s;
+  }
+
+  &__item:hover &__remove {
+    opacity: 1;
   }
 
   img {
@@ -205,8 +299,26 @@ export default {
     box-shadow: 0 0 15px 5px rgba(0, 0, 0, 0.2);
   }
 
+  &__remove {
+    position: absolute;
+    top: 0; right: 0;
+    border-radius: 0 $space 0 $space;
+    width: 30px;
+    height: 30px;
+    padding: 5px;
+    @include all-cent;
+    backdrop-filter: blur(10px);
+    font-size: 30px;
+    cursor: pointer;
+    color: white;
+    text-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.2);
+    opacity: 0;
+    transition: opacity $transition;
+  }
+
   @media (max-width: $extra-medium) {
     margin-top: $space;
+      gap: 5px;
 
     img {
       height: 80px;
