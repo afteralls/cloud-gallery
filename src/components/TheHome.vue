@@ -2,8 +2,18 @@
   <div class="main">
     <div class="main__img"><img src="../assets/img/gallery-logo.webp" alt="Штрих-код"></div>
     <div class="main__text">
-      <h1>Вы на главной странице Галереи</h1>
-      <p>Попробуйте загрузить все изображения сразу или воспользуйтесь поиском по специальным тегам</p>
+      <h1>Fast Gallery — загружай и наслаждайся!</h1>
+      <p>Галерея для комфортного просмотра фотографий. Загружайте изображения и просматривайте их в любое время. А чтобы быстрее находить нужный контент — укажите парочку тегов для поиска в будущем</p>
+    </div>
+    <div class="_row">
+      <a class="link" href="https://t.me/apocalypsecore">
+        <div class="_img-wrapper"><img src="../assets/img/telegram.webp" alt="Telegram"></div>
+        <h3>Связаться</h3>
+      </a>
+      <a class="link" href="https://github.com/post-apocalypse/gallery">
+        <div class="_img-wrapper"><img src="../assets/img/github.webp" alt="Code"></div>
+        <h3>Исходный код</h3>
+      </a>
     </div>
   </div>
 </template>
@@ -47,7 +57,7 @@ export default {
 
     @media (max-width: $extra-medium) {
       img {
-        height: 200px;
+        height: 180px;
         width: auto;
       }
     }
@@ -63,6 +73,7 @@ export default {
     padding: $space;
     padding-top: $space * 5;
     border-radius: $br-rad;
+    max-width: 1000px;
 
     @media (max-width: $extra-medium) {
       bottom: 150px;
@@ -75,7 +86,9 @@ export default {
   }
 
   @media (max-width: $extra-medium) {
-    background-size: cover;
+    & ._row {
+      margin-bottom: 80px;
+    }
   }
 }
 

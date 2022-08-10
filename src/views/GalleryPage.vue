@@ -187,7 +187,7 @@ export default {
       }
 
       setTimeout(() => {
-        const tagsWrapper = document.querySelector('._tag__main-wrapper')
+        const tagsWrapper = document.querySelector('._tag-wrapper')
         tagsWrapper.addEventListener('click', e => { upd(e) })
       }, 1)
     }

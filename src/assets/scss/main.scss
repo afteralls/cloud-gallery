@@ -52,6 +52,10 @@
 	backdrop-filter: blur(10px);
   cursor: pointer;
 
+  &:hover {
+    background: rgba(255, 255, 255, 0.7);
+  }
+
   &-wrapper {
     @include all-cent;
     background: rgba(0, 0, 0, 0.7);
