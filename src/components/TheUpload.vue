@@ -1,5 +1,6 @@
 <template>
-  <app-notification/>
+<app-notification/>
+<Transition name="route" mode="out-in">
   <div class="upload">
     <div class="preview">
       <div class="preview__wrapper" v-if="imagesPrewiew.length > 0 && files.length > 0">
@@ -17,7 +18,7 @@
       <div v-else>
         <p> Окно для предпросмотра выбранных файлов, но вы их ещё не загрузили...</p>
         <br>
-        <small>(Удерживайте Shift для горизонтального скролла)</small>
+        <small v-if="currentWidth > 750">(Удерживайте Shift для горизонтального скролла)</small>
       </div>
     </div>
     <div class="upload__row">
@@ -55,6 +56,7 @@
       </form>
     </div>
   </div>
+</Transition>
 </template>
 
 <script>
@@ -136,6 +138,8 @@ export default {
 
     onMounted(() => {
       wrapper = document.querySelector('.preview')
+      updateWidth()
+
       tippy('#tags', {
         content: store.getters.template,
         arrow: false,
@@ -224,6 +228,10 @@ export default {
     const onDrop = acceptFiles => { showPreview(acceptFiles) }
     const { getRootProps, getInputProps, ...rest } = useDropzone({ onDrop })
 
+    const currentWidth = ref(0)
+    const updateWidth = () => { currentWidth.value = window.innerWidth }
+    window.addEventListener('resize', updateWidth)
+
     return {
       getRootProps,
       getInputProps,
@@ -238,7 +246,8 @@ export default {
       hBlur,
       isSubmitting,
       compress,
-      setTags
+      setTags,
+      currentWidth
     }
   },
   components: { AppNotification }

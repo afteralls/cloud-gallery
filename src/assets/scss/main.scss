@@ -50,6 +50,8 @@
   gap: 5px;
   flex-wrap:wrap;
   max-width: 208px;
+  padding: 5px;
+	backdrop-filter: blur(10px);
 }
 
 ._tag {

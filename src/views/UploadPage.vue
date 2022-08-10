@@ -1,10 +1,8 @@
 <template>
   <div class="layout">
     <the-navbar />
-    <Transition name="route" mode="out-in">
-      <the-auth v-if="!$store.getters.isAuthenticated" />
-      <the-upload v-else />
-    </Transition>
+    <the-auth v-if="!$store.getters.isAuthenticated" />
+    <the-upload v-else />
   </div>
 </template>
 

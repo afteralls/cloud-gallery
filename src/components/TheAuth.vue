@@ -1,6 +1,7 @@
 <template>
   <app-notification></app-notification>
-  <div class="auth">
+  <Transition name="route" mode="out-in">
+    <div class="auth">
     <img src="../assets/img/gallery-logo.webp" alt="Auth">
     <div class="_column">
       <div class="_info"><h1>Для начала, нужно войти в аккаунт</h1></div>
@@ -27,7 +28,8 @@
         </button>
       </form>
     </div>
-  </div>
+    </div>
+  </Transition>
 </template>
 
 <script>

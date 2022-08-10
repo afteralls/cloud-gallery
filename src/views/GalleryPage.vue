@@ -39,7 +39,12 @@
           :data-hash="image.hashtags"
           :data-sub-html="'<h4>Hashtags: '+ image.hashtags + ' | @' + image.uploader + '</h4>'"
         >
-          <div @contextmenu.prevent="delImage" class="lightgallery-vue__remove" :data-name="image.name">&times;</div>
+          <div
+            @contextmenu.prevent="delImage"
+            class="lightgallery-vue__remove"
+            :data-name="image.name"
+            v-if="$store.getters.isAuthenticated && currentWidth > 750"
+          >&times;</div>
           <img :src="image.src">
         </a>
       </lightgallery>
@@ -116,6 +121,23 @@ export default {
       hashs.value = new Set(ress.slice(0, ress.length - 1))
     }
 
+    const setTippy = () => {
+      tippy('.lightgallery-vue__remove', {
+        content: '<div class="del">Удалить (ПКМ)</div>',
+        arrow: false,
+        allowHTML: true,
+        placement: 'bottom'
+      })
+    }
+
+    const initHandler = () => {
+      setTimeout(() => {
+        lightGallery.refresh()
+        galleryWrapper = document.querySelector('.lightgallery-vue')
+        setTippy()
+      }, 1000)
+    }
+
     const print = handleSubmit(() => {
       result.value = []
       const currentHashs = hash.value
@@ -134,25 +156,21 @@ export default {
         } else if (currentHashs.length === 1) {
           if (allHashs.includes(currentHashs[0])) { result.value.push(el) }
         }
-        if (result.value.length === 0) {
-          store.dispatch('setNotification', 'Никаких совпадений не нашлось, попробуйте поискать по-другому')
-        }
+        setTimeout(() => {
+          if (result.value.length === 0) {
+            store.dispatch('setNotification', 'Никаких совпадений не нашлось, попробуйте поискать по-другому')
+          }
+        }, 1)
       })
 
       hash.value = ''
-      setTimeout(() => {
-        lightGallery.refresh()
-        galleryWrapper = document.querySelector('.lightgallery-vue')
-      }, 1000)
+      initHandler()
     })
 
     const printAll = () => {
       result.value = []
       result.value = [...collection.value]
-      setTimeout(() => {
-        lightGallery.refresh()
-        galleryWrapper = document.querySelector('.lightgallery-vue')
-      }, 1000)
+      initHandler()
     }
 
     const setTags = () => {
@@ -283,10 +301,6 @@ export default {
     transition: transform 0.3s;
   }
 
-  &__item:hover &__remove {
-    opacity: 1;
-  }
-
   img {
     height: 150px;
     width: auto;
@@ -313,7 +327,15 @@ export default {
     color: white;
     text-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.2);
     opacity: 0;
-    transition: opacity $transition;
+    transition: all $transition;
+  }
+
+  &__item:hover &__remove {
+    opacity: 1;
+  }
+
+  &__remove:hover {
+    color: red;
   }
 
   @media (max-width: $extra-medium) {
@@ -336,5 +358,10 @@ export default {
     min-height: 95px;
     width: 100%;
   }
+}
+
+.del {
+  background-color: $sColor;
+  padding: ($space / 1.5) ($space / 2);
 }
 </style>
