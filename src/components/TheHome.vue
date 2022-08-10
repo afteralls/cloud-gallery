@@ -44,6 +44,13 @@ export default {
       height: 250px;
       width: auto;
     }
+
+    @media (max-width: $extra-medium) {
+      img {
+        height: 200px;
+        width: auto;
+      }
+    }
   }
 
   &__text {
@@ -55,23 +62,11 @@ export default {
     backdrop-filter: blur(10px);
     padding: $space;
     padding-top: $space * 5;
-
-    p {
-      padding: 0 ($space * 2);
-    }
-
-    -webkit-mask: linear-gradient(
-      to right,
-      rgba(0, 0, 0, 0) 0%,
-      rgba(0, 0, 0, 0.8) 5%,
-      rgba(0, 0, 0, 1) 7%,
-      rgba(0, 0, 0, 1) 93%,
-      rgba(0, 0, 0, 0.8) 95%,
-      rgba(0, 0, 0, 0) 100%
-    );
+    border-radius: $br-rad;
 
     @media (max-width: $extra-medium) {
       bottom: 150px;
+      border-radius: 0;
     }
   }
 

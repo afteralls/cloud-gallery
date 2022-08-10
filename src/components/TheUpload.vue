@@ -49,7 +49,7 @@
             type="checkbox"
             id="showTxt"
           ><label for="showTxt">Сжать изображения</label>
-          <button :disabled="isSanding || isSubmitting || files.length === 0" class="_btn">
+          <button :disabled="order !== 0 || isSubmitting || files.length === 0" class="_btn">
             <h3>Добавить в Коллекцию</h3>
           </button>
         </div>
@@ -76,8 +76,8 @@ export default {
   setup () {
     const imagesPrewiew = ref([])
     const store = useStore()
+    const order = ref(0)
     const files = ref([])
-    const isSanding = ref(false)
     const compress = ref(false)
     const email = store.getters.email.split('@')[0]
     const { handleSubmit, isSubmitting } = useForm()
@@ -141,7 +141,7 @@ export default {
       updateWidth()
 
       tippy('#tags', {
-        content: store.getters.template,
+        content: `<div class="_tag__upload-wrapper">${store.getters.template}</div>`,
         arrow: false,
         allowHTML: true,
         interactive: true,
@@ -180,7 +180,8 @@ export default {
       }, e => { console.log(e) }, () => {
         store.dispatch('setNotification', 'Изображение успешно загружено')
         hashtags.value = ''
-        isSanding.value = false
+        order.value--
+        console.log(order.value)
         files.value = files.value.filter(f => f.name !== file.name)
         imagesPrewiew.value.forEach((f, i) => {
           if (f.match(file.name)) { imagesPrewiew.value.splice(i, 1) }
@@ -189,7 +190,6 @@ export default {
     }
 
     const onUpload = async (filesArr, blocks) => {
-      isSanding.value = true
       if (compress.value) {
         await filesArr.forEach((file, idx) => {
           // eslint-disable-next-line
@@ -213,12 +213,14 @@ export default {
       }
 
       setTimeout(() => {
-        const tagsWrapper = document.querySelector('._tag-wrapper')
+        const tagsWrapper = document.querySelector('._tag__upload-wrapper')
         tagsWrapper.addEventListener('click', e => { upd(e) })
       }, 1)
     }
 
     const uploadHandler = handleSubmit(() => {
+      order.value = files.value.length
+      console.log(order.value)
       document.querySelectorAll('.preview__remove').forEach(e => e.remove())
       const previewInfo = wrapper.querySelectorAll('.preview__info')
       previewInfo.forEach(clearInfo)
@@ -240,14 +242,14 @@ export default {
       removeImage,
       files,
       uploadHandler,
-      isSanding,
       hashtags,
       hError,
       hBlur,
       isSubmitting,
       compress,
       setTags,
-      currentWidth
+      currentWidth,
+      order
     }
   },
   components: { AppNotification }
@@ -397,7 +399,7 @@ input[type="checkbox"]:checked + label::after {
   max-width: calc(100vw - 60px);
 
   &:hover &__wrapper {
-    border: 3px dashed rgba(177,136,212,1);
+    border: 3px dashed $dzColor;
   }
 
   &__wrapper {

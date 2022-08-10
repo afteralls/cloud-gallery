@@ -36,6 +36,10 @@
   &-enter-from {
     opacity: 0;
     transform: translateX(100px);
+
+    @media (max-width: $extra-medium) {
+      transform: none;
+    }
   }
   &-enter-active {
     transition: all 0.2s ease-out;
@@ -43,6 +47,10 @@
   &-leave-to {
     opacity: 0;
     transform: translateX(-100px);
+
+    @media (max-width: $extra-medium) {
+      transform: none;
+    }
   }
   &-leave-active {
     transition: all 0.2s ease-in;

@@ -1,10 +1,10 @@
 <template>
-<Transition name="route" mode="out-in">
+<Transition name="ntf" mode="out-in">
   <div v-if="$store.getters.getErrorMessage" class="notification">
     <div class="notification__text"><h3>{{ $store.getters.getErrorMessage }}</h3></div>
   </div>
 </Transition>
-<Transition name="route" mode="out-in">
+<Transition name="ntf" mode="out-in">
   <div v-if="$store.getters.getMessage" class="notification">
     <div class="notification__text"><h3>{{ $store.getters.getMessage }}</h3></div>
   </div>
@@ -31,6 +31,23 @@
   img {
     max-width: 50px;
     padding: $space;
+  }
+}
+
+.ntf {
+  &-enter-from {
+    opacity: 0;
+    transform: translateY(-100px);
+  }
+  &-enter-active {
+    transition: all 0.2s ease-out;
+  }
+  &-leave-to {
+    opacity: 0;
+    transform: translateY(-100px);
+  }
+  &-leave-active {
+    transition: all 0.2s ease-in;
   }
 }
 </style>

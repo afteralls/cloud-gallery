@@ -5,7 +5,7 @@
       <h3>{{ userName }}</h3>
       <h3>|</h3>
       <div class="_img-wrapper">
-        <img id="exit" @click.prevent="logout" src="../assets/img/exit.webp" alt="Выйти">
+        <img @click.prevent="logout" src="../assets/img/exit.webp" alt="Выйти">
       </div>
     </div>
   </div>
@@ -14,9 +14,6 @@
 <script>
 import AppLink from './AppLink'
 import { useStore } from 'vuex'
-import { onMounted } from 'vue'
-import tippy from 'tippy.js'
-import 'tippy.js/dist/tippy.css'
 
 export default {
   components: { AppLink },
@@ -29,13 +26,6 @@ export default {
     const logout = () => {
       store.commit('logout')
     }
-
-    onMounted(() => {
-      tippy('#exit', {
-        content: 'Выйти из аккаунта',
-        arrow: false
-      })
-    })
 
     return { logout, userName }
   }

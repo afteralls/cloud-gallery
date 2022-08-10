@@ -4,13 +4,13 @@
     <div :class="['sidebar', {_invalid: prError}]">
       <form class="sidebar__form" @submit.prevent="print" :class="{'_notf-v': !prError && hash}">
         <input
-          @blur="prBlur"
+          @blur="prBlur, hide = true"
           @click.prevent.once="hash = ''"
           @focus="setTags"
           type="text"
           id="hash"
           v-model="hash"
-          placeholder="#Mount #Art"
+          :placeholder="currentWidth > 600 ? '#Mount #Art' : '#Art #Sun'"
         >
         <button class="_btn" @click="print">
           <div class="_img-wrapper"><img src="../assets/img/search.webp" alt="Search"></div>
@@ -22,11 +22,11 @@
         <div class="_img-wrapper"><img src="../assets/img/download.webp" alt="Search"></div>
         <h3 v-if="currentWidth > 750">Загрузить всё</h3>
       </button>
-      <h3 v-if="currentWidth > 500">|</h3>
+      <h3 v-if="currentWidth > 750">|</h3>
       <app-link :isUpload="true" :currentWidth="currentWidth" />
     </div>
     <Transition name="route" mode="out-in">
-      <the-home v-if="result.length === 0" />
+      <the-home v-if="result.length === 0 && hide" />
       <lightgallery
         v-else
         :settings="{ speed: 150, plugins: plg, licenseKey: '7EC452A9-0CFD441C-BD984C7C-17C8456E' }" :onInit="onInit"
@@ -78,6 +78,7 @@ export default {
     const collection = ref([])
     const result = ref([])
     const hashs = ref([])
+    const hide = ref(true)
     const template = ref('')
     const { handleSubmit } = useForm()
     let galleryWrapper = null
@@ -126,7 +127,8 @@ export default {
         content: '<div class="del">Удалить (ПКМ)</div>',
         arrow: false,
         allowHTML: true,
-        placement: 'bottom'
+        placement: 'bottom',
+        delay: 300
       })
     }
 
@@ -180,8 +182,12 @@ export default {
         }
       }
 
+      if (currentWidth.value < 720) {
+        hide.value = false
+      }
+
       setTimeout(() => {
-        const tagsWrapper = document.querySelector('._tag-wrapper')
+        const tagsWrapper = document.querySelector('._tag__main-wrapper')
         tagsWrapper.addEventListener('click', e => { upd(e) })
       }, 1)
     }
@@ -221,11 +227,11 @@ export default {
       hashs.value.forEach(el => {
         template.value += `<small class="_tag" data-tag="${el}">${el}</small>`
       })
-      const tempRes = `<div class="_tag-wrapper">${template.value}</div>`
+      const tempRes = template.value
       localStorage.setItem('template', tempRes)
 
       tippy('#hash', {
-        content: tempRes,
+        content: `<div class="_tag__main-wrapper">${tempRes}</div>`,
         arrow: false,
         allowHTML: true,
         interactive: true,
@@ -235,7 +241,20 @@ export default {
 
     onMounted(() => { updateWidth() })
 
-    return { result, print, onInit, plg, hash, printAll, prBlur, prError, currentWidth, setTags, delImage }
+    return {
+      result,
+      print,
+      onInit,
+      plg,
+      hash,
+      printAll,
+      prBlur,
+      prError,
+      currentWidth,
+      setTags,
+      delImage,
+      hide
+    }
   }
 }
 </script>
@@ -303,7 +322,7 @@ export default {
 
   img {
     height: 150px;
-    width: auto;
+    width: 150px;
     object-fit: cover;
     border-radius: $br-rad;
     transition: $transition;
