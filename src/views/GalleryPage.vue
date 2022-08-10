@@ -231,7 +231,7 @@ export default {
       localStorage.setItem('template', tempRes)
 
       tippy('#hash', {
-        content: `<div class="_tag__main-wrapper">${tempRes}</div>`,
+        content: `<div class="_tag-wrapper">${tempRes}</div>`,
         arrow: false,
         allowHTML: true,
         interactive: true,

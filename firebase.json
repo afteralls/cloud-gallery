@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "site": "smartgallery",
+    "site": "fastgallery",
     "public": "dist",
     "ignore": [
       "firebase.json",

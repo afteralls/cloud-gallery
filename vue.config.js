@@ -2,8 +2,8 @@ const { defineConfig } = require('@vue/cli-service')
 module.exports = defineConfig({
   transpileDependencies: true,
   pwa: {
-    name: 'Smart Gallery',
-    short_name: 'smart-gallery',
+    name: 'Fast Gallery',
+    short_name: 'fast-gallery',
     themeColor: '#3e5082',
     lang: 'ru',
     description: 'Галерея для быстрой загрузки и просмотра изображений',

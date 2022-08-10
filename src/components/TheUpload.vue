@@ -141,7 +141,7 @@ export default {
       updateWidth()
 
       tippy('#tags', {
-        content: `<div class="_tag__upload-wrapper">${store.getters.template}</div>`,
+        content: `<div class="_tag-wrapper">${store.getters.template}</div>`,
         arrow: false,
         allowHTML: true,
         interactive: true,
