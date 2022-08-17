@@ -1,14 +1,14 @@
 <template>
-<Transition name="ntf" mode="out-in">
-  <div v-if="$store.getters.getErrorMessage" class="notification">
-    <div class="notification__text"><h3>{{ $store.getters.getErrorMessage }}</h3></div>
-  </div>
-</Transition>
-<Transition name="ntf" mode="out-in">
-  <div v-if="$store.getters.getMessage" class="notification">
-    <div class="notification__text"><h3>{{ $store.getters.getMessage }}</h3></div>
-  </div>
-</Transition>
+  <Transition name="ntf" mode="out-in">
+    <div v-if="$store.getters.getErrorMessage" class="notification">
+      <div class="notification__text"><h3>{{ $store.getters.getErrorMessage }}</h3></div>
+    </div>
+  </Transition>
+  <Transition name="ntf" mode="out-in">
+    <div v-if="$store.getters.getMessage" class="notification">
+      <div class="notification__text"><h3>{{ $store.getters.getMessage }}</h3></div>
+    </div>
+  </Transition>
 </template>
 
 <style lang="scss">

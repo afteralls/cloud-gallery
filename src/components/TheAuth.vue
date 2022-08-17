@@ -1,33 +1,33 @@
 <template>
-  <app-notification></app-notification>
+  <app-notification />
   <Transition name="route" mode="out-in">
     <div class="auth">
-    <img src="../assets/img/gallery-logo.webp" alt="Auth">
-    <div class="_column">
-      <div class="_info"><h1>Для начала, нужно войти в аккаунт</h1></div>
-      <div class="_mark">
-        <p>Чтобы добавлять в Галерею новые изображения необходимо авторизоваться</p>
-      </div>
-      <form class="_column" style="justify-content: space-between;" @submit.prevent="onSubmit">
-        <div class="_row">
-          <div :class="['_column', {_invalid: eError}]">
-            <div :class="['_notf', {'_notf-v': !eError && email}]">
-              <p>*&nbsp;</p><small>{{ eError || 'Введите ваш E-Mail'}}</small>
-            </div>
-            <input type="email" placeholder="E-Mail" v-model="email" @blur="eBlur">
-          </div>
-          <div :class="['_column', {_invalid: pError}]">
-            <div :class="['_notf', {'_notf-v': !pError && password}]">
-              <p>*&nbsp;</p><small>{{ pError || 'Введите ваш пароль'}}</small>
-            </div>
-            <input type="password" placeholder="Пароль" v-model="password" @blur="pBlur">
-          </div>
+      <img src="../assets/img/gallery-logo.webp" alt="Auth">
+      <div class="_column">
+        <div class="_info"><h1>Для начала, нужно войти в аккаунт</h1></div>
+        <div class="_mark">
+          <p>Чтобы добавлять в Галерею новые изображения необходимо авторизоваться</p>
         </div>
-        <button class="_btn" :disabled="isSubmitting">
-          <h3>Войти в аккаунт</h3>
-        </button>
-      </form>
-    </div>
+        <form class="_column" style="justify-content: space-between;" @submit.prevent="onSubmit">
+          <div class="_row">
+            <div :class="['_column', {_invalid: eError}]">
+              <div :class="['_notf', {'_notf-v': !eError && email}]">
+                <p>*&nbsp;</p><small>{{ eError || 'Введите ваш E-Mail'}}</small>
+              </div>
+              <input type="email" placeholder="E-Mail" v-model="email" @blur="eBlur">
+            </div>
+            <div :class="['_column', {_invalid: pError}]">
+              <div :class="['_notf', {'_notf-v': !pError && password}]">
+                <p>*&nbsp;</p><small>{{ pError || 'Введите ваш пароль'}}</small>
+              </div>
+              <input type="password" placeholder="Пароль" v-model="password" @blur="pBlur">
+            </div>
+          </div>
+          <button class="_btn" :disabled="isSubmitting">
+            <h3>Войти в аккаунт</h3>
+          </button>
+        </form>
+      </div>
     </div>
   </Transition>
 </template>
@@ -36,7 +36,7 @@
 import { useField, useForm } from 'vee-validate'
 import { useStore } from 'vuex'
 import * as yup from 'yup'
-import { onMounted } from 'vue'
+import { ref, onMounted } from 'vue'
 import AppNotification from './AppNotification'
 
 export default {
@@ -64,7 +64,11 @@ export default {
       await store.dispatch('login', values)
     })
 
+    const currentWidth = ref(0)
+    const updateWidth = () => { currentWidth.value = window.innerWidth }
     onMounted(() => {
+      updateWidth()
+
       email.value = 'default@gallery.app'
       password.value = 'default'
     })
@@ -77,7 +81,8 @@ export default {
       pError,
       pBlur,
       onSubmit,
-      isSubmitting
+      isSubmitting,
+      currentWidth
     }
   },
   components: { AppNotification }
@@ -140,10 +145,6 @@ export default {
       max-height: 300px;
       width: auto;
     }
-
-    // button {
-    //   padding: $space;
-    // }
   }
 }
 </style>

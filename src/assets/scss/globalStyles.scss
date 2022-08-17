@@ -57,7 +57,11 @@ select:hover, input:hover, button:hover {
 input {
   border-radius: $br-rad;
   height: 50px;
-  @include tag-settings;
+  font-family: 'Montserrat', sans-serif;
+  outline: none;
+  border: none;
+  font-size: 16px;
+  padding: 0 15px;
   background-color: white;
   transition: 1s ease;
 }

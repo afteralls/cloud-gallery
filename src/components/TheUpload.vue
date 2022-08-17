@@ -1,62 +1,62 @@
 <template>
-<app-notification/>
-<Transition name="route" mode="out-in">
-  <div class="upload">
-    <div class="preview">
-      <div class="preview__wrapper" v-if="imagesPrewiew.length > 0 && files.length > 0">
-        <div class="_row">
-          <div
-            @click.prevent="removeImage"
-            class="preview__image-wrapper"
-            v-for="img in imagesPrewiew"
-            :key="img"
-            v-html="img"
-          ></div>
-          <div class="preview__space">&nbsp;</div>
-        </div>
-      </div>
-      <div v-else>
-        <p> Окно для предпросмотра выбранных файлов, но вы их ещё не загрузили...</p>
-        <br>
-        <small v-if="currentWidth > 750">(Удерживайте Shift для горизонтального скролла)</small>
-      </div>
-    </div>
-    <div class="upload__row">
-      <div class="dragzone" v-bind="getRootProps()">
-        <div :class="['dragzone__wrapper', { 'dragzone__wrapper-act': isDragActive }]">
-          <input v-bind="getInputProps({accept: ['.jpg', '.webp', '.webp', '.jpeg']})">
-          <p>{{ isDragActive ? 'Можете бросать' : 'Кликнете на область или перетащите сюда необходимые файлы' }}</p>
-        </div>
-      </div>
-      <form class="settings" @submit.prevent="uploadHandler">
-        <div :class="['_column', {_invalid: hError}]" style="justify-content: flex-end;">
-          <div :class="['_notf', {'_notf-v': !hError && hashtags}]">
-            <p>*&nbsp;</p><small>{{ hError || 'Введите общие хештеги'}}</small>
+  <app-notification/>
+  <Transition name="route" mode="out-in">
+    <div class="upload">
+      <div class="preview">
+        <div class="preview__wrapper" v-if="imagesPrewiew.length > 0 && files.length > 0">
+          <div class="_row">
+            <div
+              @click.prevent="removeImage"
+              class="preview__image-wrapper"
+              v-for="img in imagesPrewiew"
+              :key="img"
+              v-html="img"
+            ></div>
+            <div class="preview__space">&nbsp;</div>
           </div>
-          <input
-            id="tags"
-            type="text"
-            placeholder="#Mount #Art"
-            v-model="hashtags"
-            @blur="hBlur"
-            @click.prevent.once="hashtags = ''"
-            @focus="setTags"
-          >
         </div>
-        <div class="_column">
-          <input
-            v-model="compress"
-            type="checkbox"
-            id="showTxt"
-          ><label for="showTxt">Сжать изображения</label>
-          <button :disabled="order !== 0 || isSubmitting || files.length === 0" class="_btn">
-            <h3>Добавить в Коллекцию</h3>
-          </button>
+        <div v-else>
+          <p> Окно для предпросмотра выбранных файлов, но вы их ещё не загрузили...</p>
+          <br>
+          <small v-if="currentWidth > 750">(Удерживайте Shift для горизонтального скролла)</small>
         </div>
-      </form>
+      </div>
+      <div class="upload__row">
+        <div class="dragzone" v-bind="getRootProps()">
+          <div :class="['dragzone__wrapper', { 'dragzone__wrapper-act': isDragActive }]">
+            <input v-bind="getInputProps({accept: ['.jpg', '.webp', '.jpeg']})">
+            <p>{{ isDragActive ? 'Можете бросать' : 'Кликнете на область или перетащите сюда необходимые файлы' }}</p>
+          </div>
+        </div>
+        <form class="settings" @submit.prevent="uploadHandler">
+          <div :class="['_column', {_invalid: hError}]" style="justify-content: flex-end;">
+            <div :class="['_notf', {'_notf-v': !hError && hashtags}]">
+              <p>*&nbsp;</p><small>{{ hError || 'Введите общие хештеги'}}</small>
+            </div>
+            <input
+              id="tags"
+              type="text"
+              placeholder="#Mount #Art"
+              v-model="hashtags"
+              @blur="hBlur"
+              @click.prevent.once="hashtags = ''"
+              @focus="setTags"
+            >
+          </div>
+          <div class="_column">
+            <input
+              v-model="compress"
+              type="checkbox"
+              id="showTxt"
+            ><label for="showTxt">Сжать изображения</label>
+            <button :disabled="order !== 0 || isSubmitting || files.length === 0" class="_btn">
+              <h3>Добавить в Коллекцию</h3>
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
-  </div>
-</Transition>
+  </Transition>
 </template>
 
 <script>

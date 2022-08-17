@@ -10,9 +10,7 @@
 </template>
 
 <script>
-export default {
-  props: ['isHome', 'isUpload', 'currentWidth']
-}
+export default { props: ['isHome', 'isUpload', 'currentWidth'] }
 </script>
 
 <style lang="scss">

@@ -19,7 +19,7 @@
         <h3>|</h3>
       </form>
       <button class="_btn" @click="printAll">
-        <div class="_img-wrapper"><img src="../assets/img/download.webp" alt="Search"></div>
+        <div class="_img-wrapper"><img src="../assets/img/download.webp" alt="Dowload"></div>
         <h3 v-if="currentWidth > 750">Загрузить всё</h3>
       </button>
       <h3 v-if="currentWidth > 750">|</h3>

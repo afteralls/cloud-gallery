@@ -1,5 +1,5 @@
 <template>
-  <div class="navbar">
+  <nav class="navbar">
     <app-link :isHome="true" />
     <div v-if="$store.getters.isAuthenticated" class="navbar__account">
       <h3>{{ userName }}</h3>
@@ -8,7 +8,7 @@
         <img @click.prevent="logout" src="../assets/img/exit.webp" alt="Выйти">
       </div>
     </div>
-  </div>
+  </nav>
 </template>
 
 <script>

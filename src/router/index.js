@@ -1,24 +1,24 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import GalleryPage from '../views/GalleryPage'
-import UploadPage from '../views/UploadPage'
-import NotFoundPage from '../views/NotFoundPage'
+import GalleryView from '../views/GalleryView'
+import UploadView from '../views/UploadView'
+import NotFoundView from '../views/NotFoundView'
 
 const routes = [
   {
     path: '/home',
     name: 'Галерея',
-    component: GalleryPage,
+    component: GalleryView,
     alias: '/'
   },
   {
     path: '/upload',
-    name: 'Добавить в коллекцию | Plane of Euthymia',
-    component: UploadPage
+    name: 'Добавить в коллекцию',
+    component: UploadView
   },
   {
     path: '/:notFound(.*)',
     name: 'Уп-с... Кажется, вы потерялись',
-    component: NotFoundPage
+    component: NotFoundView
   }
 ]
 

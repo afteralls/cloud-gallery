@@ -1,6 +1,6 @@
 <template>
   <div class="main">
-    <div class="main__img"><img src="../assets/img/gallery-logo.webp" alt="Штрих-код"></div>
+    <div class="main__img"><img src="../assets/img/gallery-logo.webp" alt="Gallery"></div>
     <div class="main__text">
       <h1>Fast Gallery — загружай и наслаждайся!</h1>
       <p>Галерея для комфортного просмотра фотографий. Загружайте изображения и просматривайте их в любое время. А чтобы быстрее находить нужный контент — укажите парочку тегов для поиска в будущем</p>
