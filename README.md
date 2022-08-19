@@ -1,24 +1,16 @@
-# gallery
+# Fast Gallery
+> Author's gallery for fast loading and comfortable viewing of images with an authorization system, photo compression and smart tag search. Firebase acted as a server
+### [Go to Application](https://barcodegen.web.app/) ###
 
-## Project setup
-```
-npm install
-```
+## Demo
+[Gast Gallery](https://user-images.githubusercontent.com/106645309/185547970-a1cdb797-fbdf-4d36-a74c-3deb0b889057.webm)
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+## Libraries and plugins used in this project
+This application is written in [Vue](https://www.npmjs.com/package/vue) together with [Vuex](https://www.npmjs.com/package/vuex) and [Vue Router](https://www.npmjs.com/package/vue-router) from the framework ecosystem. [Firebase](https://www.npmjs.com/package/firebase) acted as the server.
+- [axios](https://www.npmjs.com/package/axios) for working with HTTP requests.
+- [compressorjs](https://www.npmjs.com/package/compressorjs) for image compression.
+- [lightgallery](https://www.npmjs.com/package/lightgallery) for viewing images.
+- [vee-validate](https://www.npmjs.com/package/vee-validate) and [yup](https://www.npmjs.com/package/yup) for validating input fields.
+- [vue3-dropzone](https://www.npmjs.com/package/vue3-dropzone) for drag'n'drop implementation.
+___
+### Have a question? Text me: [Telegram](https://t.me/apocalypsecore)
