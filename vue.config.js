@@ -5,8 +5,8 @@ module.exports = defineConfig({
     name: 'Fast Gallery',
     short_name: 'fast-gallery',
     themeColor: '#3e5082',
-    lang: 'ru',
-    description: 'Галерея для быстрой загрузки и просмотра изображений',
+    lang: 'en',
+    description: 'Gallery for fast loading and comfortable viewing of images with an authorization system, photo compression and smart tag searchй',
     manifestOptions: {
       display: 'standalone',
       background_color: '#3e5082'
