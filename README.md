@@ -1,6 +1,6 @@
 # Fast Gallery
 > Author's gallery for fast loading and comfortable viewing of images with an authorization system, photo compression and smart tag search. Firebase acted as a server
-### [Go to Application](https://barcodegen.web.app/) ###
+### [Go to App](https://barcodegen.web.app/) ###
 
 ## Demo
 [Fast Gallery](https://user-images.githubusercontent.com/106645309/185779694-ff0410f0-d03a-4b63-84b3-1e3c4f6d46a3.webm)
