@@ -6,18 +6,18 @@ import NotFoundView from '../views/NotFoundView'
 const routes = [
   {
     path: '/home',
-    name: 'Галерея',
+    name: 'Home',
     component: GalleryView,
     alias: '/'
   },
   {
     path: '/upload',
-    name: 'Добавить в коллекцию',
+    name: 'Add to Collection',
     component: UploadView
   },
   {
     path: '/:notFound(.*)',
-    name: 'Уп-с... Кажется, вы потерялись',
+    name: "Oops... It seems you're lost",
     component: NotFoundView
   }
 ]

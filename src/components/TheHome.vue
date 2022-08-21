@@ -2,17 +2,17 @@
   <div class="main">
     <div class="main__img"><img src="../assets/img/gallery-logo.webp" alt="Gallery"></div>
     <div class="main__text">
-      <h1>Fast Gallery — загружай и наслаждайся!</h1>
-      <p>Галерея для комфортного просмотра фотографий. Загружайте изображения и просматривайте их в любое время. А чтобы быстрее находить нужный контент — укажите парочку тегов для поиска в будущем</p>
+      <h1>Fast Gallery — download and enjoy!</h1>
+      <p>Gallery for comfortable viewing of photos. Upload images and view them at any time. And to find the content you need faster, specify a couple of tags to search for in the future</p>
     </div>
     <div class="_row">
       <a class="link" href="https://t.me/apocalypsecore">
         <div class="_img-wrapper"><img src="../assets/img/telegram.webp" alt="Telegram"></div>
-        <h3>Связаться</h3>
+        <h3>Text me</h3>
       </a>
       <a class="link" href="https://github.com/post-apocalypse/gallery">
         <div class="_img-wrapper"><img src="../assets/img/github.webp" alt="Code"></div>
-        <h3>Исходный код</h3>
+        <h3>Source</h3>
       </a>
     </div>
   </div>

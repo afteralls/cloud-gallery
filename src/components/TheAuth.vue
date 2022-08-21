@@ -4,27 +4,27 @@
     <div class="auth">
       <img src="../assets/img/gallery-logo.webp" alt="Auth">
       <div class="_column">
-        <div class="_info"><h1>Для начала, нужно войти в аккаунт</h1></div>
+        <div class="_info"><h1>To get started, you need to log in to your account</h1></div>
         <div class="_mark">
-          <p>Чтобы добавлять в Галерею новые изображения необходимо авторизоваться</p>
+          <p>To add new images to the Gallery, you need to log in</p>
         </div>
         <form class="_column" style="justify-content: space-between;" @submit.prevent="onSubmit">
           <div class="_row">
             <div :class="['_column', {_invalid: eError}]">
               <div :class="['_notf', {'_notf-v': !eError && email}]">
-                <p>*&nbsp;</p><small>{{ eError || 'Введите ваш E-Mail'}}</small>
+                <p>*&nbsp;</p><small>{{ eError || 'Enter your E-Mail'}}</small>
               </div>
               <input type="email" placeholder="E-Mail" v-model="email" @blur="eBlur">
             </div>
             <div :class="['_column', {_invalid: pError}]">
               <div :class="['_notf', {'_notf-v': !pError && password}]">
-                <p>*&nbsp;</p><small>{{ pError || 'Введите ваш пароль'}}</small>
+                <p>*&nbsp;</p><small>{{ pError || 'Enter your Password'}}</small>
               </div>
-              <input type="password" placeholder="Пароль" v-model="password" @blur="pBlur">
+              <input type="password" placeholder="Password" v-model="password" @blur="pBlur">
             </div>
           </div>
           <button class="_btn" :disabled="isSubmitting">
-            <h3>Войти в аккаунт</h3>
+            <h3>Login</h3>
           </button>
         </form>
       </div>
@@ -48,8 +48,8 @@ export default {
       yup
         .string()
         .trim()
-        .required('Введите ваш E-Mail')
-        .email('Введите корректный E-Mail')
+        .required('Enter your E-Mail')
+        .email('Enter the correct E-Mail')
     )
 
     const { value: password, errorMessage: pError, handleBlur: pBlur } = useField(
@@ -57,7 +57,7 @@ export default {
       yup
         .string()
         .trim()
-        .required('Введите ваш пароль')
+        .required('Enter your password')
     )
 
     const onSubmit = handleSubmit(async values => {

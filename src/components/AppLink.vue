@@ -1,11 +1,11 @@
 <template>
   <router-link v-if="isHome" class="link" to="/">
     <div class="_img-wrapper"><img src="../assets/img/arrow-left.webp" alt="To Home"></div>
-    <h3>Вернуться в Галерею</h3>
+    <h3>Go back to the Gallery</h3>
   </router-link>
   <router-link v-if="isUpload" class="link" to="/upload">
     <div class="_img-wrapper"><img src="../assets/img/add.webp" alt="Add"></div>
-    <h3 v-if="currentWidth > 900">Пополнить коллекцию</h3>
+    <h3 v-if="currentWidth > 900">Add to Collection</h3>
   </router-link>
 </template>
 

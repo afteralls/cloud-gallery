@@ -14,13 +14,13 @@
         >
         <button class="_btn" @click="print">
           <div class="_img-wrapper"><img src="../assets/img/search.webp" alt="Search"></div>
-          <h3 v-if="currentWidth > 750">Поиск</h3>
+          <h3 v-if="currentWidth > 750">Search</h3>
         </button>
         <h3>|</h3>
       </form>
       <button class="_btn" @click="printAll">
         <div class="_img-wrapper"><img src="../assets/img/download.webp" alt="Dowload"></div>
-        <h3 v-if="currentWidth > 750">Загрузить всё</h3>
+        <h3 v-if="currentWidth > 750">Download all</h3>
       </button>
       <h3 v-if="currentWidth > 750">|</h3>
       <app-link :isUpload="true" :currentWidth="currentWidth" />
@@ -124,7 +124,7 @@ export default {
 
     const setTippy = () => {
       tippy('.lightgallery-vue__remove', {
-        content: '<div class="del">Удалить (ПКМ)</div>',
+        content: '<div class="del">Delete (MRC)</div>',
         arrow: false,
         allowHTML: true,
         placement: 'bottom',
@@ -160,7 +160,7 @@ export default {
         }
         setTimeout(() => {
           if (result.value.length === 0) {
-            store.dispatch('setNotification', 'Никаких совпадений не нашлось, попробуйте поискать по-другому')
+            store.dispatch('setNotification', 'No matches found, try searching differently')
           }
         }, 1)
       })
@@ -196,9 +196,9 @@ export default {
       const { name } = e.target.dataset
       const desertRef = fRef(storage, `images/${name}`)
       deleteObject(desertRef).then(() => {
-        store.dispatch('setNotification', 'Изображение успешно удалено')
+        store.dispatch('setNotification', 'The image was successfully deleted')
       }).catch(() => {
-        store.dispatch('setNotification', 'Уп-с... Не удалось удалить изображение')
+        store.dispatch('setNotification', 'Oops... Failed to delete image')
       })
       try {
         const block = galleryWrapper
