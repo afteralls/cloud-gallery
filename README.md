@@ -3,7 +3,7 @@
 ### [Go to Application](https://barcodegen.web.app/) ###
 
 ## Demo
-[Gast Gallery](https://user-images.githubusercontent.com/106645309/185547970-a1cdb797-fbdf-4d36-a74c-3deb0b889057.webm)
+[Fast Gallery](https://user-images.githubusercontent.com/106645309/185779694-ff0410f0-d03a-4b63-84b3-1e3c4f6d46a3.webm)
 
 ## Libraries and plugins used in this project
 This application is written in [Vue](https://www.npmjs.com/package/vue) together with [Vuex](https://www.npmjs.com/package/vuex) and [Vue Router](https://www.npmjs.com/package/vue-router) from the framework ecosystem. [Firebase](https://www.npmjs.com/package/firebase) acted as the server.
