@@ -3,18 +3,18 @@
   <vue-final-modal v-model="showModal" overlay-class="modal-wrapper">
     <form class="modal" @submit.prevent="updateData">
       <div class="_column" style="gap: 7.5px">
-        <small>Введите общие хештеги</small>
+        <small>Enter common hashtags</small>
         <input
           @click.prevent.once="hash = ''"
           @focus="setUpTags"
           type="text"
           id="upHash"
           v-model="upHashtags"
-          :placeholder="currentWidth > 600 ? '#EiMiko #Raiden #Yae' : '#Ei #Miko'"
+          placeholder="#Mount #Art"
         >
       </div>
       <button class="_btn">
-        <h3>Внести изменения</h3>
+        <h3>Update</h3>
       </button>
     </form>
   </vue-final-modal>
@@ -29,7 +29,7 @@
           type="text"
           id="hash"
           v-model="hash"
-          :placeholder="currentWidth > 600 ? '#EiMiko #Raiden #Yae' : '#Ei #Miko'"
+          placeholder="#Mount #Art"
         >
         <button class="_btn" @click="print">
           <font-awesome-icon icon="fa-solid fa-magnifying-glass" size="xl" />
@@ -102,7 +102,7 @@
           </a>
         </lightgallery>
         <div v-for="collection in grouped" :key="collection" class="sorted">
-          <div class="date-info"><h3>Изображения, загруженные за {{ collection[0].created }}</h3></div>
+          <div class="date-info"><h3>Images uploaded for {{ collection[0].created }}</h3></div>
           <lightgallery
             :settings="{ speed: 150, plugins: plg, licenseKey: '7EC452A9-0CFD441C-BD984C7C-17C8456E' }" :onInit="onInit"
           >
@@ -227,14 +227,14 @@ export default {
 
     const setTippy = () => {
       tippy('#delete', {
-        content: '<div class="del">Удалить (ПКМ)</div>',
+        content: '<div class="del">Delete (RMC)</div>',
         arrow: false,
         allowHTML: true,
         placement: 'bottom',
         delay: 300
       })
       tippy('#edit', {
-        content: '<div class="del">Редактировать (ПКМ)</div>',
+        content: '<div class="del">Edit (RMC)</div>',
         arrow: false,
         allowHTML: true,
         placement: 'bottom',
@@ -271,7 +271,7 @@ export default {
         }
         setTimeout(() => {
           if (result.value.length === 0) {
-            store.dispatch('setNotification', 'Никаких совпадений не нашлось, попробуйте поискать по-другому')
+            store.dispatch('setNotification', 'No matches found, try searching differently')
           }
         }, 1)
       })
@@ -281,6 +281,7 @@ export default {
     })
 
     const printAll = async () => {
+      grouped.value = []
       if (!dateFilter.value) {
         sortFilter.value
           ? imageCollection.value.sort((a, b) => new Date(b.created).getTime() - new Date(a.created).getTime())
@@ -379,13 +380,13 @@ export default {
             result.value.forEach((f, i) => {
               if (f.name === name) { result.value.splice(i, 1) }
             })
-            store.dispatch('setNotification', 'Изображение успешно удалено')
+            store.dispatch('setNotification', 'The image was successfully deleted')
             galleryWrapper.removeChild(block)
           }, 300)
         } catch (e) {}
       }).catch((e) => {
         console.log(e)
-        store.dispatch('setNotification', 'Уп-с... Не удалось удалить изображение')
+        store.dispatch('setNotification', 'Oops... Failed to delete image')
       })
     }
 
@@ -427,8 +428,8 @@ export default {
             }, 1000)
           }
         })
-        store.dispatch('setNotification', 'Данные успешно обновлены')
-      }).catch(() => { store.dispatch('setNotification', 'Уп-с... Не получилось обновить данные...') })
+        store.dispatch('setNotification', 'Data updated successfully')
+      }).catch(() => { store.dispatch('setNotification', 'Oops... Failed to update data...') })
     }
 
     const currentWidth = ref(0)
@@ -456,7 +457,7 @@ export default {
         const tempRes = template.value
         localStorage.setItem('template', tempRes)
         tippy('#hash', {
-          content: `<div class="_tag-wrapper">${tempRes}${store.getters.isAuthenticated && currentWidth.value > 750 ? '<small style="width: 100%; text-align: center; color: white;">Удаление тега (ПКМ)</small>' : ''}</div>`,
+          content: `<div class="_tag-wrapper">${tempRes}${store.getters.isAuthenticated && currentWidth.value > 750 ? '<small style="width: 100%; text-align: center; color: white;">Removing a tag (MRC)</small>' : ''}</div>`,
           arrow: false,
           allowHTML: true,
           interactive: true,

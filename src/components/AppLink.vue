@@ -1,7 +1,7 @@
 <template>
   <router-link v-if="isHome" class="link" to="/">
     <font-awesome-icon icon="fa-solid fa-arrow-left" size="lg" />
-    <h3>Вернуться в Галерею</h3>
+    <h3>Go back to the Gallery</h3>
   </router-link>
   <router-link v-if="isUpload" class="link" to="/upload">
     <font-awesome-icon icon="fa-solid fa-plus" size="lg" />

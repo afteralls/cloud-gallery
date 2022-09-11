@@ -2,7 +2,7 @@
   <div class="account-wrapper">
     <div v-if="$store.getters.isAuthenticated" class="account">
       <div class="_column" style="gap: 0;">
-        <small>Рады видеть тебя,</small>
+        <small>Welcome,</small>
         <h3>{{ userName }}</h3>
       </div>
       <app-link :isUpload="true" />
@@ -11,9 +11,9 @@
       </div>
     </div>
     <div v-else class="login">
-      <small>Войдите в аккаунт для редактирования коллекции</small>
+      <small>Sign in to edit collection</small>
       <router-link class="link" to="/auth">
-        <h3>Войти</h3>
+        <h3>Log in</h3>
         <font-awesome-icon icon="fa-solid fa-arrow-right-to-bracket" size="lg" />
       </router-link>
     </div>

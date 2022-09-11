@@ -22,6 +22,8 @@ export default {
 
 .not-found {
   @include all-cent;
+  @include glass-effect;
+  padding: $space;
   gap: $space;
   max-width: 700px;
   margin: $space;

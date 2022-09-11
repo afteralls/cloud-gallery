@@ -18,27 +18,27 @@
           </div>
         </div>
         <div v-else>
-          <p> Окно для предпросмотра выбранных файлов, но вы их ещё не загрузили...</p>
+          <p>A window for previewing the selected files, but you haven't downloaded them yet...</p>
           <br>
-          <small v-if="currentWidth > 720">(Удерживайте Shift для горизонтального скролла)</small>
+          <small v-if="currentWidth > 720">(Hold Shift to scroll horizontally)</small>
         </div>
       </div>
       <div class="upload__row">
         <div class="dragzone" v-bind="getRootProps()">
           <div :class="['dragzone__wrapper', { 'dragzone__wrapper-act': isDragActive }]">
             <input v-bind="getInputProps({accept: ['.jpg', '.webp', '.webp', '.jpeg']})">
-            <p>{{ isDragActive ? 'Можете бросать' : 'Кликнете на область или перетащите сюда необходимые файлы' }}</p>
+            <p>{{ isDragActive ? 'Drop it!' : 'Click on the area or drag the necessary files here' }}</p>
           </div>
         </div>
         <form class="settings" @submit.prevent="uploadHandler">
           <div :class="['_column', {_invalid: hError}]" style="justify-content: flex-end;">
             <div :class="['_notf', {'_notf-v': !hError && hashtags}]">
-              <p>*&nbsp;</p><small>{{ hError || 'Введите общие хештеги'}}</small>
+              <p>*&nbsp;</p><small>{{ hError || 'Enter common hashtags'}}</small>
             </div>
             <input
               id="hash"
               type="text"
-              placeholder="#EiMiko #Raiden #Yae"
+              placeholder="#Mount #Art"
               v-model="hashtags"
               @blur="hBlur"
               @click.prevent.once="hashtags = ''"
@@ -50,9 +50,9 @@
               v-model="compress"
               type="checkbox"
               id="showTxt"
-            ><label for="showTxt">Сжать изображения</label>
+            ><label for="showTxt">Compress images</label>
             <button :disabled="order !== 0 || isSubmitting || files.length === 0" class="_btn">
-              <h3>Добавить в Коллекцию</h3>
+              <h3>Add to Collection</h3>
             </button>
           </div>
         </form>
@@ -104,9 +104,9 @@ export default {
       yup
         .string()
         .trim()
-        .required('Введите хотя бы один Хештег')
-        .min(3, 'Введите не менее 3 символов')
-        .matches('#', "Тег должен начинаться с '#'")
+        .required('Enter at least one Hashtag')
+        .min(3, 'Enter at least 3 symbols')
+        .matches('#', "The tag must start with '#'")
     )
 
     const showPreview = (filesArr) => {
@@ -191,7 +191,7 @@ export default {
         block.style.width = percentage + '%'
       }, e => { console.log(e) }, async () => {
         order.value--
-        if (order.value !== 0) { store.dispatch('setNotification', 'Изображение успешно загружено') }
+        if (order.value !== 0) { store.dispatch('setNotification', 'Image uploaded successfully') }
         imageCollection.value.push({
           name: file.name,
           hashtags: currentTags,
@@ -206,7 +206,7 @@ export default {
         })
         if (order.value === 0) {
           hashtags.value = ''
-          store.dispatch('setNotification', 'Все изображения успешно загружены')
+          store.dispatch('setNotification', 'All images uploaded successfully')
           const imageBlob = new Blob([JSON.stringify(imageCollection.value)], { type: 'application/json' })
           uploadBytes(imageDataRef, imageBlob)
           currentTags.split(' ').forEach(tag => {

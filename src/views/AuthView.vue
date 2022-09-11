@@ -12,19 +12,19 @@
           <div class="_row">
             <div :class="['_column', {_invalid: eError}]">
               <div :class="['_notf', {'_notf-v': !eError && email}]">
-                <p>*&nbsp;</p><small>{{ eError || 'Введите ваш E-Mail'}}</small>
+                <p>*&nbsp;</p><small>{{ eError || 'Enter your E-Mail'}}</small>
               </div>
               <input type="email" placeholder="E-Mail" v-model="email" @blur="eBlur">
             </div>
             <div :class="['_column', {_invalid: pError}]">
               <div :class="['_notf', {'_notf-v': !pError && password}]">
-                <p>*&nbsp;</p><small>{{ pError || 'Введите ваш пароль'}}</small>
+                <p>*&nbsp;</p><small>{{ pError || 'Enter your password'}}</small>
               </div>
               <input type="password" placeholder="Пароль" v-model="password" @blur="pBlur">
             </div>
           </div>
           <button class="_btn" :disabled="isSubmitting">
-            <h3>Login</h3>
+            <h3>Log in</h3>
           </button>
         </form>
       </div>
@@ -52,15 +52,15 @@ export default {
       yup
         .string()
         .trim()
-        .required('Введите ваш E-Mail')
-        .email('Введите корректный E-Mail')
+        .required('Enter your E-Mail')
+        .email('Enter the correct E-Mail')
     )
     const { value: password, errorMessage: pError, handleBlur: pBlur } = useField(
       'password',
       yup
         .string()
         .trim()
-        .required('Введите ваш пароль')
+        .required('Enter your password')
     )
     const onSubmit = handleSubmit(async values => {
       await store.dispatch('login', values)
@@ -71,7 +71,12 @@ export default {
     const currentWidth = ref(0)
     const updateWidth = () => { currentWidth.value = window.innerWidth }
     window.addEventListener('resize', updateWidth)
-    onMounted(() => { updateWidth() })
+    onMounted(() => {
+      updateWidth()
+      email.value = 'default@gallery.app'
+      password.value = 'default'
+    })
+
     return {
       email,
       eError,
