@@ -3,7 +3,7 @@
 @import './globalStyles';
 
 ._mark {
-  border-left: 5px solid $mColor; 
+  border-left: 5px solid $eColor; 
   padding-left: $space;
 }
 
@@ -45,6 +45,34 @@
   @include all-cent;
 }
 
+._layout {
+  @include all-cent;
+  flex-direction: column;
+  gap: $space;
+  margin: $space;
+
+  & .notification {
+    top: 50px;
+  }
+}
+
+._btn {
+  @include all-cent;
+  gap: $space / 2;
+  border-radius: $br-rad;
+  height: 50px;
+  border: none;
+  padding: $space;
+  background-color: rgba(177,136,212,1);
+  font-family: 'Montserrat', sans-serif;
+  transition: $transition;
+  cursor: pointer;
+
+  &:hover {
+    background-color: $eColor;
+  }
+}
+
 ._tag {
   padding: 5px;
   border-radius: 5px;
@@ -63,26 +91,5 @@
     flex-wrap:wrap;
     max-width: 208px;
     padding: 5px;
-  }
-}
-
-._btn {
-  @include all-cent;
-  gap: $space / 2;
-  border-radius: $br-rad;
-  height: 50px;
-  border: none;
-  padding: $space;
-  background-color: $sColor;
-  font-family: 'Montserrat', sans-serif;
-  transition: $transition;
-
-  &:hover {
-    background-color: $mColor;
-  }
-
-  img {
-    max-height: 20px;
-    width: auto;
   }
 }

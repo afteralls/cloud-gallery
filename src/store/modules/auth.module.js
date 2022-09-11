@@ -1,7 +1,7 @@
 import { error } from '@/utils/errorHandler'
 import axios from 'axios'
 const AUTH_KEY = 'auth-token'
-const KEY = 'AIzaSyDbP389NOWDFZ4oAz8lMLDlm2TdrzCdUbg'
+const KEY = 'AIzaSyBHgjDXYZ-xksiD_Toy7mY9y1uHtcn0VVU'
 
 export default {
   state: () => ({

@@ -8,15 +8,20 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^6.1.2",
+    "@fortawesome/free-solid-svg-icons": "^6.1.2",
+    "@fortawesome/vue-fontawesome": "^3.0.1",
     "axios": "^0.27.2",
     "compressorjs": "^1.1.1",
     "core-js": "^3.8.3",
-    "firebase": "^9.9.2",
+    "firebase": "^9.9.1",
+    "imagemin": "^8.0.1",
     "lightgallery": "^2.5.0",
     "register-service-worker": "^1.7.2",
     "tippy.js": "^6.3.7",
-    "vee-validate": "^4.6.4",
+    "vee-validate": "^4.6.2",
     "vue": "^3.2.13",
+    "vue-final-modal": "^3.4.4",
     "vue-router": "^4.0.3",
     "vue3-dropzone": "^0.0.7",
     "vuex": "^4.0.0",
@@ -39,5 +44,29 @@
     "eslint-plugin-vue": "^8.0.3",
     "sass": "^1.32.7",
     "sass-loader": "^12.0.0"
-  }
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true
+    },
+    "extends": [
+      "plugin:vue/vue3-essential",
+      "@vue/standard"
+    ],
+    "parserOptions": {
+      "parser": "@babel/eslint-parser"
+    },
+    "rules": {}
+  },
+  "browserslist": [
+    "Chrome >= 45",
+    "Firefox ESR",
+    "Edge >= 12",
+    "Explorer >= 10",
+    "iOS >= 9",
+    "Safari >= 9",
+    "Android >= 4.4",
+    "Opera >= 30"
+  ]
 }

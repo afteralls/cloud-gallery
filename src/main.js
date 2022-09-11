@@ -6,12 +6,12 @@ import store from './store'
 import { initializeApp } from 'firebase/app'
 
 const firebaseConfig = {
-  apiKey: 'AIzaSyDbP389NOWDFZ4oAz8lMLDlm2TdrzCdUbg',
-  authDomain: 'smart-web-gallery.firebaseapp.com',
-  projectId: 'smart-web-gallery',
-  storageBucket: 'smart-web-gallery.appspot.com',
-  messagingSenderId: '417755037264',
-  appId: '1:417755037264:web:fb9bf8e5a8810344155b55'
+  apiKey: 'AIzaSyBHgjDXYZ-xksiD_Toy7mY9y1uHtcn0VVU',
+  authDomain: 'plane-of-euthymia-dfcb2.firebaseapp.com',
+  projectId: 'plane-of-euthymia-dfcb2',
+  storageBucket: 'plane-of-euthymia-dfcb2.appspot.com',
+  messagingSenderId: '74064285343',
+  appId: '1:74064285343:web:60d3f1dfacc149791a5caa'
 }
 
 initializeApp(firebaseConfig)

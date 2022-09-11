@@ -6,10 +6,22 @@ body {
   margin: 0; padding: 0;
   box-sizing: border-box;
   font-family: 'Montserrat', sans-serif;
+  scrollbar-width: none;
 
   h1, h2, h3, p {
     margin: 0;
   }
+}
+
+video {
+  height: 100vh;
+  width: 100vw;
+  object-fit: cover;
+}
+
+svg {
+  max-height: 20px;
+  width: auto;
 }
 
 #app {
@@ -49,6 +61,11 @@ label::before {
 ::-webkit-scrollbar {
   display: none;
 }
+// ::-moz-scrollbars {
+//   display: none;
+// }
+
+// ::-moz-scrollbars-none
 
 select:hover, input:hover, button:hover {
   box-shadow: 0 0 15px 5px rgba(0, 0, 0, 0.2);
@@ -57,11 +74,6 @@ select:hover, input:hover, button:hover {
 input {
   border-radius: $br-rad;
   height: 50px;
-  font-family: 'Montserrat', sans-serif;
-  outline: none;
-  border: none;
-  font-size: 16px;
-  padding: 0 15px;
-  background-color: white;
+  @include tag-settings;
   transition: 1s ease;
 }

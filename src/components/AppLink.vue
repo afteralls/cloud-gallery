@@ -1,16 +1,23 @@
 <template>
   <router-link v-if="isHome" class="link" to="/">
-    <div class="_img-wrapper"><img src="../assets/img/arrow-left.webp" alt="To Home"></div>
-    <h3>Go back to the Gallery</h3>
+    <font-awesome-icon icon="fa-solid fa-arrow-left" size="lg" />
+    <h3>Вернуться в Галерею</h3>
   </router-link>
   <router-link v-if="isUpload" class="link" to="/upload">
-    <div class="_img-wrapper"><img src="../assets/img/add.webp" alt="Add"></div>
-    <h3 v-if="currentWidth > 900">Add to Collection</h3>
+    <font-awesome-icon icon="fa-solid fa-plus" size="lg" />
   </router-link>
 </template>
 
 <script>
-export default { props: ['isHome', 'isUpload', 'currentWidth'] }
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import { faArrowLeft, faPlus } from '@fortawesome/free-solid-svg-icons'
+library.add(faArrowLeft, faPlus)
+
+export default {
+  components: { FontAwesomeIcon },
+  props: ['isHome', 'isUpload', 'currentWidth']
+}
 </script>
 
 <style lang="scss">
@@ -23,10 +30,9 @@ export default { props: ['isHome', 'isUpload', 'currentWidth'] }
   color: black;
   @include glass-effect;
   transition: $transition;
-
-  h3 {
-    padding-right: $space;
-  }
+  gap: $space / 2;
+  padding: 0 $space;
+  height: 50px;
 
   &:hover {
     box-shadow: 0 0 15px 5px rgba(0, 0, 0, 0.2);
@@ -34,7 +40,6 @@ export default { props: ['isHome', 'isUpload', 'currentWidth'] }
   }
 
   img {
-    margin: $space;
     max-height: 20px;
     width: auto;
   }
