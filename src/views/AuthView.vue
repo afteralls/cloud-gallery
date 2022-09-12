@@ -41,6 +41,7 @@ import { useRouter } from 'vue-router'
 import * as yup from 'yup'
 import AppNotification from '../components/AppNotification'
 import TheNavbar from '../components/TheNavbar'
+
 export default {
   components: { AppNotification, TheNavbar },
   setup () {
