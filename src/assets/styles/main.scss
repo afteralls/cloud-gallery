@@ -12,7 +12,7 @@
   border: none;
 }
 
-body, input {
+body, input, button {
   box-sizing: border-box;
   font-family: 'Montserrat', sans-serif;
   font-size: 16px;
@@ -39,7 +39,7 @@ small {
   text-transform: uppercase;
 }
 
-input[type="text"] {
+input {
   border-radius: var(--br-rad);
   padding: var(--space);
   background-color: var(--wrapper-c);
@@ -50,7 +50,7 @@ input[type="text"] {
   }
 }
 
-input[type="checkbox"], input[type="radio"] { display: none; }
+input[type="checkbox"] { display: none; }
 
 label {
   cursor: pointer;
@@ -155,4 +155,20 @@ label {
   background-color: rgba(128, 128, 128, 0.5);
   width: 1px;
   height: 100%;
+}
+
+._notf {
+  display: flex;
+
+  p {
+    font-weight: bold;
+    margin: 0;
+    color: red;
+  }
+
+  &-v {
+    p {
+      color: green;
+    }
+  }
 }

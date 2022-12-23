@@ -2,9 +2,16 @@
   <div class="_wrapper">
     <section class="home">
       <div class="_column headers">
-        <h1></h1>
+        <h1>Облачная Галерея</h1>
+        <h2>Галерея для комфортного просмотра фотографий</h2>
+        <p>Загружайте изображения и просматривайте их в любое время. А чтобы быстрее находить нужный контент — укажите парочку тегов для поиска в будущем</p>
+        <div class="madeby">
+          <small>Made with</small>
+          <HeartIcon />
+          <small>by <a href="https://t.me/afterallspace">Daniil Sukharnikov</a></small>
+        </div>
         <RouterLink class="_btn" to="/gallery">
-          <small></small>
+          <small>Перейти к Галереи</small>
         </RouterLink>
       </div>
       <div class="logo-wrapper">
@@ -16,6 +23,7 @@
 
 <script setup lang="ts">
 import LogoIcon from '@/assets/svg/LogoIcon.vue'
+import HeartIcon from '@/assets/svg/HeartIcon.vue'
 </script>
 
 <style scoped lang="scss">
@@ -83,5 +91,21 @@ import LogoIcon from '@/assets/svg/LogoIcon.vue'
     h2 { font-size: 1.2rem; }
     p { font-size: 1rem; }
   }
+}
+
+.madeby {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  flex-wrap: wrap;
+
+  svg {
+    fill: var(--txt-c);
+    fill: red;
+  }
+
+  a { transition: var(--transition); }
+  a:hover { color: var(--accent-c); }
 }
 </style>

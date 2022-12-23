@@ -28,21 +28,21 @@ useEventListener(document, 'click', (evt: any) => {
 
 <style scoped lang="scss">
 .menu-wrapper {
-  background-color: var(--bg-c);
   position: fixed;
-  top: 73px;
+  top: 72px;
   right: 15px;
   width: 200px;
   height: 100px;
   z-index: 40;
-  padding: var(--space);
-  border-radius: var(--br-rad);
 }
 
 .menu {
   display: flex;
   width: 100%;
   height: 100%;
+  background-color: var(--bg-c);
+  padding: var(--space);
+  border-radius: var(--br-rad);
   flex-direction: column;
   gap: var(--space);
   justify-content: center;

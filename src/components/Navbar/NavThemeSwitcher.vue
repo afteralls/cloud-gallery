@@ -23,7 +23,7 @@ const currentColor = computed(() => isDark.value ? '#242424' : '#ffffff')
 const docMeta = () =>
   document.querySelector('meta[name="theme-color"]')?.setAttribute('content', currentColor.value)
 
-  watch(isDark, () => { docMeta() })
+watch(isDark, () => { docMeta() })
 onMounted(() => { docMeta() })
 </script>
 

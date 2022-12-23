@@ -2,10 +2,12 @@
 import { RouterView } from 'vue-router'
 import TheNavbar from '@/components/Navbar/TheNavbar.vue'
 import TheBackground from '@/components/TheBackground.vue'
+import AppHotifications from './components/AppHotifications.vue'
 </script>
 
 <template>
   <TheNavbar />
+  <AppHotifications class="notfs" />
   <TheBackground class="background" />
   <div class="wrapper"></div>
   <div class="_container">
@@ -34,6 +36,13 @@ import TheBackground from '@/components/TheBackground.vue'
   height: 100%;
   width: 100%;
   z-index: -2;
+}
+
+.notfs {
+  position: fixed;
+  top: 56px;
+  right: 0;
+  z-index: 5;
 }
 
 .main {
