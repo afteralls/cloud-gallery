@@ -1,24 +1,18 @@
 import { useStorage, useNavigatorLanguage } from '@vueuse/core'
+import langData from '@/languages/langData'
 import type { App } from 'vue'
 
-declare module 'vue' {
-  interface ComponentCustomProperties {
-    $i18n: (key: string) => string
-  }
-}
-
 export default {
-  install: (app: App, options: any) => {    
+  install: (app: App) => {    
     const { language } = useNavigatorLanguage()
     const validLang = language.value?.includes('-') ? language.value?.split('-')[0] : language.value
     const langHandler = validLang === 'ru' ? 'ru' : 'en'
-    const currentLang = useStorage<string>('lang', langHandler)
+    const curLang = useStorage<string>('lang', langHandler)
 
-    const changeLang = () =>
-      currentLang.value === 'en' ? currentLang.value = 'ru' : currentLang.value = 'en'
+    const changeLang = () => curLang.value === 'en' ? curLang.value = 'ru' : curLang.value = 'en'
   
-    app.config.globalProperties.$i18n = key =>
-      key.split('.').reduce((o, i) => o[i], options[currentLang.value])
+    app.config.globalProperties.$i18n = (key: string) =>
+      key.split('.').reduce((o: any, i: any) => o[i], langData[curLang.value])
     app.provide(import.meta.env.VITE_I18N, changeLang)
   }
 }

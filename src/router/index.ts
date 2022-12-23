@@ -13,12 +13,10 @@ const router = createRouter({
   ]
 })
 
-router.beforeEach((to, from, next) => {
+router.beforeEach((to, _, next) => {
   document.title = to.name
   next()
-  if(from.name !== to.name) {
-    setTimeout(() => { window.scrollTo(0,0) }, 250)
-  }
+  setTimeout(() => { window.scrollTo(0,0) }, 250)
 })
 
 export default router
