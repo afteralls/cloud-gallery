@@ -3,12 +3,14 @@ import { useStorage } from '@vueuse/core'
 import axios from 'axios'
 import { error } from '@/utils/errorHandler'
 import { computed } from 'vue'
+import { useNotfStore } from './notfStore'
 
 export const useAuthStore = defineStore('auth', () => {
   const authToken = useStorage<string>('auth-token', null)
   const email = useStorage<string>('email', null)
   const isAuthenticated = computed(() => !!authToken.value)
   const KEY = import.meta.env.VITE_KEY
+  const notf = useNotfStore()
 
   const login = async (payload: any) => {
     try {
@@ -16,8 +18,10 @@ export const useAuthStore = defineStore('auth', () => {
       const { data } = await axios.post(url, { ...payload, returnSecureToken: true })
       authToken.value = data.idToken
       email.value = payload.email.split('@')[0]
-    } catch (e: object | any) { error(e.response.data.error.message) }
+    } catch (e: any) { notf.addNotification(error(e.response.data.error.message)) }
   }
 
-  return { email, isAuthenticated, login }
+  const logout = () => { authToken.value = null }
+
+  return { email, isAuthenticated, login, logout }
 })

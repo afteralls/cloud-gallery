@@ -17,14 +17,12 @@ const { notifications } = useNotfStore()
 <style scoped lang="scss">
 .notification {
   display: flex;
-  box-sizing: border-box;
   align-items: flex-end;
   flex-direction: column;
   margin: var(--space);
   gap: var(--space);
 
   &__item {
-    
     background-color: var(--tp-c);
     backdrop-filter: blur(8px);
     padding: var(--space);

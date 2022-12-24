@@ -12,10 +12,6 @@
         <TranslateIcon @click="changeLang" />
         <div class="_br"></div>
         <NavContacts />
-        <div class="_br"></div>
-        <RouterLink to="/auth" class="_row">
-          <small>Авторизоваться</small>
-        </RouterLink>
       </div>
       <NavMobMenu v-else>
         <template #theme><NavThemeSwitcher /></template>

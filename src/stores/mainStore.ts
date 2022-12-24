@@ -1,3 +1,13 @@
 import { defineStore } from 'pinia'
+import { ref } from 'vue'
 
-export const useMainStore = defineStore('main', () => {})
+interface ActionsData {
+  foldName: string
+  path: string
+  desc: string
+}
+
+export const useMainStore = defineStore('main', () => {
+  const actions = ref<ActionsData[]>([])
+  return { actions }
+})
