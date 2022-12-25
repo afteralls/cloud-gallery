@@ -2,11 +2,16 @@
 <nav ref="navSize" class="nav-wrapper">
   <div class="_container">
     <div class="nav">
-      <RouterLink to="/" class="_row" :title="$i18n('nav.linkTitles.home')">
-        <LogoIcon />
-        <h3>{{ width > 375 ? $i18n('nav.name') : $i18n('nav.name_sh') }}</h3>
-      </RouterLink>
-      <div v-if="width > 900" class="options _row">
+      <div class="_row" style="position: relative">
+        <Transition name="nav" mode="out-in">
+          <RouterLink v-if="$route.path !== '/gallery'" to="/" class="_row">
+            <LogoIcon />
+            <h3>{{ width > 375 ? $i18n('nav.name') : $i18n('nav.name_sh') }}</h3>
+          </RouterLink>
+          <NavGalleryOptions v-else />
+        </Transition>
+      </div>
+      <div v-if="width > 900" class="_row">
         <NavThemeSwitcher />
         <div class="_br"></div>
         <TranslateIcon @click="changeLang" />
@@ -29,6 +34,7 @@ import NavContacts from './NavContacts.vue'
 import TranslateIcon from '@/assets/svg/TranslateIcon.vue'
 import NavThemeSwitcher from './NavThemeSwitcher.vue'
 import NavMobMenu from './NavMobMenu.vue'
+import NavGalleryOptions from './NavGalleryOptions.vue'
 
 import { useResizeObserver } from '@vueuse/core'
 import { inject, ref, onMounted } from 'vue'
@@ -57,7 +63,7 @@ onMounted(() => { width.value = window.window.innerWidth })
   justify-content: space-between;
   gap: var(--space);
   padding: var(--space);
-  line-height: 0;
+  height: 60px;
 
   h3 { text-transform: uppercase; }
 
@@ -65,6 +71,18 @@ onMounted(() => { width.value = window.window.innerWidth })
     height: 24px;
     width: auto;
     cursor: pointer;
+  }
+}
+
+.nav {
+  &-enter-active,
+  &-leave-active {
+    transition: opacity 0.2s ease;
+  }
+
+  &-enter-from,
+  &-leave-to {
+    opacity: 0;
   }
 }
 </style>

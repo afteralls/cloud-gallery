@@ -40,7 +40,7 @@ import AppHotifications from './components/AppHotifications.vue'
 
 .notfs {
   position: fixed;
-  top: 56px;
+  top: 60px;
   right: 0;
   z-index: 5;
 }

@@ -18,6 +18,7 @@ export const useAuthStore = defineStore('auth', () => {
       const { data } = await axios.post(url, { ...payload, returnSecureToken: true })
       authToken.value = data.idToken
       email.value = payload.email.split('@')[0]
+      notf.addNotification(`Добро пожаловать, ${email.value}`)
     } catch (e: any) { notf.addNotification(error(e.response.data.error.message)) }
   }
 

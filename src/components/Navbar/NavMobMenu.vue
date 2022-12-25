@@ -29,7 +29,7 @@ useEventListener(document, 'click', (evt: any) => {
 <style scoped lang="scss">
 .menu-wrapper {
   position: fixed;
-  top: 72px;
+  top: 76px;
   right: 15px;
   width: 200px;
   height: 100px;

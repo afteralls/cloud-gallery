@@ -57,11 +57,9 @@ const { value: password, errorMessage: pError, handleBlur: pBlur } = useField(
     .trim()
     .required('Enter your password')
 )
+
 const onSubmit = handleSubmit(async values => {
   await auth.login(values)
-  console.log(auth.isAuthenticated);
-  setTimeout(() => console.log(auth.isAuthenticated), 100)
-  
   if (auth.isAuthenticated) router.push('/')
 })
 </script>

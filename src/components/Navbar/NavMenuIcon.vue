@@ -11,7 +11,7 @@
 <style scoped lang="scss">
 .menu-icon {
   position: relative;
-  height: 24px;
+  height: 28px;
   width: 30px;
   display: block;
   z-index: 10;

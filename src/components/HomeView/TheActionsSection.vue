@@ -2,36 +2,36 @@
   <section class="actions">
     <div class="actions__container">
       <div class="actions__wrapper">
-        <RouterLink to="/auth" v-if="!auth.isAuthenticated" class="actions__card actions__card-act">
+        <RouterLink to="/auth" v-if="!auth.isAuthenticated" class="actions__card act">
           <AccountIcon />
           <h3>Войти в аккаунт</h3>
         </RouterLink>
         <div v-else class="_row">
-          <div class="actions__card actions__account">
-            <AccountIcon />
-            <div>
-              <p>Здравствуйте,</p>
-              <h3>{{ auth.email }}</h3>
+          <div class="actions__card account">
+            <div class="actions__row">
+              <AccountIcon />
+              <div>
+                <p>Здравствуйте,</p>
+                <h3>{{ auth.email }}</h3>
+              </div>
             </div>
-            <p>Теперь, у вас есть полный доступ к колекции, наслаждайтесь!</p>
+            <p>У вас есть полный доступ к колекции и всему функционалу, наслаждайтесь!</p>
             <div @click="auth.logout" class="_btn">
               <small>Выйти</small>
             </div>
           </div>
-          <div class="actions__card actions__card-act">
+          <RouterLink to="/upload" class="actions__card act">
+            <AddImagesIcon />
+            <h3>Пополнить коллекцию</h3>
+          </RouterLink>
+          <div @click="isOpen = true" class="actions__card act">
             <AddFolderIcon />
             <h3>Создать новую папку</h3>
           </div>
         </div>
-        <RouterLink
-          v-for="(temp, idx) in actions"
-          :to="temp.path"
-        >
-          <TheAction :idx="idx" :link="temp.path" @del-temp="(idx) => actions.splice(idx, 1)">
-            <template #codename><h3>{{ temp.foldName }}</h3></template>
-            <template #desc><p>{{ temp.desc }}</p></template>
-          </TheAction>
-        </RouterLink>
+        <AppModal :isOpen="isOpen" @close-modal="isOpen = false">
+          <small>Какой-то текст для примера</small>
+        </AppModal>
         <div v-if="!auth.isAuthenticated" class="actions__tip">
           <InfoIcon />
           <h3>Для разблокировки новых действий необходимо авторизоваться</h3>
@@ -46,12 +46,15 @@
 import TheAction from './TheAction.vue'
 import InfoIcon from '@/assets/svg/InfoIcon.vue'
 import AddFolderIcon from '@/assets/svg/AddFolderIcon.vue'
+import AddImagesIcon from '@/assets/svg/AddImagesIcon.vue'
 import AccountIcon from '@/assets/svg/AccountIcon.vue'
-import { useMainStore } from '@/stores/mainStore.js'
+import AppModal from '@/components/AppModal.vue'
+// import { useMainStore } from '@/stores/mainStore.js'
 import { useAuthStore } from '@/stores/authStore.js'
+import { ref } from 'vue'
 
 const auth = useAuthStore()
-const { actions } = useMainStore()
+const isOpen = ref(false) 
 </script>
 
 <style scoped lang="scss">
@@ -73,6 +76,11 @@ const { actions } = useMainStore()
     gap: var(--space);
   }
 
+  &__row {
+    display: flex;
+    align-items: center;
+  }
+
   &__card {
     display: flex;
     flex-direction: column;
@@ -92,18 +100,6 @@ const { actions } = useMainStore()
     }
   }
 
-  &__card-act {
-    cursor: pointer;
-    text-align: center;
-    transition: var(--transition);
-    justify-content: center;
-    align-items: center;
-
-    &:hover {
-      background-color: var(--wrapper-c-h);
-    }
-  }
-
   &__tip {
     display: flex;
     justify-content: center;
@@ -113,5 +109,22 @@ const { actions } = useMainStore()
     max-width: 350px;
     min-width: 350px;
   }
+}
+
+.act {
+  cursor: pointer;
+  text-align: center;
+  transition: var(--transition);
+  justify-content: center;
+  align-items: center;
+
+  &:hover {
+    background-color: var(--wrapper-c-h);
+  }
+}
+
+.account {
+  justify-content: space-between;
+  p { text-align: center; }
 }
 </style>
