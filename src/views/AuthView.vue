@@ -8,7 +8,7 @@
           <p>Чтобы войти в аккаунт, пожалуйста, заполните поля ниже</p>
         </div>
         <div class="_column">
-          <div class="_row">
+          <div class="auth__row">
             <div :class="['_column', {_invalid: eError}]">
               <div :class="['_notf', {'_notf-v': !eError && email}]">
                 <p>*&nbsp;</p><small>{{ eError || 'Enter your E-Mail'}}</small>
@@ -81,6 +81,21 @@ const onSubmit = handleSubmit(async values => {
     justify-content: space-around;
   }
 
+  &__row {
+    display: flex;
+    gap: var(--space);
+    width: 100%;
+    justify-content: space-between;
+
+    @media(max-width: 500px) {
+      flex-direction: column;
+
+      input {
+        width: 100%;
+      }
+    }
+  }
+
   & ._btn {
     width: 100%;
   }
@@ -89,6 +104,17 @@ const onSubmit = handleSubmit(async values => {
     max-width: 300px;
     height: auto;
     border-radius: var(--br-rad);
+    object-fit: cover;
+  }
+
+  @media(max-width: 900px) {
+    flex-direction: column;
+    max-width: 455px;
+
+    img {
+      max-width: 100%;
+      max-height: 200px;
+    }
   }
 }
 </style>
