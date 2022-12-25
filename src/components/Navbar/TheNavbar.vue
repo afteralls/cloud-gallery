@@ -44,7 +44,7 @@ const navSize = ref<HTMLInputElement | null>(null)
 const width = ref<number>(0)
 
 useResizeObserver(navSize, entries => { width.value = entries[0].contentRect.width })
-onMounted(() => { width.value = window.window.innerWidth })
+onMounted(() => { width.value = window.innerWidth })
 </script>
 
 <style lang="scss">

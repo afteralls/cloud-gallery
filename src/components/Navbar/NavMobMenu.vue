@@ -2,13 +2,11 @@
 <NavMenuIcon @click="isActive = !isActive" :class="{ 'active': isActive }" />
 <Transition name="main">
   <div v-show="isActive" class="menu-wrapper">
-    <div class="menu">
-      <slot name="theme"></slot>
-      <div class="_row">
-        <slot name="translation"></slot>
-        <div class="_br"></div>
-        <slot name="contacts"></slot>
-      </div>
+    <slot name="theme"></slot>
+    <div class="_row">
+      <slot name="translation"></slot>
+      <div class="_br"></div>
+      <slot name="contacts"></slot>
     </div>
   </div>
 </Transition>
@@ -19,7 +17,7 @@ import { ref } from 'vue'
 import NavMenuIcon from './NavMenuIcon.vue'
 import { useEventListener } from '@vueuse/core'
 
-const isActive = ref(false)
+const isActive = ref<boolean>(false)
 useEventListener(document, 'click', (evt: any) => {
   if (!evt.target.closest(['.menu-icon', '.menu-wrapper']))
     isActive.value = false
@@ -34,12 +32,7 @@ useEventListener(document, 'click', (evt: any) => {
   width: 200px;
   height: 100px;
   z-index: 40;
-}
-
-.menu {
   display: flex;
-  width: 100%;
-  height: 100%;
   background-color: var(--bg-c);
   padding: var(--space);
   border-radius: var(--br-rad);
