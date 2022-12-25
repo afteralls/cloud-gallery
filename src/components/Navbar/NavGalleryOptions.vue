@@ -1,16 +1,16 @@
 <template>
-  <div class="options">
-    <RouterLink to="/"><LogoIcon /></RouterLink>
-    <div class="_br"></div>
-    <div class="options_folder">
-      <FoldersIcon />
-    </div>
-    <div class="options__search">
-      <input type="text" placeholder="#Art #Nature">
-      <SearchIcon class="options__search-icon" />
-    </div>
-    <div class="stable"><FilterIcon /></div>
+<div class="options">
+  <RouterLink to="/"><LogoIcon /></RouterLink>
+  <div class="_br"></div>
+  <div class="options_folder">
+    <FoldersIcon />
   </div>
+  <div class="options__search">
+    <input type="text" placeholder="#Art #Nature">
+    <SearchIcon class="options__search-icon" />
+  </div>
+  <div class="stable"><FilterIcon /></div>
+</div>
 </template>
 
 <script setup lang="ts">
@@ -19,9 +19,10 @@ import LogoIcon from '@/assets/svg/LogoIcon.vue'
 import FilterIcon from '@/assets/svg/FilterIcon.vue'
 import FoldersIcon from '@/assets/svg/FoldersIcon.vue'
 import { useMainStore } from '@/stores/mainStore'
+import { onMounted } from 'vue'
 
 const main = useMainStore()
-console.log(main.folders)
+// onMounted(() => { main.getFolders })
 </script>
 
 <style scoped lang="scss">

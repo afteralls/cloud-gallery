@@ -50,7 +50,7 @@ input {
   }
 }
 
-input[type="checkbox"] { display: none; }
+input[type="checkbox"], input[type="radio"] { display: none; }
 
 label {
   cursor: pointer;

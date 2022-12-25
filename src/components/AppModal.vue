@@ -42,8 +42,8 @@ defineEmits(['closeModal'])
 
   &__close {
     position: absolute;
-    top: 0;
-    right: -32px;
+    top: -32px;
+    right: 0;
     cursor: pointer;
   }
 }

@@ -30,7 +30,28 @@
           </div>
         </div>
         <AppModal :isOpen="isOpen" @close-modal="isOpen = false">
-          <small>Какой-то текст для примера</small>
+          <div class="_column">
+            <small>Название</small>
+            <input v-model="folderName" type="text" placeholder="Mounts">
+            <small>Тип</small>
+            <div class="_cb-wrapper">
+              <Transition name="main"><CheckIcon v-if="folderType === 'global'" /></Transition>
+              <input v-model="folderType" id="gl" type="radio" value="global">
+              <label for="gl"><small>Глобальная</small></label>
+            </div>
+            <div class="_cb-wrapper">
+              <Transition name="main"><CheckIcon v-if="folderType === 'local'" /></Transition>
+              <input v-model="folderType" id="lc" type="radio" value="local">
+              <label for="lc"><small>Локальная</small></label>
+            </div>
+            <div
+              @click="main.createFolder(folderName, folderType), isOpen = false" 
+              class="_btn" 
+              style="width: 100%"
+            >
+              <small>Создать</small>
+            </div>
+          </div>
         </AppModal>
         <div v-if="!auth.isAuthenticated" class="actions__tip">
           <InfoIcon />
@@ -43,18 +64,21 @@
 </template>
 
 <script setup lang="ts">
-import TheAction from './TheAction.vue'
 import InfoIcon from '@/assets/svg/InfoIcon.vue'
 import AddFolderIcon from '@/assets/svg/AddFolderIcon.vue'
 import AddImagesIcon from '@/assets/svg/AddImagesIcon.vue'
 import AccountIcon from '@/assets/svg/AccountIcon.vue'
 import AppModal from '@/components/AppModal.vue'
-// import { useMainStore } from '@/stores/mainStore.js'
+import CheckIcon from '@/assets/svg/CheckIcon.vue'
+import { useMainStore } from '@/stores/mainStore.js'
 import { useAuthStore } from '@/stores/authStore.js'
 import { ref } from 'vue'
 
 const auth = useAuthStore()
-const isOpen = ref(false) 
+const main = useMainStore()
+const isOpen = ref<boolean>(false)
+const folderName = ref<string>('')
+const folderType = ref<string>('global')
 </script>
 
 <style scoped lang="scss">
