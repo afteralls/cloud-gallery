@@ -3,7 +3,7 @@
   <RouterLink to="/"><LogoIcon /></RouterLink>
   <div class="_br"></div>
   <NavFoldersMenu />
-  <AppHashInput />
+  <AppHashInput :is-search="true" />
   <div class="stable"><FilterIcon /></div>
 </div>
 </template>

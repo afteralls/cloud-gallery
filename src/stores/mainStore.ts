@@ -6,6 +6,7 @@ import { useAuthStore } from './authStore'
 import { useNotfStore } from './notfStore'
 
 interface Folder { name: string, type: string }
+interface PreviewInfo { name?: string, src?: string, size?: string }
 
 export const useMainStore = defineStore('main', () => {
   const storage = getStorage()
@@ -15,6 +16,9 @@ export const useMainStore = defineStore('main', () => {
   const foldersCollection = ref<Folder[]>([])
   const imageCollection = ref<any>([])
   const hashCollection = ref<string[]>([])
+
+  const clientImages = ref<File[] | null>([])
+  const previewImages = ref<PreviewInfo[]>([])
 
   const curFolder = useStorage<Folder>('curFolder', { name: 'images', type: 'global' })
   const globalFoldersRef = Ref(storage, 'gallery')
@@ -77,6 +81,8 @@ export const useMainStore = defineStore('main', () => {
     getFolders,
     getData,
     imageCollection,
-    hashCollection
+    hashCollection,
+    clientImages,
+    previewImages
   }
 })

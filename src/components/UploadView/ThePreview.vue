@@ -1,10 +1,10 @@
 <template>
   <div class="preview">
     <transition name="main" mode="out-in">
-      <div class="preview-wrapper" v-if="previewImages.length">
-        <div class="preview-row">
+      <div class="preview-wrapper" v-if="main.previewImages.length">
+        <div @click="deleteImage" class="preview-row">
           <TransitionGroup name="images">
-            <div class="image-wrapper" v-for="(item, idx) in previewImages" :key="idx">
+            <div class="image-wrapper" v-for="(item, idx) in main.previewImages" :key="idx">
               <div class="remove" :data-idx="idx"><CloseIcon /></div>
               <img :src="item.src" :alt="item.name" :title="item.name">
               <div class="info"><small>{{ item.size }}</small></div>
@@ -17,6 +17,7 @@
         <InfoIcon />
         <h3>Здесь будут ваши изображения, как только вы добавите их</h3>
         <p>Попробуйте добавить несколько изображений для их дальнейшего редактирования и отбора</p>
+        <h5>(Удерживайте Shift для горизонтального скролла)</h5>
       </div>
     </transition>
   </div>
@@ -25,9 +26,17 @@
 <script setup lang="ts">
 import InfoIcon from '@/assets/svg/InfoIcon.vue'
 import CloseIcon from '@/assets/svg/CloseIcon.vue'
+import { useMainStore } from '@/stores/mainStore'
 
-interface PreviewInfo { name?: string, src?: string, size?: string }
-defineProps<{ previewImages: PreviewInfo[]}>()
+const main = useMainStore()
+
+const deleteImage = (evt: any) => {
+  const idx: number = parseInt(evt.target.dataset.idx)
+  if (idx || idx === 0) {
+    main.previewImages.splice(idx, 1)
+    main.clientImages?.splice(idx, 1)
+  }
+}
 </script>
 
 <style scoped lang="scss">
@@ -39,7 +48,7 @@ defineProps<{ previewImages: PreviewInfo[]}>()
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 300px;
+  height: 282px;
   width: 100%;
   max-width: 100%;
   overflow-x: scroll;
@@ -82,7 +91,7 @@ defineProps<{ previewImages: PreviewInfo[]}>()
   position: relative;
 
   img {
-    height: 268px;
+    height: 250px;
     width: auto;
     border-radius: var(--br-rad);
   }

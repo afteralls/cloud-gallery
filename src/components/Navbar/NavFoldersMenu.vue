@@ -3,9 +3,9 @@
 <Transition name="main">
   <div v-show="isActive" class="menu-wrapper">
     <small>Текущая</small>
-    <NavFolderItem data-idx="0" :type="main.curFolder.type" :name="main.curFolder.name" />
+    <AppFolderItem data-idx="0" :type="main.curFolder.type" :name="main.curFolder.name" />
     <small>Доступные</small>
-    <NavFolderItem
+    <AppFolderItem
       v-for="(folder, idx) in main.foldersCollection"
       :key="folder.name"
       :data-idx="idx"
@@ -18,7 +18,7 @@
 
 <script setup lang="ts">
 import FoldersIcon from '@/assets/svg/FoldersIcon.vue'
-import NavFolderItem from './NavFolderItem.vue'
+import AppFolderItem from '@/components/AppFolderItem.vue'
 import { ref } from 'vue'
 import { useEventListener } from '@vueuse/core'
 import { useMainStore } from '@/stores/mainStore'
