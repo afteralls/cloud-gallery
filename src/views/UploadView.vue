@@ -1,26 +1,11 @@
 <template>
   <div class="_wrapper">
     <div class="upload">
-      <div class="preview">
-        <AppScrollSpace v-if="clientImages?.length">
-          <div class="image-wrapper" v-for="(item, idx) in previewImages" :key="idx">
-            <div class="preview__remove" :data-idx="item.name">&times;</div>
-            <img :src="item.src" :alt="item.name" :title="item.name">
-            <div class="preview__info">
-              <p>{{ item.size }}</p>
-            </div>
-          </div>
-        </AppScrollSpace>
-        <div v-else class="_tip">
-          <InfoIcon />
-          <h3>Здесь будут ваши изображения, как только вы добавите их</h3>
-          <p>Попробуйте добавить несколько изображений для их дальнейшего редактирования и отбора</p>
-        </div>
-      </div>
+      <ThePreviewSection :preview-images="previewImages" @click="deleteImage" />
       <div ref="dropZoneRef" class="drop-zone">
         <div class="drop-container">
           <input ref="addBtn" @change="addFiles(addBtn?.files)" multiple type="file" class="add">
-          <small v-if="!isOverDropZone"> Нажмите на поле или просто перетащите сюда необходимые файлы</small>
+          <small v-if="!isOverDropZone">Нажмите на поле или перетащите сюда необходимые файлы</small>
           <small v-else>Бросайте!</small>
         </div>
       </div>
@@ -31,8 +16,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useDropZone } from '@vueuse/core'
-import InfoIcon from '@/assets/svg/InfoIcon.vue'
-import AppScrollSpace from '@/components/AppScrollSpace.vue'
+import ThePreviewSection from '@/components/UploadView/ThePreviewSection.vue'
 import { bytesToSize } from '@/utils/bytesToSize'
 
 interface PreviewInfo { name?: string, src?: string, size?: string }
@@ -47,6 +31,7 @@ const { isOverDropZone } = useDropZone(dropZoneRef, onDrop)
 const addFiles = (files: File[] | null | FileList) => {
   const imgArr = Array.from((files as File[] | FileList))
   imgArr.forEach((file: File) => { clientImages.value?.push(file) })
+  previewHandler()
 }
 
 const previewHandler = () => {
@@ -69,24 +54,22 @@ const previewHandler = () => {
   })
 }
 
+const deleteImage = (evt: any) => {
+  const idx: number = parseInt(evt.target.dataset.idx)
+  if (idx || idx === 0) {
+    previewImages.value.splice(idx, 1)
+    clientImages.value?.splice(idx, 1)
+  }
+}
 </script>
 
 <style scoped lang="scss">
 .upload {
   display: flex;
+  align-items: center;
   flex-direction: column;
-  align-items: flex-start;
   gap: var(--space);
   width: 100%;
-
-  svg {
-    width: 50px;
-    height: auto;
-  }
-}
-
-.preview {
-  max-height: 350px;
 }
 
 .drop-zone {
@@ -94,6 +77,7 @@ const previewHandler = () => {
   height: 150px;
   padding: var(--space);
   background-color: var(--tp-c);
+  backdrop-filter: blur(8px);
   border-radius: var(--br-rad);
 }
 
