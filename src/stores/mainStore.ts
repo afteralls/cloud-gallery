@@ -1,33 +1,37 @@
 import { defineStore } from 'pinia'
-import { ref, computed } from 'vue'
+import { ref } from 'vue'
 import { useStorage } from '@vueuse/core'
 import { getStorage, ref as Ref, listAll, uploadBytes, getBlob } from 'firebase/storage'
 import { useAuthStore } from './authStore'
 import { useNotfStore } from './notfStore'
 
+interface Folder { name: string, type: string }
+
 export const useMainStore = defineStore('main', () => {
   const storage = getStorage()
   const auth = useAuthStore()
   const notf = useNotfStore()
-  const folders = ref<any>([])
-  const curFolder = useStorage<{ name?: string, type?: string }>('curFolder', { name: 'images', type: 'global' })
-  const imageCollection = ref([])
+
+  const foldersCollection = ref<Folder[]>([])
+  const imageCollection = ref<any>([])
   const hashCollection = ref<string[]>([])
-  const globalfoldersRef = Ref(storage, 'gallery')
+
+  const curFolder = useStorage<Folder>('curFolder', { name: 'images', type: 'global' })
+  const globalFoldersRef = Ref(storage, 'gallery')
+  const localFoldersRef = Ref(storage, `users/${auth.email}`)
 
   const getFolderList = async (foldRef: any, type: string) => {
     const folderList = await listAll(foldRef)
     folderList.prefixes.forEach((folderRef: any) => {
-      folders.value.push({ name: folderRef.name, type })
+      foldersCollection.value.push({ name: folderRef.name, type })
     })
   }
 
   const getFolders = async () => {
-    folders.value = []
-    await getFolderList(globalfoldersRef, 'global')
+    foldersCollection.value = []
+    await getFolderList(globalFoldersRef, 'global')
     if (auth.isAuthenticated) {
-      const localfoldersRef = Ref(storage, `users/${auth.email}`)
-      await getFolderList(localfoldersRef, 'local')
+      await getFolderList(localFoldersRef, 'local')
     }
   }
 
@@ -57,9 +61,8 @@ export const useMainStore = defineStore('main', () => {
     })
   }
 
-  const isGlobal = computed(() => curFolder.value.type === 'global')
   const getData = async () => {
-    const path: string = isGlobal.value
+    const path: string = curFolder.value.type === 'global'
       ? `gallery/${curFolder.value.name}`
       : `users/${auth.email}/${curFolder.value.name}`
     const curHashRef = Ref(storage, `${path}/hashData.json`)
@@ -68,7 +71,7 @@ export const useMainStore = defineStore('main', () => {
   }
 
   return {
-    folders,
+    foldersCollection,
     curFolder,
     createFolder,
     getFolders,

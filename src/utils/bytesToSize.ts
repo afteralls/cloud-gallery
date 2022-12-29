@@ -1,4 +1,4 @@
-export function bytesToSize (bytes: number) {
+export const bytesToSize = (bytes: number) => {
   const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB']
 
   if (bytes === 0) return '0 Byte'

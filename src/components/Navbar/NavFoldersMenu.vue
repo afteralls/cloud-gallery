@@ -6,8 +6,8 @@
     <NavFolderItem data-idx="0" :type="main.curFolder.type" :name="main.curFolder.name" />
     <small>Доступные</small>
     <NavFolderItem
-      v-for="(folder, idx) in main.folders"
-      :key="folder"
+      v-for="(folder, idx) in main.foldersCollection"
+      :key="folder.name"
       :data-idx="idx"
       :type="folder.type"
       :name="folder.name"
@@ -31,7 +31,7 @@ useEventListener(document, 'click', (evt: any) => {
   if (!evt.target.closest(['.folder-icon', '.menu-wrapper']))
     isActive.value = false
   if (evt.target.closest(['.folder'])) {
-    main.curFolder = main.folders[evt.target.dataset.idx]
+    main.curFolder = main.foldersCollection[evt.target.dataset.idx]
     main.getData()
     isActive.value = false
   }

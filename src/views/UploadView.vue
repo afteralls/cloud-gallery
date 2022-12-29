@@ -1,3 +1,125 @@
 <template>
-  <div></div>
+  <div class="_wrapper">
+    <div class="upload">
+      <div class="preview">
+        <AppScrollSpace v-if="clientImages?.length">
+          <div class="image-wrapper" v-for="(item, idx) in previewImages" :key="idx">
+            <div class="preview__remove" :data-idx="item.name">&times;</div>
+            <img :src="item.src" :alt="item.name" :title="item.name">
+            <div class="preview__info">
+              <p>{{ item.size }}</p>
+            </div>
+          </div>
+        </AppScrollSpace>
+        <div v-else class="_tip">
+          <InfoIcon />
+          <h3>Здесь будут ваши изображения, как только вы добавите их</h3>
+          <p>Попробуйте добавить несколько изображений для их дальнейшего редактирования и отбора</p>
+        </div>
+      </div>
+      <div ref="dropZoneRef" class="drop-zone">
+        <div class="drop-container">
+          <input ref="addBtn" @change="addFiles(addBtn?.files)" multiple type="file" class="add">
+          <small v-if="!isOverDropZone"> Нажмите на поле или просто перетащите сюда необходимые файлы</small>
+          <small v-else>Бросайте!</small>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
+
+<script setup lang="ts">
+import { ref } from 'vue'
+import { useDropZone } from '@vueuse/core'
+import InfoIcon from '@/assets/svg/InfoIcon.vue'
+import AppScrollSpace from '@/components/AppScrollSpace.vue'
+import { bytesToSize } from '@/utils/bytesToSize'
+
+interface PreviewInfo { name?: string, src?: string, size?: string }
+
+const dropZoneRef = ref<HTMLDivElement>()
+const addBtn = ref<any>()
+const clientImages = ref<File[] | null>([])
+const previewImages = ref<PreviewInfo[]>([])
+const onDrop = (files: File[] | null) => { addFiles(files) }
+const { isOverDropZone } = useDropZone(dropZoneRef, onDrop)
+
+const addFiles = (files: File[] | null | FileList) => {
+  const imgArr = Array.from((files as File[] | FileList))
+  imgArr.forEach((file: File) => { clientImages.value?.push(file) })
+}
+
+const previewHandler = () => {
+  clientImages.value?.forEach(file => {
+    if (!file.type.match('image')) { return }
+    const reader = new FileReader()
+
+    reader.onload = (e) => {
+      const image = new Image()
+      image.onload = () => {
+        previewImages.value.push({
+          name: file.name,
+          src: e.target?.result as string,
+          size: bytesToSize(file.size)
+        })
+      }
+      image.src = e.target?.result as string
+    }
+    reader.readAsDataURL(file)
+  })
+}
+
+</script>
+
+<style scoped lang="scss">
+.upload {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space);
+  width: 100%;
+
+  svg {
+    width: 50px;
+    height: auto;
+  }
+}
+
+.preview {
+  max-height: 350px;
+}
+
+.drop-zone {
+  width: 300px;
+  height: 150px;
+  padding: var(--space);
+  background-color: var(--tp-c);
+  border-radius: var(--br-rad);
+}
+
+.drop-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  text-align: center;
+  padding: var(--space);
+  border-radius: var(--br-rad);
+  border: 3px dashed var(--accent-c);
+  transition: var(--transition);
+  position: relative;
+
+  &:hover {
+    border: 3px dashed var(--accent-c-h);
+  }
+}
+
+.add {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  opacity: 0;
+}
+</style>

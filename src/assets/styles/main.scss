@@ -126,6 +126,16 @@ label {
   }
 }
 
+._tip {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  flex-direction: column;
+  gap: var(--space);
+  max-width: 350px;
+  min-width: 350px;
+}
+
 ._svg-wrapper {
   display: flex;
   justify-content: center;
