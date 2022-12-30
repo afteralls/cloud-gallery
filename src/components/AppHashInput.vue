@@ -1,13 +1,21 @@
 <template>
   <div :class="{ 'hash-input': true, search: isSearch }">
-    <input @focus="showTips = true" v-model="hashSearch" type="text" placeholder="#Art #Nature">
+    <input
+      @focus="showTips = true"
+      v-model="hashModel"
+      type="text"
+      @change="changeModel"
+      placeholder="#Art #Nature"
+    />
     <SearchIcon v-if="isSearch" class="search-icon" />
     <Transition name="main">
       <div v-if="showTips" class="hash-tips">
         <div v-for="hash in main.hashCollection" :key="hash" :data-hash="hash" class="_btn hash">
           <h5>{{ hash }}</h5>
         </div>
-        <h5 v-if="!main.hashCollection.length">Тегов пока нет, попробуйте пополнить коллекцию текущей директории</h5>
+        <h5 v-if="!main.hashCollection.length">
+          Тегов пока нет, попробуйте пополнить коллекцию текущей директории
+        </h5>
       </div>
     </Transition>
   </div>
@@ -20,16 +28,18 @@ import { useMainStore } from '@/stores/mainStore'
 import { useEventListener } from '@vueuse/core'
 
 defineProps<{ isSearch?: boolean }>()
+const emit = defineEmits<{ (e: 'update:hashModel', value: string): void }>()
+const hashModel = ref<string>('')
+const changeModel = (evt: any) => { emit('update:hashModel', evt.target?.value) }
 
 const showTips = ref<boolean>(false)
-const hashSearch = ref<string>('')
 const main = useMainStore()
 
 useEventListener(document, 'click', (evt: any) => {
   if (!evt.target.closest(['.search', '.hash-input']))
     showTips.value = false
   if (evt.target.closest(['.hash']))
-    hashSearch.value += `${evt.target.dataset.hash} `
+    hashModel.value += `${evt.target.dataset.hash} `
 })
 </script>
 

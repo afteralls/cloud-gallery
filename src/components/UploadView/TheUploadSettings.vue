@@ -1,7 +1,7 @@
 <template>
   <div class="upload-settings">
     <small>Введите общие теги</small>
-    <AppHashInput />
+    <AppHashInput @update:hashModel="(value) => { main.uploadTags = value }" />
     <small>Папка для загрузки</small>
     <AppFolderItem
       @click="isOpen = true"
@@ -20,7 +20,10 @@
       <InfoIcon />
       <h5>Опция применяется<br />ко всем изображениям</h5>
     </div>
-    <div class="_btn"><small>Загрузить</small></div>
+    <div
+      @click="uploadHandler"
+      :class="{ _btn: true, _disabled: main.isUploading }"
+    ><small>Загрузить</small></div>
   </div>
   <AppModal :is-open="isOpen" @close-modal="isOpen = false">
     <div @click="changeFolder" class="folder-list">
@@ -57,6 +60,13 @@ const changeFolder = (evt: any) => {
     main.getData()
     isOpen.value = false
   }
+}
+
+const uploadHandler = () => {
+  document.querySelectorAll('.remove').forEach(e => e.remove())
+  main.isUploading = true
+  const items = document.querySelectorAll('.progress')
+  main.uploadHandler(toCompress.value, items)
 }
 
 onMounted(() => { main.getFolders(); main.getData() })

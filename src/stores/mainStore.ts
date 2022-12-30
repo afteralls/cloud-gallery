@@ -1,9 +1,20 @@
 import { defineStore } from 'pinia'
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { useStorage } from '@vueuse/core'
-import { getStorage, ref as Ref, listAll, uploadBytes, getBlob } from 'firebase/storage'
+import {
+  getStorage,
+  ref as Ref,
+  listAll,
+  uploadBytesResumable,
+  getBlob,
+  uploadBytes,
+  getDownloadURL,
+  getMetadata
+} from 'firebase/storage'
 import { useAuthStore } from './authStore'
 import { useNotfStore } from './notfStore'
+import Compressor from 'compressorjs'
+import type { object } from 'yup'
 
 interface Folder { name: string, type: string }
 interface PreviewInfo { name?: string, src?: string, size?: string }
@@ -17,12 +28,21 @@ export const useMainStore = defineStore('main', () => {
   const imageCollection = ref<any>([])
   const hashCollection = ref<string[]>([])
 
-  const clientImages = ref<File[] | null>([])
+  const clientImages = ref<File[] | null | undefined>([])
   const previewImages = ref<PreviewInfo[]>([])
 
   const curFolder = useStorage<Folder>('curFolder', { name: 'images', type: 'global' })
   const globalFoldersRef = Ref(storage, 'gallery')
   const localFoldersRef = Ref(storage, `users/${auth.email}`)
+
+  const curPath = computed(() => {
+    return curFolder.value.type === 'global'
+      ? `gallery/${curFolder.value.name}`
+      : `users/${auth.email}/${curFolder.value.name}`
+  })
+
+  const curHashDataRef = ref<any>()
+  const curImageDataRef = ref<any>()
 
   const getFolderList = async (foldRef: any, type: string) => {
     const folderList = await listAll(foldRef)
@@ -43,7 +63,7 @@ export const useMainStore = defineStore('main', () => {
     const imageDataRef = type === 'global'
       ? Ref(storage, `gallery/${name}/${fileName}.json`)
       : Ref(storage, `users/${auth.email}/${name}/${fileName}.json`)
-    const defBlob = new Blob([JSON.stringify(['#work', '#hiii'])], { type: 'application/json' })
+    const defBlob = new Blob([JSON.stringify([])], { type: 'application/json' })
     uploadBytes(imageDataRef, defBlob)
   }
 
@@ -53,25 +73,71 @@ export const useMainStore = defineStore('main', () => {
     notf.addNotification('Папка успешно создана!')
   }
 
-  const getDataHandler = async (hashRef: any, imageRef: any) => {
+  const getData = async () => {
+    curHashDataRef.value = Ref(storage, `${curPath.value}/hashData.json`)
+    curImageDataRef.value = Ref(storage, `${curPath.value}/imageData.json`)
     hashCollection.value = []; imageCollection.value = []
-    await getBlob(hashRef).then(async responce => {
+    await getBlob(curHashDataRef.value).then(async responce => {
       const data = await new Response(responce).text()
       if (data) hashCollection.value = JSON.parse(data)
     })
-    await getBlob(imageRef).then(async responce => {
+    await getBlob(curImageDataRef.value).then(async responce => {
       const data = await new Response(responce).text()
       if (data) imageCollection.value = JSON.parse(data)
     })
   }
 
-  const getData = async () => {
-    const path: string = curFolder.value.type === 'global'
-      ? `gallery/${curFolder.value.name}`
-      : `users/${auth.email}/${curFolder.value.name}`
-    const curHashRef = Ref(storage, `${path}/hashData.json`)
-    const curImageRef = Ref(storage, `${path}/imageData.json`)
-    await getDataHandler(curHashRef, curImageRef)
+  const isUploading = ref<boolean>(false)
+  const uploadTags = ref<string>('')
+  const uploadImages = (file: File, blocks: NodeListOf<Element>, idx: number) => {
+    const currentTags = uploadTags.value.trim()
+    const metadata = { customMetadata: { hashtags: currentTags, uploader: auth.email } }
+    const imageRef = Ref(storage, `${curPath.value}/${file.name}`)
+    const uploadTask = uploadBytesResumable(imageRef, file, metadata)
+    uploadTask.on('state_changed', snapshot => {
+      const percentage = parseInt(((snapshot.bytesTransferred / snapshot.totalBytes) * 100).toFixed())
+      const block: any = blocks[idx]
+      if (percentage > 30) { block.textContent = percentage + '%' }
+      block.style.width = percentage + '%'
+    }, e => { console.log(e) }, async () => {
+      notf.addNotification('Изображение успешно загружено')
+      imageCollection.value.push({
+        name: file.name,
+        hashtags: currentTags,
+        src: await getDownloadURL(uploadTask.snapshot.ref),
+        uploader: auth.email,
+        created: await getMetadata(uploadTask.snapshot.ref).then(meta => meta.timeCreated.split('T')[0])
+      })
+      clientImages.value = clientImages.value?.filter((f: any) => f.name !== file.name)
+      previewImages.value.forEach((f, i) => {
+        if (f.name === file.name) previewImages.value.splice(i, 1)
+      })
+      if (!clientImages.value?.length) {
+        const imageBlob = new Blob([JSON.stringify(imageCollection.value)], { type: 'application/json' })
+        uploadBytes(curImageDataRef.value, imageBlob)
+        currentTags.split(' ').forEach(tag => {
+          if (!hashCollection.value.includes(tag)) hashCollection.value.push(tag)
+        })
+        const tagBlob = new Blob([JSON.stringify(hashCollection.value)], { type: 'application/json' })
+        uploadBytes(curHashDataRef.value, tagBlob)
+        isUploading.value = false
+      }
+    })
+  }
+
+  const uploadHandler = (toCompress: boolean, items: NodeListOf<Element>) => {
+    if (toCompress) {
+      clientImages.value?.forEach((file, idx) => {
+        new Compressor(file, {
+          quality: 0.6,
+          success (result) { uploadImages(result as File, items, idx) }
+        })
+      })
+    } else {
+      clientImages.value?.forEach((file, idx) => {
+        uploadImages(file, items, idx)
+      })
+    }
   }
 
   return {
@@ -83,6 +149,9 @@ export const useMainStore = defineStore('main', () => {
     imageCollection,
     hashCollection,
     clientImages,
-    previewImages
+    previewImages,
+    isUploading,
+    uploadTags,
+    uploadHandler
   }
 })

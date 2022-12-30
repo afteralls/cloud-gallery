@@ -30,17 +30,15 @@ const { notifications } = useNotfStore()
   }
 }
 
-.notf-move,
-.notf-enter-active,
-.notf-leave-active {
-  transition: all 0.5s ease;
-}
-.notf-enter-from,
-.notf-leave-to {
-  opacity: 0;
-  transform: translateX(30px);
-}
-.notf-leave-active {
-  position: absolute;
+.notf {
+  &-enter-active,
+  &-leave-active {
+    transition: all 0.5s ease;
+  }
+  &-enter-from,
+  &-leave-to {
+    opacity: 0;
+    transform: translateX(30px);
+  }
 }
 </style>

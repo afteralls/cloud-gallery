@@ -7,7 +7,10 @@
             <div class="image-wrapper" v-for="(item, idx) in main.previewImages" :key="idx">
               <div class="remove" :data-idx="idx"><CloseIcon /></div>
               <img :src="item.src" :alt="item.name" :title="item.name">
-              <div class="info"><small>{{ item.size }}</small></div>
+              <div :class="{ info: true, uploading: main.isUploading }">
+                <div v-show="main.isUploading" class="progress"></div>
+                <small v-if="!main.isUploading">{{ item.size }}</small>
+              </div>
             </div>
           </TransitionGroup>
           <div>&nbsp;</div>
@@ -29,7 +32,6 @@ import CloseIcon from '@/assets/svg/CloseIcon.vue'
 import { useMainStore } from '@/stores/mainStore'
 
 const main = useMainStore()
-
 const deleteImage = (evt: any) => {
   const idx: number = parseInt(evt.target.dataset.idx)
   if (idx || idx === 0) {
@@ -106,7 +108,7 @@ const deleteImage = (evt: any) => {
   position: absolute;
   bottom: 0;
   width: 100%;
-  height: 30px;
+  height: 32px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -115,8 +117,26 @@ const deleteImage = (evt: any) => {
   backdrop-filter: blur(8px);
   border-radius: 0 0 var(--space) var(--space);
   opacity: 0;
+  overflow: hidden;
 }
 
+.progress {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 32px;
+  width: 0%;
+  color: var(--dark-txt-c);
+  background-color: var(--accent-c);
+  transition: width var(--transition);
+  z-index: 1;
+  display: flex;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+}
+
+.uploading,
 .image-wrapper:hover .info,
 .image-wrapper:hover .remove {
   opacity: 1;
@@ -129,9 +149,8 @@ const deleteImage = (evt: any) => {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 30px;
-  height: 30px;
-  padding: 5px;
+  width: 64px;
+  height: 32px;
   backdrop-filter: blur(10px);
   font-size: 30px;
   cursor: pointer;
@@ -146,9 +165,9 @@ const deleteImage = (evt: any) => {
   bottom: 0;
   left: 0;
   top: 0;
-  width: 100%;
+  width: 0%;
   background-color: var(--accent-c);
-  transition: width var(--transition);
+  transition: var(--transition);
   z-index: 1;
   display: flex;
   text-align: center;
