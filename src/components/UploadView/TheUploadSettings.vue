@@ -22,7 +22,7 @@
     </div>
     <div
       @click="uploadHandler"
-      :class="{ _btn: true, _disabled: main.isUploading }"
+      :class="{ _btn: true, _disabled: main.isUploading || !main.uploadTags || !main.clientImages?.length }"
     ><small>Загрузить</small></div>
   </div>
   <AppModal :is-open="isOpen" @close-modal="isOpen = false">

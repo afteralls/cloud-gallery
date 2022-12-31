@@ -14,10 +14,16 @@ import {
 import { useAuthStore } from './authStore'
 import { useNotfStore } from './notfStore'
 import Compressor from 'compressorjs'
-import type { object } from 'yup'
 
 interface Folder { name: string, type: string }
 interface PreviewInfo { name?: string, src?: string, size?: string }
+interface ImageCollection {
+  name: string,
+  hashtags: string,
+  src: string,
+  uploader: string,
+  created: string
+}
 
 export const useMainStore = defineStore('main', () => {
   const storage = getStorage()
@@ -25,7 +31,7 @@ export const useMainStore = defineStore('main', () => {
   const notf = useNotfStore()
 
   const foldersCollection = ref<Folder[]>([])
-  const imageCollection = ref<any>([])
+  const imageCollection = ref<ImageCollection[]>([])
   const hashCollection = ref<string[]>([])
 
   const clientImages = ref<File[] | null | undefined>([])
@@ -133,11 +139,29 @@ export const useMainStore = defineStore('main', () => {
           success (result) { uploadImages(result as File, items, idx) }
         })
       })
-    } else {
-      clientImages.value?.forEach((file, idx) => {
-        uploadImages(file, items, idx)
-      })
-    }
+    } else { clientImages.value?.forEach((file, idx) => { uploadImages(file, items, idx) }) }
+  }
+
+  const galleryCollection = ref<ImageCollection[]>([])
+  const searchTags = ref<string>('')
+  const search = () => {
+    galleryCollection.value = []
+    const searchCollection: string[] = searchTags.value.match(' ')
+      ? searchTags.value.split(' ')
+      : [searchTags.value]
+    searchCollection.forEach((tag, idx) => { if(!tag) searchCollection.splice(idx, 1) })
+    
+    imageCollection.value.forEach(image => {
+      const imageTagsCollection: string[] = image.hashtags.trim().split(' ')      
+      if (searchCollection.length > 1) {
+        const allTags = [imageTagsCollection, searchCollection]
+        const deepValidate = allTags.reduce((p, c) => p.filter(e => c.includes(e)))
+        if (deepValidate.length === searchCollection.length) galleryCollection.value.push(image)
+      } else if (searchCollection.length === 1) {
+        if (imageTagsCollection.includes(searchCollection[0])) galleryCollection.value.push(image)
+      }
+    })
+    if (!galleryCollection.value.length) notf.addNotification('Совпадений не найдено...')
   }
 
   return {
@@ -152,6 +176,9 @@ export const useMainStore = defineStore('main', () => {
     previewImages,
     isUploading,
     uploadTags,
-    uploadHandler
+    uploadHandler,
+    galleryCollection,
+    searchTags,
+    search
   }
 })

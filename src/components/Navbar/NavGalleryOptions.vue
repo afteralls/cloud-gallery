@@ -3,7 +3,7 @@
   <RouterLink to="/"><LogoIcon /></RouterLink>
   <div class="_br"></div>
   <NavFoldersMenu />
-  <AppHashInput :is-search="true" @update:hashModel="(value) => searchTags = value" />
+  <AppHashInput :is-search="true" @update:hashModel="(value) => main.searchTags = value" />
   <div class="stable"><FilterIcon /></div>
 </div>
 </template>
@@ -14,8 +14,9 @@ import LogoIcon from '@/assets/svg/LogoIcon.vue'
 import FilterIcon from '@/assets/svg/FilterIcon.vue'
 import NavFoldersMenu from './NavFoldersMenu.vue'
 import AppHashInput from '../AppHashInput.vue'
+import { useMainStore } from '@/stores/mainStore'
 
-const searchTags = ref<string>('')
+const main = useMainStore()
 </script>
 
 <style scoped lang="scss">

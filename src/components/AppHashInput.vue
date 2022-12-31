@@ -4,10 +4,9 @@
       @focus="showTips = true"
       v-model="hashModel"
       type="text"
-      @change="changeModel"
       placeholder="#Art #Nature"
     />
-    <SearchIcon v-if="isSearch" class="search-icon" />
+    <SearchIcon @click="searchHandler" v-if="isSearch" class="search-icon" />
     <Transition name="main">
       <div v-if="showTips" class="hash-tips">
         <div v-for="hash in main.hashCollection" :key="hash" :data-hash="hash" class="_btn hash">
@@ -22,25 +21,29 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import SearchIcon from '@/assets/svg/SearchIcon.vue'
 import { useMainStore } from '@/stores/mainStore'
 import { useEventListener } from '@vueuse/core'
+import { mapActions } from 'pinia';
 
 defineProps<{ isSearch?: boolean }>()
 const emit = defineEmits<{ (e: 'update:hashModel', value: string): void }>()
 const hashModel = ref<string>('')
-const changeModel = (evt: any) => { emit('update:hashModel', evt.target?.value) }
-
 const showTips = ref<boolean>(false)
 const main = useMainStore()
+
+const searchHandler = () => { if (main.searchTags !== '') main.search() }
 
 useEventListener(document, 'click', (evt: any) => {
   if (!evt.target.closest(['.search', '.hash-input']))
     showTips.value = false
-  if (evt.target.closest(['.hash']))
-    hashModel.value += `${evt.target.dataset.hash} `
+  if (evt.target.closest(['.hash'])) {
+    hashModel.value += evt.target.dataset.hash + ' '
+  }
 })
+
+watch(hashModel, (value) => { emit('update:hashModel', value) })
 </script>
 
 <style scoped lang="scss">
