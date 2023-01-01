@@ -1,33 +1,57 @@
 <template>
   <div class="_wrapper">
-    <div class="gallery">
+    <div @click="openGallery" class="collection">
       <TransitionGroup name="image">
         <div v-for="(img, idx) in main.galleryCollection" :key="idx" class="image-wrapper">
-          <img :src="img.src" :alt="img.name">
+          <img :data-idx="idx" :src="img.src" :alt="img.name">
         </div>
       </TransitionGroup>
     </div>
+    <TheGalleryViewer
+      :is-open="isOpen"
+      :current-image="currentImage"
+      :cur-idx="curIdx"
+      :size="collectionSize"
+      @close-modal="isOpen = false"
+      @prev="() => changeCurrentImage(--curIdx)"
+      @next="() => changeCurrentImage(++curIdx)"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
+import TheGalleryViewer from '@/components/GalleryView/TheGalleryViewer.vue'
 import { useMainStore } from '@/stores/mainStore'
+import type { Image } from '@/stores/mainStore'
 
 const main = useMainStore()
+const isOpen = ref<boolean>(false)
+const curIdx = ref<number>(0)
+const collectionSize = ref<number>(0)
+const currentImage = ref<Image>()
 
+const changeCurrentImage = (idx: number) => currentImage.value = main.galleryCollection[idx]
+const openGallery = (evt: any) => {
+  if (evt.target.closest(['.image-wrapper'])) {
+    curIdx.value = +evt.target.dataset.idx
+    collectionSize.value = main.galleryCollection.length
+    changeCurrentImage(curIdx.value)
+    isOpen.value = true
+  }
+}
 </script>
 
 <style scoped lang="scss">
-.gallery {
+.collection {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
   gap: var(--space);
 
   img {
-    width: 150px;
-    height: 150px;
+    width: 160px;
+    height: 160px;
     border-radius: var(--br-rad);
     cursor: pointer;
     object-fit: cover;

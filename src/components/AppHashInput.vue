@@ -25,7 +25,6 @@ import { ref, watch } from 'vue'
 import SearchIcon from '@/assets/svg/SearchIcon.vue'
 import { useMainStore } from '@/stores/mainStore'
 import { useEventListener } from '@vueuse/core'
-import { mapActions } from 'pinia';
 
 defineProps<{ isSearch?: boolean }>()
 const emit = defineEmits<{ (e: 'update:hashModel', value: string): void }>()

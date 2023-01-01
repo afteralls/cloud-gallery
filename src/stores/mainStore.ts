@@ -17,13 +17,7 @@ import Compressor from 'compressorjs'
 
 interface Folder { name: string, type: string }
 interface PreviewInfo { name?: string, src?: string, size?: string }
-interface ImageCollection {
-  name: string,
-  hashtags: string,
-  src: string,
-  uploader: string,
-  created: string
-}
+export interface Image { name: string, hashtags: string, src: string, uploader: string, created: string }
 
 export const useMainStore = defineStore('main', () => {
   const storage = getStorage()
@@ -31,7 +25,7 @@ export const useMainStore = defineStore('main', () => {
   const notf = useNotfStore()
 
   const foldersCollection = ref<Folder[]>([])
-  const imageCollection = ref<ImageCollection[]>([])
+  const imageCollection = ref<Image[]>([])
   const hashCollection = ref<string[]>([])
 
   const clientImages = ref<File[] | null | undefined>([])
@@ -142,7 +136,7 @@ export const useMainStore = defineStore('main', () => {
     } else { clientImages.value?.forEach((file, idx) => { uploadImages(file, items, idx) }) }
   }
 
-  const galleryCollection = ref<ImageCollection[]>([])
+  const galleryCollection = ref<Image[]>([])
   const searchTags = ref<string>('')
   const search = () => {
     galleryCollection.value = []
