@@ -32,7 +32,13 @@ const hashModel = ref<string>('')
 const showTips = ref<boolean>(false)
 const main = useMainStore()
 
-const searchHandler = () => { if (main.searchTags !== '') main.search() }
+const searchHandler = () => {
+  if (main.searchTags !== '') {
+    main.search()
+    hashModel.value = ''
+    showTips.value = false
+  }
+}
 
 useEventListener(document, 'click', (evt: any) => {
   if (!evt.target.closest(['.search', '.hash-input']))
@@ -78,6 +84,7 @@ watch(hashModel, (value) => { emit('update:hashModel', value) })
   &-icon {
     position: absolute;
     right: 0;
+    z-index: 11;
     bottom: 5px;
   }
 }

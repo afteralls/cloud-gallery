@@ -14,10 +14,12 @@
           <small>{{ curIdx + 1 }} / {{ size }}</small>
           <CloseIcon @click="$emit('closeModal')" />
         </div>
-        <img @dblclick="zoom" ref="curImage" :src="currentImage?.src" :alt="currentImage?.name">
+        <Transition name="main" mode="out-in">
+          <img ref="curImage" :src="currentImage?.src" :alt="currentImage?.name">
+        </Transition>
         <div :class="{ 'interface': true, 'viewer-footer': true, 'active': isShow }">
-          <small>Загрузил: {{ currentImage?.uploader }}</small>
-          <small>Хэштеги: {{ currentImage?.hashtags }}</small>
+          <h5>Загрузил:</h5><small>{{ currentImage?.uploader }}</small>
+          <h5>Хэштеги: </h5><div class="_hash"><h5>{{ currentImage?.hashtags }}</h5></div>
         </div>
       </div>
     </Transition>
@@ -26,7 +28,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useEventListener, useSwipe } from '@vueuse/core'
+import { useEventListener } from '@vueuse/core'
 import CloseIcon from '@/assets/svg/CloseIcon.vue'
 import ArrowLeftIcon from '@/assets/svg/ArrowLeftIcon.vue'
 import ArrowRightIcon from '@/assets/svg/ArrowRightIcon.vue'
@@ -41,13 +43,6 @@ const showInterface = (evt: any) => {
     isShow.value = !isShow.value
   }
 }
-
-const zoom = () => {
-  console.log('sdfdsf')
-}
-
-const curImage = ref(null)
-const imageArea = ref()
 
 useEventListener(document, 'keyup', (evt: any) => {
   if (evt.code === 'ArrowLeft' && props.curIdx !== 0)
@@ -92,17 +87,18 @@ useEventListener(document, 'keyup', (evt: any) => {
 }
 
 .interface {
-  justify-content: space-between;
   padding: 0 var(--space);
   gap: var(--space);
   width: 100%;
 }
 
 .viewer-header {
+  justify-content: space-between;
   top: 0;
 }
 
 .viewer-footer {
+  justify-content: center;
   bottom: 0;
 }
 

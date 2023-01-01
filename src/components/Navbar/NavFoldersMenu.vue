@@ -56,4 +56,8 @@ onMounted(() => { main.getFolders(); main.getData() })
   flex-direction: column;
   gap: var(--space);
 }
+
+.folder-icon {
+  min-width: 24px !important;
+}
 </style>
