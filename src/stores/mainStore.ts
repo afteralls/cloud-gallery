@@ -9,7 +9,8 @@ import {
   getBlob,
   uploadBytes,
   getDownloadURL,
-  getMetadata
+  getMetadata,
+  deleteObject
 } from 'firebase/storage'
 import { useAuthStore } from './authStore'
 import { useNotfStore } from './notfStore'
@@ -182,7 +183,6 @@ export const useMainStore = defineStore('main', () => {
   }
 
   const curFilter = ref<string>('date')
-
   const deepSearch = () => {
     galleryCollection.value = []
     const deepSearchCollection: Image[] = []
@@ -191,14 +191,36 @@ export const useMainStore = defineStore('main', () => {
         if (curDate.value === image.created) deepSearchCollection.push(image)
       })
     } else if (curFilter.value === 'user') {
-      console.log(curUploader.value);
-      
       imageCollection.value.forEach(image => {
         if (curUploader.value === image.uploader) deepSearchCollection.push(image)
       })
     }
     galleryCollection.value = deepSearchCollection
     if (!galleryCollection.value.length) notf.addNotification('Совпадений не найдено...')
+  }
+
+  const deleteHandler = (array: Image[], imageName: string) => {
+    array.forEach((f, i) => { if (f.name === imageName) { array.splice(i, 1) } })
+  }
+
+  const deleteImage = (e: any) => {
+    const { name } = e.target.dataset
+    const imageRef = Ref(storage, `${curPath.value}/${name}`)
+    
+    deleteObject(imageRef).then(async () => {
+      deleteHandler(imageCollection.value, name)
+      deleteHandler(galleryCollection.value, name)
+      const imageDataBlob = new Blob([JSON.stringify(imageCollection.value)], { type: 'application/json' })
+      uploadBytes(curImageDataRef.value, imageDataBlob)
+      notf.addNotification('Изображение успешно удалено')
+    }).catch(() => {
+      notf.addNotification('Упс... Что-то пошло не так')
+    })
+  }
+
+  const updateTags = ref<string>('')
+  const updateImageData = (name: string, hashtags: string) => {
+    updateTags.value = hashtags
   }
 
   return {
@@ -222,6 +244,9 @@ export const useMainStore = defineStore('main', () => {
     curUploader,
     uploaders,
     deepSearch,
-    curFilter
+    curFilter,
+    deleteImage,
+    updateImageData,
+    updateTags
   }
 })

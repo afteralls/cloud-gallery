@@ -23,8 +23,8 @@ import AppHotifications from './components/AppHotifications.vue'
 .wrapper {
   position: fixed;
   top: 0;
-  height: 100%;
-  width: 100%;
+  height: 100vh;
+  width: 100vw;
   backdrop-filter: blur(40px);
   background-color: var(--tp-c);
   z-index: -1;
@@ -33,8 +33,8 @@ import AppHotifications from './components/AppHotifications.vue'
 .background {
   position: fixed;
   top: 0;
-  height: 100%;
-  width: 100%;
+  height: 100vh;
+  width: 100vw;
   z-index: -2;
 }
 

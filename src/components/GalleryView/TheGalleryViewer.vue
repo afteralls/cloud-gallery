@@ -1,7 +1,7 @@
 <template>
   <Teleport to="body">
     <Transition name="main">
-      <div ref="viewer" @mousemove="showInterface" v-if="isOpen" class="modal">
+      <div ref="viewer" v-if="isOpen" class="modal">
         <div
           @click="$emit('prev')"
           :class="{ arrow: true, 'arrow-left': true, '_disabled': curIdx === 0, 'active': isShow }"
@@ -12,7 +12,13 @@
         ><ArrowRightIcon /></div>
         <div :class="{ 'interface': true, 'viewer-header': true, 'active': isShow }">
           <small>{{ curIdx + 1 }} / {{ size }}</small>
-          <CloseIcon @click="$emit('closeModal')" />
+          <div class="_row">
+            <Transition name="main" mode="out-in">
+              <FullscreenEnterIcon v-if="!isFullscreen" @click="enter" />
+              <FullscreenExitIcon v-else @click="exit" />
+            </Transition>
+            <CloseIcon @click="$emit('closeModal')" />
+          </div>
         </div>
         <div class="active-image">
           <img ref="curImage" :src="currentImage?.src" :alt="currentImage?.name">
@@ -29,6 +35,8 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useEventListener, useFullscreen  } from '@vueuse/core'
+import FullscreenEnterIcon from '@/assets/svg/FullsceenEnterIcon.vue'
+import FullscreenExitIcon from '@/assets/svg/FullscreenExitIcon.vue'
 import CloseIcon from '@/assets/svg/CloseIcon.vue'
 import ArrowLeftIcon from '@/assets/svg/ArrowLeftIcon.vue'
 import ArrowRightIcon from '@/assets/svg/ArrowRightIcon.vue'
@@ -39,18 +47,23 @@ const emit = defineEmits<{ (e: 'closeModal'): void, (e: 'prev'): void, (e: 'next
 
 const isShow = ref<boolean>(true)
 const viewer = ref<HTMLDivElement | null>(null)
+const { isFullscreen, enter, exit } = useFullscreen(viewer)
 const interval = ref<NodeJS.Timeout>()
-const showInterface = () => {
+
+useEventListener(viewer, 'mousemove', () => {  
   clearTimeout(interval.value)
   isShow.value = true
   interval.value = setTimeout(() => { isShow.value = false }, 3000)
-}
+})
 
 useEventListener(document, 'keyup', (evt: any) => {  
+  console.log(evt.code)
   if (evt.code === 'ArrowLeft' && props.curIdx !== 0)
     emit('prev')
   if (evt.code === 'ArrowRight' && props.curIdx !== props.size - 1)
     emit('next')
+  if (evt.code === 'Escape')
+    emit('closeModal')
 })
 
 useEventListener(viewer, 'wheel', (evt: any) => {
