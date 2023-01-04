@@ -1,7 +1,7 @@
 <template>
   <Teleport to="body">
     <Transition name="main">
-      <div @click="showInterface" v-if="isOpen" class="modal">
+      <div ref="viewer" @mousemove="showInterface" v-if="isOpen" class="modal">
         <div
           @click="$emit('prev')"
           :class="{ arrow: true, 'arrow-left': true, '_disabled': curIdx === 0, 'active': isShow }"
@@ -14,9 +14,9 @@
           <small>{{ curIdx + 1 }} / {{ size }}</small>
           <CloseIcon @click="$emit('closeModal')" />
         </div>
-        <Transition name="main" mode="out-in">
+        <div class="active-image">
           <img ref="curImage" :src="currentImage?.src" :alt="currentImage?.name">
-        </Transition>
+        </div>
         <div :class="{ 'interface': true, 'viewer-footer': true, 'active': isShow }">
           <h5>Загрузил:</h5><small>{{ currentImage?.uploader }}</small>
           <h5>Хэштеги: </h5><div class="_hash"><h5>{{ currentImage?.hashtags }}</h5></div>
@@ -28,7 +28,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useEventListener } from '@vueuse/core'
+import { useEventListener, useFullscreen  } from '@vueuse/core'
 import CloseIcon from '@/assets/svg/CloseIcon.vue'
 import ArrowLeftIcon from '@/assets/svg/ArrowLeftIcon.vue'
 import ArrowRightIcon from '@/assets/svg/ArrowRightIcon.vue'
@@ -38,16 +38,26 @@ const props = defineProps<{ isOpen: boolean, currentImage?: Image, curIdx: numbe
 const emit = defineEmits<{ (e: 'closeModal'): void, (e: 'prev'): void, (e: 'next'): void }>()
 
 const isShow = ref<boolean>(true)
-const showInterface = (evt: any) => {
-  if (!evt.target.closest(['.interface', '.arrow'])) {
-    isShow.value = !isShow.value
-  }
+const viewer = ref<HTMLDivElement | null>(null)
+const interval = ref<NodeJS.Timeout>()
+const showInterface = () => {
+  clearTimeout(interval.value)
+  isShow.value = true
+  interval.value = setTimeout(() => { isShow.value = false }, 3000)
 }
 
-useEventListener(document, 'keyup', (evt: any) => {
+useEventListener(document, 'keyup', (evt: any) => {  
   if (evt.code === 'ArrowLeft' && props.curIdx !== 0)
     emit('prev')
   if (evt.code === 'ArrowRight' && props.curIdx !== props.size - 1)
+    emit('next')
+})
+
+useEventListener(viewer, 'wheel', (evt: any) => {
+  evt.preventDefault()  
+  if (evt.deltaY < 0 && props.curIdx !== 0)
+    emit('prev')
+  if (evt.deltaY > 0 && props.curIdx !== props.size - 1)
     emit('next')
 })
 </script>
@@ -64,6 +74,14 @@ useEventListener(document, 'keyup', (evt: any) => {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.active-image {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: auto;
 
   img {
     height: auto;

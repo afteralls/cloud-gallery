@@ -1,9 +1,9 @@
 <template>
-  <div class="_wrapper">
-    <div @click="openGallery" class="collection">
+  <div @click="openGallery" class="_wrapper">
+    <div class="collection">
       <TransitionGroup name="image">
         <div v-for="(img, idx) in main.galleryCollection" :key="idx" class="image-wrapper">
-          <img :data-idx="idx" :src="img.src" :alt="img.name">
+          <img loading="lazy" :data-idx="idx" :src="img.src" :alt="img.name">
         </div>
       </TransitionGroup>
     </div>
@@ -20,7 +20,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { ref } from 'vue'
 import TheGalleryViewer from '@/components/GalleryView/TheGalleryViewer.vue'
 import { useMainStore } from '@/stores/mainStore'
 import type { Image } from '@/stores/mainStore'
@@ -74,5 +74,23 @@ const openGallery = (evt: any) => {
   &-leave-active {
     position: absolute;
   }
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space);
+}
+
+.date {
+  padding: var(--space);
+  background-color: var(--tp-c);
+  backdrop-filter: blur(8px);
+  border-radius: var(--br-rad);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 </style>

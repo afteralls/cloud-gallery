@@ -49,8 +49,7 @@ onMounted(() => { main.getFolders(); main.getData() })
   left: 15px;
   z-index: 40;
   display: flex;
-  background-color: var(--tp-c);
-  backdrop-filter: blur(8px);
+  background-color: var(--bg-c);
   padding: var(--space);
   border-radius: var(--br-rad);
   flex-direction: column;

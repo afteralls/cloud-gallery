@@ -91,13 +91,15 @@ watch(hashModel, (value) => { emit('update:hashModel', value) })
 
 .hash-tips {
   position: absolute;
+  max-height: 130px;
+  overflow-y: scroll;
   top: 25px;
+  z-index: 30;
   width: 100%;
   display: flex;
   flex-wrap: wrap;
   text-align: center;
-  background-color: var(--tp-c);
-  backdrop-filter: blur(8px);
+  background-color: var(--bg-c);
   padding: var(--space);
   border-radius: 0 0 var(--br-rad) var(--br-rad);
   gap: 5px;

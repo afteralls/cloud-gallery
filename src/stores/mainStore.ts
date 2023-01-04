@@ -73,18 +73,35 @@ export const useMainStore = defineStore('main', () => {
     notf.addNotification('Папка успешно создана!')
   }
 
+  const dateCollection = ref<string[]>(['Не выбрано'])
+  const curDate = ref<string>(dateCollection.value[0])
+  const uploaders = ref<string[]>(['Не выбрано'])
+  const curUploader = ref<string>(uploaders.value[0])
+
   const getData = async () => {
     curHashDataRef.value = Ref(storage, `${curPath.value}/hashData.json`)
     curImageDataRef.value = Ref(storage, `${curPath.value}/imageData.json`)
     hashCollection.value = []; imageCollection.value = []
+
     await getBlob(curHashDataRef.value).then(async responce => {
       const data = await new Response(responce).text()
       if (data) hashCollection.value = JSON.parse(data)
     })
+
     await getBlob(curImageDataRef.value).then(async responce => {
       const data = await new Response(responce).text()
       if (data) imageCollection.value = JSON.parse(data)
     })
+
+    imageCollection.value.map(img => {
+      if (!dateCollection.value.includes(img.created))
+        dateCollection.value.push(img.created)
+      if (!uploaders.value.includes(img.uploader))
+        uploaders.value.push(img.uploader)
+    })
+
+    curDate.value = dateCollection.value[0]
+    curUploader.value = uploaders.value[0]
   }
 
   const isUploading = ref<boolean>(false)
@@ -137,24 +154,50 @@ export const useMainStore = defineStore('main', () => {
   }
 
   const galleryCollection = ref<Image[]>([])
-  const searchTags = ref<string>('')
-  const search = () => {
+  const findHandler = (inputValue: string, resultCollection: Image[]) => {
     galleryCollection.value = []
-    const searchCollection: string[] = searchTags.value.match(' ')
-      ? searchTags.value.split(' ')
-      : [searchTags.value]
-    searchCollection.forEach((tag, idx) => { if(!tag) searchCollection.splice(idx, 1) })
+    const tagsCollection: string[] = inputValue.match(' ')
+      ? inputValue.split(' ')
+      : [inputValue]
+      tagsCollection.forEach((tag, idx) => { if(!tag) tagsCollection.splice(idx, 1) })
     
     imageCollection.value.forEach(image => {
       const imageTagsCollection: string[] = image.hashtags.trim().split(' ')      
-      if (searchCollection.length > 1) {
-        const allTags = [imageTagsCollection, searchCollection]
+      if (tagsCollection.length > 1) {
+        const allTags = [imageTagsCollection, tagsCollection]
         const deepValidate = allTags.reduce((p, c) => p.filter(e => c.includes(e)))
-        if (deepValidate.length === searchCollection.length) galleryCollection.value.push(image)
-      } else if (searchCollection.length === 1) {
-        if (imageTagsCollection.includes(searchCollection[0])) galleryCollection.value.push(image)
+        if (deepValidate.length === tagsCollection.length) resultCollection.push(image)
+      } else if (tagsCollection.length === 1) {
+        if (imageTagsCollection.includes(tagsCollection[0])) resultCollection.push(image)
       }
     })
+  }
+
+  const searchTags = ref<string>('')
+  const search = () => {
+    const searchCollection: Image[] = []
+    findHandler(searchTags.value, searchCollection)
+    galleryCollection.value = searchCollection
+    if (!galleryCollection.value.length) notf.addNotification('Совпадений не найдено...')
+  }
+
+  const curFilter = ref<string>('date')
+
+  const deepSearch = () => {
+    galleryCollection.value = []
+    const deepSearchCollection: Image[] = []
+    if (curFilter.value === 'date') {
+      imageCollection.value.forEach(image => {
+        if (curDate.value === image.created) deepSearchCollection.push(image)
+      })
+    } else if (curFilter.value === 'user') {
+      console.log(curUploader.value);
+      
+      imageCollection.value.forEach(image => {
+        if (curUploader.value === image.uploader) deepSearchCollection.push(image)
+      })
+    }
+    galleryCollection.value = deepSearchCollection
     if (!galleryCollection.value.length) notf.addNotification('Совпадений не найдено...')
   }
 
@@ -173,6 +216,12 @@ export const useMainStore = defineStore('main', () => {
     uploadHandler,
     galleryCollection,
     searchTags,
-    search
+    search,
+    curDate,
+    dateCollection,
+    curUploader,
+    uploaders,
+    deepSearch,
+    curFilter
   }
 })

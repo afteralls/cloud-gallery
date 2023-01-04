@@ -21,10 +21,8 @@ import ArrowIcon from '@/assets/svg/ArrowIcon.vue'
 import { ref } from 'vue'
 import { useEventListener } from '@vueuse/core'
 
-defineProps<{
-  model: string,
-  items: string[]
-}>()
+defineProps<{ model: string, items: string[] }>()
+defineEmits<{ (e: 'updateData', value: string): void }>()
 
 const open = ref(false)
 useEventListener(document, 'click', (evt: any) => {
@@ -41,25 +39,24 @@ useEventListener(document, 'click', (evt: any) => {
   align-items: center;
   position: relative;
   outline: none;
-  z-index: 5;
   cursor: pointer;
 
   &__selected {
     display: flex;
     align-items: center;
-    height: 28px;
-    width: 100px;
-    padding: calc(var(--space) / 2);
+    width: 100%;
+    padding: var(--space);
     background-color: var(--wrapper-c-h);
     border-radius: var(--br-rad);
     color: var(--txt-c);
     user-select: none;
     transition: var(--transition);
     pointer-events: none;
+    z-index: 20;
   }
 
   &__arrow {
-    z-index: 1;
+    z-index: 21;
     position: absolute;
     right: 0;
     transition: var(--transition);
@@ -73,16 +70,16 @@ useEventListener(document, 'click', (evt: any) => {
     flex-direction: column;
     border-radius: var(--br-rad);
     position: absolute;
-    top: 30px;
+    top: 47px;
     background-color: var(--wrapper-c);
     width: 100%;
     box-sizing: border-box;
-    z-index: 1;
+    z-index: 30;
     transition: var(--transition);
   }
 
   &__item {
-    padding: 0.66rem;
+    padding: var(--space);
     border-radius: var(--br-rad);
     user-select: none;
 
