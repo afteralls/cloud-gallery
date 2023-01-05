@@ -46,7 +46,7 @@
                 <label for="lc"><small>Локальная</small></label>
               </div>
               <div
-                @click="main.createFolder(folderName, folderType), isOpen = false" 
+                @click="server.createFolder(folderName, folderType), isOpen = false" 
                 class="_btn" 
                 style="width: 100%"
               >
@@ -72,12 +72,12 @@ import AddImagesIcon from '@/assets/svg/AddImagesIcon.vue'
 import AccountIcon from '@/assets/svg/AccountIcon.vue'
 import AppModal from '@/components/AppModal.vue'
 import CheckIcon from '@/assets/svg/CheckIcon.vue'
-import { useMainStore } from '@/stores/mainStore.js'
+import { useServerStore } from '@/stores/serverStore.js'
 import { useAuthStore } from '@/stores/authStore.js'
 import { ref } from 'vue'
 
 const auth = useAuthStore()
-const main = useMainStore()
+const server = useServerStore()
 
 const isOpen = ref<boolean>(false)
 const folderName = ref<string>('')

@@ -2,17 +2,18 @@
   <div :class="{ 'hash-input': true, search: isSearch }">
     <input
       @focus="showTips = true"
-      v-model="hashModel"
+      :value="modal"
       type="text"
       placeholder="#Art #Nature"
+      @input="inputHandler"
     />
     <SearchIcon @click="searchHandler" v-if="isSearch" class="search-icon" />
     <Transition name="main">
       <div v-if="showTips" class="hash-tips">
-        <div v-for="hash in main.hashCollection" :key="hash" :data-hash="hash" class="_btn hash">
+        <div v-for="hash in core.hashtagsCollection" :key="hash" :data-hash="hash" class="_btn hash">
           <h5>{{ hash }}</h5>
         </div>
-        <h5 v-if="!main.hashCollection.length">
+        <h5 v-if="!core.hashtagsCollection.length">
           Тегов пока нет, попробуйте пополнить коллекцию текущей директории
         </h5>
       </div>
@@ -21,21 +22,28 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { ref } from 'vue'
 import SearchIcon from '@/assets/svg/SearchIcon.vue'
-import { useMainStore } from '@/stores/mainStore'
+import { useCoreStore } from '@/stores/coreStore'
 import { useEventListener } from '@vueuse/core'
 
-defineProps<{ isSearch?: boolean }>()
-const emit = defineEmits<{ (e: 'update:hashModel', value: string): void }>()
-const hashModel = ref<string>('')
+const props = defineProps<{ modal: string, isSearch?: boolean }>()
+const emit = defineEmits<{
+  (e: 'update:hashModel', value: string): void
+  (e: 'update:addTag', value: string): void
+}>()
+
 const showTips = ref<boolean>(false)
-const main = useMainStore()
+const core = useCoreStore()
+
+const inputHandler = (evt: any) => {
+  emit('update:hashModel', evt.target.value)
+}
 
 const searchHandler = () => {
-  if (main.searchTags !== '') {
-    main.search()
-    hashModel.value = ''
+  if (props.modal !== '') {
+    emit('update:hashModel', '')
+    core.search(props.modal)
     showTips.value = false
   }
 }
@@ -44,11 +52,9 @@ useEventListener(document, 'click', (evt: any) => {
   if (!evt.target.closest(['.search', '.hash-input']))
     showTips.value = false
   if (evt.target.closest(['.hash'])) {
-    hashModel.value += evt.target.dataset.hash + ' '
+    emit('update:addTag', `${evt.target.dataset.hash} `)
   }
 })
-
-watch(hashModel, (value) => { emit('update:hashModel', value) })
 </script>
 
 <style scoped lang="scss">

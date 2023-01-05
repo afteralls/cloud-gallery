@@ -3,38 +3,43 @@
   <RouterLink to="/"><LogoIcon /></RouterLink>
   <div class="_br"></div>
   <NavFoldersMenu />
-  <AppHashInput :is-search="true" @update:hashModel="(value) => main.searchTags = value" />
+  <AppHashInput
+    :modal="searchTags"
+    :is-search="true"
+    @update:hashModel="(value) => searchTags = value"
+    @update:addTag="(value) => searchTags += value"
+  />
   <div @click="showFilters = true" class="stable"><FilterIcon /></div>
   <AppModal :is-open="showFilters" @close-modal="showFilters = false">
     <div class="filters">
       <small>Фильтр</small>
       <div class="_row">
-        <div @click="main.curFilter = 'date'" :class="{ '_btn': true, 'act': main.curFilter === 'date' }">
+        <div @click="core.curFilter = 'date'" :class="{ '_btn': true, 'act': core.curFilter === 'date' }">
           <small>По дате</small>
         </div>
-        <div @click="main.curFilter = 'user'" :class="{ '_btn': true, 'act': main.curFilter === 'user' }">
+        <div @click="core.curFilter = 'user'" :class="{ '_btn': true, 'act': core.curFilter === 'user' }">
           <small>По пользователю</small>
         </div>
       </div>
       <Transition name="main" mode="out-in">
         <TheSelect
-          v-if="main.curFilter === 'date'"
-          :model="main.curDate"
-          :items="main.dateCollection"
-          @update-data="(value) => main.curDate = value"
+          v-if="core.curFilter === 'date'"
+          :model="core.curDate"
+          :items="core.dateCollection"
+          @update-data="(value) => core.curDate = value"
         />
         <TheSelect
-          v-else-if="main.curFilter === 'user'"
-          :model="main.curUploader"
-          :items="main.uploaders"
-          @update-data="(value) => main.curUploader = value"
+          v-else-if="core.curFilter === 'user'"
+          :model="core.curUploader"
+          :items="core.uploaders"
+          @update-data="(value) => core.curUploader = value"
         />
       </Transition>
-      <div @click="main.deepSearch(), showFilters = false" class="_btn">
+      <div @click="core.deepSearch(), showFilters = false" class="_btn">
         <small>Поиск</small>
       </div>
       <small>Загрузка полной коллекции</small>
-      <div @click="main.galleryCollection = main.imageCollection, showFilters = false" class="_btn">
+      <div @click="core.galleryCollection = core.imageCollection, showFilters = false" class="_btn">
         <small>Загрузить всё</small>
       </div>
     </div>
@@ -50,9 +55,10 @@ import NavFoldersMenu from './NavFoldersMenu.vue'
 import AppHashInput from '../AppHashInput.vue'
 import AppModal from '../AppModal.vue'
 import TheSelect from './TheSelect.vue'
-import { useMainStore } from '@/stores/mainStore'
+import { useCoreStore } from '@/stores/coreStore'
 
-const main = useMainStore()
+const core = useCoreStore()
+const searchTags = ref<string>('')
 const showFilters = ref<boolean>(false)
 </script>
 

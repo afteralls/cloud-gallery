@@ -6,15 +6,15 @@ import { computed } from 'vue'
 import { useNotfStore } from './notfStore'
 
 export const useAuthStore = defineStore('auth', () => {
+  const notf = useNotfStore()
   const authToken = useStorage<string>('auth-token', null)
   const email = useStorage<string>('email', null)
   const isAuthenticated = computed(() => !!authToken.value)
-  const KEY = import.meta.env.VITE_KEY
-  const notf = useNotfStore()
+  const key = 'AIzaSyDbP389NOWDFZ4oAz8lMLDlm2TdrzCdUbg'
 
   const login = async (payload: any) => {
     try {
-      const url = `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${KEY}`
+      const url = `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${key}`
       const { data } = await axios.post(url, { ...payload, returnSecureToken: true })
       authToken.value = data.idToken
       email.value = payload.email.split('@')[0]

@@ -12,9 +12,9 @@
 import { ref } from 'vue'
 import { useDropZone } from '@vueuse/core'
 import { bytesToSize } from '@/utils/bytesToSize'
-import { useMainStore } from '@/stores/mainStore'
+import { useCoreStore } from '@/stores/coreStore'
 
-const main = useMainStore()
+const core = useCoreStore()
 const dropZoneRef = ref<HTMLDivElement>()
 const addBtn = ref<any>()
 const onDrop = (files: File[] | null) => { addFiles(files) }
@@ -22,19 +22,19 @@ const { isOverDropZone } = useDropZone(dropZoneRef, onDrop)
 
 const addFiles = (files: File[] | null | FileList) => {
   const imgArr = Array.from((files as File[] | FileList))
-  imgArr.forEach((file: File) => { main.clientImages?.push(file) })
+  imgArr.forEach((file: File) => { core.clientImages?.push(file) })
   previewHandler()
 }
 
 const previewHandler = () => {
-  main.clientImages?.forEach(file => {
+  core.clientImages?.forEach(file => {
     if (!file.type.match('image')) { return }
     const reader = new FileReader()
 
     reader.onload = (e) => {
       const image = new Image()
       image.onload = () => {
-        main.previewImages.push({
+        core.previewImages.push({
           name: file.name,
           src: e.target?.result as string,
           size: bytesToSize(file.size)

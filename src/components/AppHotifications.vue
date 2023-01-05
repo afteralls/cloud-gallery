@@ -21,7 +21,7 @@ const { notifications } = useNotfStore()
   flex-direction: column;
   margin: var(--space);
   gap: var(--space);
-  z-index: 100;
+  z-index: 300;
 
   &__item {
     background-color: var(--tp-c);

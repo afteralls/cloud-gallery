@@ -1,7 +1,7 @@
 <template>
   <Teleport to="body">
     <Transition name="main">
-      <div ref="viewer" v-if="isOpen" class="modal">
+      <div ref="viewer" v-if="isOpen && core.galleryCollection.length" class="modal">
         <div
           @click="$emit('prev')"
           :class="{ arrow: true, 'arrow-left': true, '_disabled': curIdx === 0, 'active': isShow }"
@@ -13,6 +13,17 @@
         <div :class="{ 'interface': true, 'viewer-header': true, 'active': isShow }">
           <small>{{ curIdx + 1 }} / {{ size }}</small>
           <div class="_row">
+            <div
+              class="_delete"
+              @click.prevent="deleteHandler"
+              :data-name="currentImage?.name"
+            ><DeleteIcon /></div>
+            <div
+              class="_edit"
+              @click.prevent="edit($event)"
+              :data-name="currentImage?.name"
+              :data-hashtags="currentImage?.hashtags"
+            ><EditImageIcon /></div>
             <Transition name="main" mode="out-in">
               <FullscreenEnterIcon v-if="!isFullscreen" @click="enter" />
               <FullscreenExitIcon v-else @click="exit" />
@@ -33,18 +44,34 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
+import DeleteIcon from '@/assets/svg/DeleteIcon.vue'
+import EditImageIcon from '@/assets/svg/EditImageIcon.vue'
 import { useEventListener, useFullscreen  } from '@vueuse/core'
 import FullscreenEnterIcon from '@/assets/svg/FullsceenEnterIcon.vue'
 import FullscreenExitIcon from '@/assets/svg/FullscreenExitIcon.vue'
 import CloseIcon from '@/assets/svg/CloseIcon.vue'
 import ArrowLeftIcon from '@/assets/svg/ArrowLeftIcon.vue'
 import ArrowRightIcon from '@/assets/svg/ArrowRightIcon.vue'
-import type { Image } from '@/stores/mainStore'
+import type { Image } from '@/stores/coreStore'
+import { useServerStore } from '@/stores/serverStore'
+import { useCoreStore } from '@/stores/coreStore'
 
-const props = defineProps<{ isOpen: boolean, currentImage?: Image, curIdx: number, size: number }>()
-const emit = defineEmits<{ (e: 'closeModal'): void, (e: 'prev'): void, (e: 'next'): void }>()
+const props = defineProps<{
+  isOpen: boolean
+  currentImage?: Image
+  curIdx: number
+  edit: Function
+}>()
 
+const emit = defineEmits<{
+  (e: 'closeModal'): void, (e: 'prev'): void
+  (e: 'next'): void
+}>()
+
+const server = useServerStore()
+const core = useCoreStore()
+const size = computed(() => core.galleryCollection.length)
 const isShow = ref<boolean>(true)
 const viewer = ref<HTMLDivElement | null>(null)
 const { isFullscreen, enter, exit } = useFullscreen(viewer)
@@ -60,7 +87,7 @@ useEventListener(document, 'keyup', (evt: any) => {
   console.log(evt.code)
   if (evt.code === 'ArrowLeft' && props.curIdx !== 0)
     emit('prev')
-  if (evt.code === 'ArrowRight' && props.curIdx !== props.size - 1)
+  if (evt.code === 'ArrowRight' && props.curIdx !== size.value - 1)
     emit('next')
   if (evt.code === 'Escape')
     emit('closeModal')
@@ -70,9 +97,28 @@ useEventListener(viewer, 'wheel', (evt: any) => {
   evt.preventDefault()  
   if (evt.deltaY < 0 && props.curIdx !== 0)
     emit('prev')
-  if (evt.deltaY > 0 && props.curIdx !== props.size - 1)
+  if (evt.deltaY > 0 && props.curIdx !== size.value - 1)
     emit('next')
 })
+
+const changeActiveImage = () => {
+  if (size.value > 1) {
+    switch (props.curIdx) {
+      case 0:
+          emit('next')
+          break
+      case size.value - 1: emit('prev'); break
+      default: emit('next'); break
+    }
+  } else {
+    emit('closeModal')
+  }
+}
+
+const deleteHandler = async (evt: any) => {
+  await server.deleteImage(evt)
+  changeActiveImage()
+}
 </script>
 
 <style scoped lang="scss">

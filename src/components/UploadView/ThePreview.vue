@@ -1,15 +1,15 @@
 <template>
   <div class="preview">
     <transition name="main" mode="out-in">
-      <div class="preview-wrapper" v-if="main.previewImages.length">
+      <div class="preview-wrapper" v-if="core.previewImages.length">
         <div @click="deleteImage" class="preview-row">
           <TransitionGroup name="images">
-            <div class="image-wrapper" v-for="(item, idx) in main.previewImages" :key="idx">
+            <div class="image-wrapper" v-for="(item, idx) in core.previewImages" :key="idx">
               <div class="remove" :data-idx="idx"><CloseIcon /></div>
               <img :src="item.src" :alt="item.name" :title="item.name">
-              <div :class="{ info: true, uploading: main.isUploading }">
-                <div v-show="main.isUploading" class="progress"></div>
-                <small v-if="!main.isUploading">{{ item.size }}</small>
+              <div :class="{ info: true, uploading: server.isUploading }">
+                <div v-show="server.isUploading" class="progress"></div>
+                <small v-if="!server.isUploading">{{ item.size }}</small>
               </div>
             </div>
           </TransitionGroup>
@@ -29,14 +29,16 @@
 <script setup lang="ts">
 import InfoIcon from '@/assets/svg/InfoIcon.vue'
 import CloseIcon from '@/assets/svg/CloseIcon.vue'
-import { useMainStore } from '@/stores/mainStore'
+import { useCoreStore } from '@/stores/coreStore'
+import { useServerStore } from '@/stores/serverStore'
 
-const main = useMainStore()
+const core = useCoreStore()
+const server = useServerStore()
 const deleteImage = (evt: any) => {
   const idx: number = parseInt(evt.target.dataset.idx)
   if (idx || idx === 0) {
-    main.previewImages.splice(idx, 1)
-    main.clientImages?.splice(idx, 1)
+    core.previewImages.splice(idx, 1)
+    core.clientImages?.splice(idx, 1)
   }
 }
 </script>

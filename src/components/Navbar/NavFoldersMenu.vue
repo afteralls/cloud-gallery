@@ -21,10 +21,12 @@ import FoldersIcon from '@/assets/svg/FoldersIcon.vue'
 import AppFolderItem from '@/components/AppFolderItem.vue'
 import { ref } from 'vue'
 import { useEventListener } from '@vueuse/core'
-import { useMainStore } from '@/stores/mainStore'
+import { useCoreStore } from '@/stores/coreStore'
+import { useServerStore } from '@/stores/serverStore'
 import { onMounted } from 'vue'
 
-const main = useMainStore()
+const main = useCoreStore()
+const server = useServerStore()
 const isActive = ref<boolean>(false)
 
 useEventListener(document, 'click', (evt: any) => {
@@ -32,12 +34,12 @@ useEventListener(document, 'click', (evt: any) => {
     isActive.value = false
   if (evt.target.closest(['.folder'])) {
     main.curFolder = main.foldersCollection[evt.target.dataset.idx]
-    main.getData()
+    server.getData()
     isActive.value = false
   }
 })
 
-onMounted(() => { main.getFolders(); main.getData() })
+onMounted(() => { server.getFolders(); server.getData() })
 </script>
 
 <style scoped lang="scss">
