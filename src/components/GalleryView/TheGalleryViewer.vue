@@ -35,8 +35,7 @@
           <img ref="curImage" :src="currentImage?.src" :alt="currentImage?.name">
         </div>
         <div :class="{ 'interface': true, 'viewer-footer': true, 'active': isShow }">
-          <h5>Загрузил:</h5><small>{{ currentImage?.uploader }}</small>
-          <h5>Хэштеги: </h5><div class="_hash"><h5>{{ currentImage?.hashtags }}</h5></div>
+          <h5>Хэштеги: </h5><div class="_btn _hash"><h5>{{ currentImage?.hashtags }}</h5></div>
         </div>
       </div>
     </Transition>
@@ -165,17 +164,18 @@ const deleteHandler = async (evt: any) => {
 
 .interface {
   padding: 0 var(--space);
-  gap: var(--space);
   width: 100%;
 }
 
 .viewer-header {
   justify-content: space-between;
+  gap: var(--space);
   top: 0;
 }
 
 .viewer-footer {
   justify-content: center;
+  gap: 5px;
   bottom: 0;
 }
 

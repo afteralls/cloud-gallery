@@ -1,6 +1,6 @@
 <template>
   <div @click="openGallery" class="_wrapper">
-    <div class="collection">
+    <div v-if="core.galleryCollection.length" class="collection">
       <TransitionGroup name="image">
         <div v-for="(img, idx) in core.galleryCollection" :key="idx" class="image-wrapper">
           <div class="image-options">
@@ -25,6 +25,10 @@
           >
         </div>
       </TransitionGroup>
+    </div>
+    <div v-else class="empty">
+      <h1>Показывать пока что нечего...</h1>
+      <h3>Воспользуйтесь поиском или фильтрами для поиска нужного контента</h3>
     </div>
     <TheGalleryViewer
       :is-open="isViewerOpen"
@@ -149,5 +153,15 @@ const edit = (evt: any) => {
   display: flex;
   flex-direction: column;
   gap: var(--space);
+}
+
+.empty {
+  display: flex;
+  height: 50vh;
+  flex-direction: column;
+  gap: var(--space);
+  justify-content: center;
+  align-items: center;
+  text-align: center;
 }
 </style>

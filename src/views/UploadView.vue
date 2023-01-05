@@ -29,5 +29,9 @@ import TheUploadSettings from '@/components/UploadView/TheUploadSettings.vue'
   display: flex;
   height: 100%;
   gap: var(--space);
+
+  @media(max-width: 910px) {
+    flex-direction: column;
+  }
 }
 </style>

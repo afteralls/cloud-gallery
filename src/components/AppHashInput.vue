@@ -10,7 +10,7 @@
     <SearchIcon @click="searchHandler" v-if="isSearch" class="search-icon" />
     <Transition name="main">
       <div v-if="showTips" class="hash-tips">
-        <div v-for="hash in core.hashtagsCollection" :key="hash" :data-hash="hash" class="_btn hash">
+        <div v-for="hash in core.hashtagsCollection" :key="hash" :data-hash="hash" class="_btn _hash">
           <h5>{{ hash }}</h5>
         </div>
         <h5 v-if="!core.hashtagsCollection.length">
@@ -51,7 +51,7 @@ const searchHandler = () => {
 useEventListener(document, 'click', (evt: any) => {
   if (!evt.target.closest(['.search', '.hash-input']))
     showTips.value = false
-  if (evt.target.closest(['.hash'])) {
+  if (evt.target.closest(['._hash'])) {
     emit('update:addTag', `${evt.target.dataset.hash} `)
   }
 })
@@ -73,7 +73,7 @@ useEventListener(document, 'click', (evt: any) => {
     border-bottom: 2px solid var(--txt-c);
   }
 
-  @media(max-width: 420px) {
+  @media(max-width: 525px) {
     input {
       width: 100%;
     }
@@ -109,15 +109,5 @@ useEventListener(document, 'click', (evt: any) => {
   padding: var(--space);
   border-radius: 0 0 var(--br-rad) var(--br-rad);
   gap: 5px;
-}
-
-.hash {
-  padding: calc(var(--space) / 2);
-  border-radius: calc(var(--br-rad) / 2);
-  h5 {
-    pointer-events: none;
-    text-transform: uppercase;
-    color: var(--dark-txt-c);
-  }
 }
 </style>

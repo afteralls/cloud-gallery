@@ -1,33 +1,35 @@
 <template>
-  <div class="upload-settings">
-    <small>Введите общие теги</small>
-    <AppHashInput
-      :modal="uploadTags"
-      @update:hash-model="(value) => { uploadTags = value }"
-      @update:add-tag="(value) => { uploadTags += value }"
-    />
-    <small>Папка для загрузки</small>
-    <AppFolderItem
-      @click="isOpen = true"
-      data-idx="0"
-      :type="core.curFolder.type"
-      :name="core.curFolder.name"
-    />
-  </div>
-  <div class="upload-settings">
-    <div class="_cb-wrapper">
-      <Transition name="core"><CheckIcon v-if="toCompress" /></Transition>
-      <input v-model="toCompress" id="min" type="checkbox">
-      <label for="min"><small>Сжать изображения</small></label>
+  <div class="settings-row">
+    <div class="upload-settings">
+      <small>Введите общие теги</small>
+      <AppHashInput
+        :modal="uploadTags"
+        @update:hash-model="(value) => { uploadTags = value }"
+        @update:add-tag="(value) => { uploadTags += value }"
+      />
+      <small>Папка для загрузки</small>
+      <AppFolderItem
+        @click="isOpen = true"
+        data-idx="0"
+        :type="core.curFolder.type"
+        :name="core.curFolder.name"
+      />
     </div>
-    <div class="_row">
-      <InfoIcon />
-      <h5>Опция применяется<br />ко всем изображениям</h5>
+    <div class="upload-settings">
+      <div class="_cb-wrapper">
+        <Transition name="core"><CheckIcon v-if="toCompress" /></Transition>
+        <input v-model="toCompress" id="min" type="checkbox">
+        <label for="min"><small>Сжать изображения</small></label>
+      </div>
+      <div class="tip-row">
+        <InfoIcon />
+        <h5>Опция применяется<br />ко всем изображениям</h5>
+      </div>
+      <div
+        @click="uploadHandler"
+        :class="{ _btn: true, _disabled: server.isUploading || !uploadTags || !core.clientImages?.length }"
+      ><small>Загрузить</small></div>
     </div>
-    <div
-      @click="uploadHandler"
-      :class="{ _btn: true, _disabled: server.isUploading || !uploadTags || !core.clientImages?.length }"
-    ><small>Загрузить</small></div>
   </div>
   <AppModal :is-open="isOpen" @close-modal="isOpen = false">
     <div @click="changeFolder" class="folder-list">
@@ -80,9 +82,25 @@ onMounted(() => { server.getFolders(); server.getData() })
 </script>
 
 <style scoped lang="scss">
+.settings-row {
+  display: flex;
+  justify-content: center;
+  gap: var(--space);
+
+  @media(max-width: 525px) {
+    flex-direction: column;
+  }
+}
+
 .upload-wrapper {
   display: flex;
   height: 100%;
+}
+
+.tip-row {
+  display: flex;
+  gap: var(--space);
+  align-items: center;
 }
 
 .upload-settings {
@@ -95,17 +113,11 @@ onMounted(() => { server.getFolders(); server.getData() })
   justify-content: space-between;
   gap: var(--space);
   min-height: 100%;
-}
 
-.upload-row {
-  display: flex;
-  gap: var(--space);
-  align-items: center;
-}
-
-.folder-list {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space);
+  @media(max-width: 525px) {
+    input {
+      width: 100% !important;
+    }
+  }
 }
 </style>

@@ -54,6 +54,10 @@ const previewHandler = () => {
   background-color: var(--tp-c);
   backdrop-filter: blur(8px);
   border-radius: var(--br-rad);
+
+  @media(max-width: 900px) {
+    width: auto;
+  }
 }
 
 .drop-container {

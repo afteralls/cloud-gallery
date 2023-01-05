@@ -142,10 +142,34 @@ label {
   align-items: center;
 }
 
+._hash {
+  padding: calc(var(--space) / 2);
+  border-radius: calc(var(--br-rad) / 2);
+  h5 {
+    pointer-events: none;
+    text-transform: uppercase;
+    color: var(--dark-txt-c);
+  }
+}
+
+._folder-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space);
+}
+
 ._disabled {
   filter: contrast(0.5);
   cursor: default;
   pointer-events: none;
+}
+
+._act {
+  background-color: green;
+
+  &:hover {
+    background-color: rgba(0, 128, 0, 0.8);
+  }
 }
 
 ._cb-wrapper {

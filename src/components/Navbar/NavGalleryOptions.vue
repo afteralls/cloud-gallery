@@ -14,10 +14,10 @@
     <div class="filters">
       <small>Фильтр</small>
       <div class="_row">
-        <div @click="core.curFilter = 'date'" :class="{ '_btn': true, 'act': core.curFilter === 'date' }">
+        <div @click="core.curFilter = 'date'" :class="{ '_btn': true, '_act': core.curFilter === 'date' }">
           <small>По дате</small>
         </div>
-        <div @click="core.curFilter = 'user'" :class="{ '_btn': true, 'act': core.curFilter === 'user' }">
+        <div @click="core.curFilter = 'user'" :class="{ '_btn': true, '_act': core.curFilter === 'user' }">
           <small>По пользователю</small>
         </div>
       </div>
@@ -82,13 +82,5 @@ const showFilters = ref<boolean>(false)
   display: flex;
   flex-direction: column;
   gap: var(--space);
-}
-
-.act {
-  background-color: green;
-
-  &:hover {
-    background-color: rgba(0, 128, 0, 0.8);
-  }
 }
 </style>

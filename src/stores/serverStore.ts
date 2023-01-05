@@ -205,6 +205,13 @@ export const useServerStore = defineStore('server', () => {
     }).catch(() => { notf.addNotification('Упс... Что-то пошло не так') })
   }
 
+  const deleteTag = (idx: number) => {
+    core.hashtagsCollection.splice(idx, 1)
+    const tagBlob = new Blob([JSON.stringify(core.hashtagsCollection)], { type: 'application/json' })
+    uploadBytes(hashDataRef.value as StorageReference, tagBlob)
+    notf.addNotification('Тег успешно удалён')
+  }
+
   return {
     createFolder,
     getFolders,
@@ -212,6 +219,7 @@ export const useServerStore = defineStore('server', () => {
     uploadHandler,
     deleteImage,
     updateImageData,
-    isUploading
+    isUploading,
+    deleteTag
   }
 })

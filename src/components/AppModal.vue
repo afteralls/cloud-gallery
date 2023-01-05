@@ -38,6 +38,7 @@ defineEmits(['closeModal'])
     padding: var(--space);
     border-radius: var(--br-rad);
     position: relative;
+    max-width: 332px;
   }
 
   &__close {
