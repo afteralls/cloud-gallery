@@ -180,6 +180,12 @@ label {
   }
 }
 
+._hash-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
 ._folder-list {
   display: flex;
   flex-direction: column;

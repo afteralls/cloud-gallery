@@ -1,17 +1,15 @@
 <template>
-  <section class="home">
-    <div class="_column headers">
-      <h1>Облачная Галерея</h1>
-      <h2>Галерея для комфортного просмотра фотографий</h2>
-      <p>Загружайте изображения и просматривайте их в любое время. А чтобы быстрее находить нужный контент — укажите парочку тегов для поиска в будущем</p>
-      <RouterLink class="_btn" to="/gallery">
-        <small>Перейти к Галереи</small>
-      </RouterLink>
-    </div>
-    <div class="logo-wrapper">
-      <LogoIcon />
-    </div>
-  </section>
+<section class="home _row">
+  <div class="_column headers">
+    <h1>Облачная Галерея</h1>
+    <h2>Галерея для комфортного просмотра фотографий</h2>
+    <p>Загружайте изображения и просматривайте их в любое время. А чтобы быстрее находить нужный контент — укажите парочку тегов для поиска в будущем</p>
+    <RouterLink class="_btn" to="/gallery">
+      <small>Перейти к Галереи</small>
+    </RouterLink>
+  </div>
+  <div class="logo-wrapper"><LogoIcon /></div>
+</section>
 </template>
 
 <script setup lang="ts">
@@ -20,17 +18,8 @@ import LogoIcon from '@/assets/svg/LogoIcon.vue'
 
 <style scoped lang="scss">
 .home {
-  display: flex;
   width: 100%;
   justify-content: space-between;
-  align-items: center;
-  gap: var(--space);
-
-  &__hidden {
-    @media (max-width: 575px) {
-      display: none;
-    }
-  }
 
   @media (max-width: 900px) {
     flex-direction: column;
@@ -39,9 +28,6 @@ import LogoIcon from '@/assets/svg/LogoIcon.vue'
 
 .logo-wrapper {
   min-width: 300px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 
   svg {
     width: 100%;
@@ -49,14 +35,13 @@ import LogoIcon from '@/assets/svg/LogoIcon.vue'
   }
 
   @media (max-width: 750px) {
-    svg {
-      max-width: 250px;
-      height: 100%;
-    }
+    svg { max-width: 250px; }
   }
 }
 
 .headers {
+  align-items: flex-start;
+
   h1 { font-size: 4rem; }
   h2 { font-size: 2rem; }
   p { font-size: 1.2rem; }

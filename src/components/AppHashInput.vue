@@ -9,7 +9,7 @@
   />
   <SearchIcon @click="searchHandler" v-if="isSearch" class="search-icon" />
   <Transition name="main" mode="out-in">
-    <div v-if="showTips" class="hash-tips">
+    <div v-if="showTips" class="hash-tips _hash-row">
       <div v-for="hash in core.hashtagsCollection" :key="hash" :data-hash="hash" class="_btn _hash">
         <h5>{{ hash }}</h5>
       </div>
@@ -90,12 +90,9 @@ useEventListener(document, 'click', (evt: any) => {
   top: 25px;
   z-index: 9;
   width: 100%;
-  display: flex;
-  flex-wrap: wrap;
   text-align: center;
   background-color: var(--bg-c);
   padding: var(--space);
   border-radius: 0 0 var(--br-rad) var(--br-rad);
-  gap: 5px;
 }
 </style>

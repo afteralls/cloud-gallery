@@ -26,7 +26,7 @@ defineEmits<{ (e: 'closeModal'): void }>()
   top: 0;
   width: 100vw;
   height: 100vh;
-  z-index: 50;
+  z-index: 9;
 }
 
 .modal-window {
