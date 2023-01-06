@@ -103,9 +103,15 @@ label {
 
 ._row {
   display: flex;
-  justify-content: center;
   align-items: center;
   gap: var(--space);
+}
+
+._tp-bg {
+  background-color: var(--tp-c);
+  backdrop-filter: blur(8px);
+  padding: var(--space);
+  border-radius: var(--br-rad);
 }
 
 ._btn {
@@ -162,6 +168,17 @@ label {
   filter: contrast(0.5);
   cursor: default;
   pointer-events: none;
+}
+
+._i {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  svg {
+    height: 24px;
+    width: auto;
+  }
 }
 
 ._act {

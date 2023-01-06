@@ -8,11 +8,16 @@
         ><ArrowLeftIcon /></div>
         <div
           @click="$emit('next')"
-          :class="{ arrow: true, 'arrow-right': true, _disabled: curIdx === size - 1, 'active': isShow }"
+          :class="{
+            arrow: true,
+            'arrow-right': true,
+            _disabled: curIdx === size - 1,
+            'active': isShow
+          }"
         ><ArrowRightIcon /></div>
         <div :class="{ 'interface': true, 'viewer-header': true, 'active': isShow }">
           <small>{{ curIdx + 1 }} / {{ size }}</small>
-          <div class="_row">
+          <div class="options">
             <div
               class="_delete"
               @click.prevent="deleteHandler"
@@ -46,7 +51,9 @@
 import { ref, computed } from 'vue'
 import DeleteIcon from '@/assets/svg/DeleteIcon.vue'
 import EditImageIcon from '@/assets/svg/EditImageIcon.vue'
-import { useEventListener, useFullscreen  } from '@vueuse/core'
+import { useEventListener, useFullscreen } from '@vueuse/core'
+import AppTip from '../AppTip.vue'
+import InfoIcon from '@/assets/svg/InfoIcon.vue'
 import FullscreenEnterIcon from '@/assets/svg/FullsceenEnterIcon.vue'
 import FullscreenExitIcon from '@/assets/svg/FullscreenExitIcon.vue'
 import CloseIcon from '@/assets/svg/CloseIcon.vue'
@@ -101,17 +108,13 @@ useEventListener(viewer, 'wheel', (evt: any) => {
 })
 
 const changeActiveImage = () => {
-  if (size.value > 1) {
+  if (size.value >= 1) {
     switch (props.curIdx) {
-      case 0:
-          emit('next')
-          break
+      case 0: emit('next'); emit('prev'); break
       case size.value - 1: emit('prev'); break
       default: emit('next'); break
     }
-  } else {
-    emit('closeModal')
-  }
+  } else { emit('closeModal') }
 }
 
 const deleteHandler = async (evt: any) => {
@@ -167,10 +170,24 @@ const deleteHandler = async (evt: any) => {
   width: 100%;
 }
 
+.tip-row {
+  display: flex;
+  gap: var(--space);
+  align-items: center;
+  // width: 300px;
+}
+
 .viewer-header {
   justify-content: space-between;
   gap: var(--space);
   top: 0;
+}
+
+.options {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--space);
 }
 
 .viewer-footer {

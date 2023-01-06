@@ -33,7 +33,7 @@ const router = createRouter({
 router.beforeEach((to, _, next) => {
   document.title = to.name
   next()
-  setTimeout(() => { window.scrollTo(0,0) }, 250)
+  setTimeout(() => { window.scrollTo(0, 0) }, 250)
 })
 
 export default router

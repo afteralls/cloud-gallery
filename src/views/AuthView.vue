@@ -1,120 +1,76 @@
 <template>
-  <div class="_wrapper">
-    <form class="auth" @submit.prevent="onSubmit">
-      <img src="../assets/img/auth.webp" alt="">
-      <div class="auth__column">
-        <div class="_column">
-          <h1>Авторизация</h1>
-          <p>Чтобы войти в аккаунт, пожалуйста, заполните поля ниже</p>
-        </div>
-        <div class="_column">
-          <div class="auth__row">
-            <div :class="['_column', {_invalid: eError}]">
-              <div :class="['_notf', {'_notf-v': !eError && email}]">
-                <p>*&nbsp;</p><small>{{ eError || 'Enter your E-Mail'}}</small>
-              </div>
-              <input type="email" placeholder="E-Mail" v-model="email" @blur="eBlur">
-            </div>
-            <div :class="['_column', {_invalid: pError}]">
-              <div :class="['_notf', {'_notf-v': !pError && password}]">
-                <p>*&nbsp;</p><small>{{ pError || 'Enter your password'}}</small>
-              </div>
-              <input type="password" placeholder="Password" v-model="password" @blur="pBlur">
-            </div>
+<div class="_wrapper">
+  <div class="auth _row _tp-bg">
+    <img src="../assets/img/auth.png" alt="Some">
+    <div class="_column auth-layout">
+      <div class="_column">
+        <h1>Авторизация</h1>
+        <p>Чтобы войти в аккаунт, пожалуйста, заполните поля ниже</p>
+      </div>
+      <div class="_column">
+        <div class="_row">
+          <div class="auth-column">
+            <small>{{ !isEmailValid ? 'Введите валидный E-Mail' : 'Введите Ваш E-Mail' }}</small>
+            <input type="email" placeholder="E-Mail" v-model="data.email">
           </div>
-          <button :class="{ _btn: true, _disabled: pError || eError || isSubmitting }">
-            <small>Log in</small>
-          </button>
+          <div class="auth-column">
+            <small>{{ !isPasswordValid ? 'Введите валидный пароль' : 'Введите Ваш пароль' }}</small>
+            <input type="password" placeholder="Password" v-model="data.password">
+          </div>
+        </div>
+        <div @click="submitHandler" :class="{ '_btn': true, '_disabled': !isAllValid }">
+          <small>Войти</small>
         </div>
       </div>
-    </form>
+    </div>
   </div>
+</div>
 </template>
 
 <script setup lang="ts">
+import { reactive, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/authStore'
-import { useField, useForm } from 'vee-validate'
-import * as yup from 'yup'
+import { validateEmail } from '@/utils/validateEmail'
+
+interface ClientData { email: string, password: string }
 
 const router = useRouter()
 const auth = useAuthStore()
-const { handleSubmit, isSubmitting } = useForm()
 
-const { value: email, errorMessage: eError, handleBlur: eBlur } = useField(
-  'email',
-  yup
-    .string()
-    .trim()
-    .required('Enter your E-Mail')
-    .email('Enter the correct E-Mail')
-)
+const data: ClientData = reactive({ email: '', password: '' })
 
-const { value: password, errorMessage: pError, handleBlur: pBlur } = useField(
-  'password',
-  yup
-    .string()
-    .trim()
-    .required('Enter your password')
-)
+const isEmailValid = computed<boolean>(() => !!validateEmail(data.email))
+const isPasswordValid = computed<boolean>(() => !!(data.password.length && data.password !== ' '))
+const isAllValid = computed<boolean>(() => isEmailValid.value && isPasswordValid.value)
 
-const onSubmit = handleSubmit(async values => {
-  await auth.login(values)
+const submitHandler = async () => {
+  await auth.login(data)
   if (auth.isAuthenticated) router.push('/')
-})
+}
 </script>
 
 <style scoped lang="scss">
 .auth {
-  display: flex;
-  gap: var(--space);
-  background-color: var(--tp-c);
-  backdrop-filter: blur(8px);
-  padding: var(--space);
-  border-radius: var(--br-rad);
-  max-width: 824px;
-
-  &__column {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space);
-    justify-content: space-around;
-  }
-
-  &__row {
-    display: flex;
-    gap: var(--space);
-    width: 100%;
-    justify-content: space-between;
-
-    @media(max-width: 500px) {
-      flex-direction: column;
-
-      input {
-        width: 100%;
-      }
-    }
-  }
-
-  & ._btn {
-    width: 100%;
-  }
-
   img {
-    max-width: 300px;
-    height: auto;
+    height: 300px;
+    width: auto;
     border-radius: var(--br-rad);
     object-fit: cover;
   }
+}
 
-  @media(max-width: 900px) {
-    flex-direction: column;
-    max-width: 455px;
+.auth-layout {
+  height: 100%;
+  justify-content: space-around;
+  gap: calc(var(--space) * 3);
 
-    img {
-      max-width: 100%;
-      max-height: 200px;
-    }
-  }
+  & ._btn { width: 100%; }
+}
+
+.auth-column {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--space) / 2);
 }
 </style>

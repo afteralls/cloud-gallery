@@ -13,6 +13,6 @@ export default {
   
     app.config.globalProperties.$i18n = (key: string) =>
       key.split('.').reduce((o: any, i: any) => o[i], langData[curLang.value])
-    app.provide(import.meta.env.VITE_I18N, changeLang)
+    app.provide('i18n', changeLang)
   }
 }
