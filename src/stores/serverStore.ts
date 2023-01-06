@@ -16,7 +16,7 @@ import type { StorageReference } from 'firebase/storage'
 import { useAuthStore } from './authStore'
 import { useNotfStore } from './notfStore'
 import { useCoreStore } from './coreStore'
-import type { Image } from './coreStore'
+import type { Image } from '@/types'
 import Compressor from 'compressorjs'
 
 export const useServerStore = defineStore('server', () => {

@@ -1,11 +1,11 @@
 <template>
-  <div class="notification">
-    <TransitionGroup name="notf">
-      <div v-for="item in notifications" :key="item" class="notification__item">
-        <small>{{ item }}</small>
-      </div>
-    </TransitionGroup>
-  </div>
+<div class="notifications _column">
+  <TransitionGroup name="notf">
+    <div v-for="item in notifications" :key="item" class="_tp-wp">
+      <small>{{ item }}</small>
+    </div>
+  </TransitionGroup>
+</div>
 </template>
 
 <script setup lang="ts">
@@ -15,29 +15,21 @@ const { notifications } = useNotfStore()
 </script>
 
 <style scoped lang="scss">
-.notification {
-  display: flex;
+.notifications {
   align-items: flex-end;
-  flex-direction: column;
   margin: var(--space);
-  gap: var(--space);
-  z-index: 300;
-
-  &__item {
-    background-color: var(--tp-c);
-    backdrop-filter: blur(8px);
-    padding: var(--space);
-    border-radius: var(--br-rad);
-  }
+  position: fixed;
+  top: 60px;
+  right: 0;
+  z-index: 10;
 }
 
 .notf {
-  &-enter-active,
-  &-leave-active {
+  &-enter-active, &-leave-active {
     transition: all 0.5s ease;
   }
-  &-enter-from,
-  &-leave-to {
+
+  &-enter-from, &-leave-to {
     opacity: 0;
     transform: translateX(30px);
   }

@@ -1,18 +1,13 @@
-interface LangProps {
-  [key: string]: string | object
-}
+import type { LangProps } from '@/types'
 
 export default {
   en: {
     nav: {
       name: 'Cloud Gallery',
-      name_sh: 'Cloud Gallery',
       darkMode: 'Dark Mode',
-      linkTitles: {
-        git: 'My page on GitHub',
-        telegram: 'My Telegram account',
-        home: 'Go to home page'
-      }
+      git: 'My page on GitHub',
+      telegram: 'My Telegram account',
+      home: 'Go to home page'
     }
   },
   ru: {

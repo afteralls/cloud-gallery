@@ -1,24 +1,24 @@
 <template>
-  <div :class="{ 'hash-input': true, search: isSearch }">
-    <input
-      @focus="showTips = true"
-      :value="modal"
-      type="text"
-      placeholder="#Art #Nature"
-      @input="inputHandler"
-    />
-    <SearchIcon @click="searchHandler" v-if="isSearch" class="search-icon" />
-    <Transition name="main">
-      <div v-if="showTips" class="hash-tips">
-        <div v-for="hash in core.hashtagsCollection" :key="hash" :data-hash="hash" class="_btn _hash">
-          <h5>{{ hash }}</h5>
-        </div>
-        <h5 v-if="!core.hashtagsCollection.length">
-          Тегов пока нет, попробуйте пополнить коллекцию текущей директории
-        </h5>
+<div :class="{ 'hash-input': true, 'search': isSearch }">
+  <input
+    @focus="showTips = true"
+    :value="model"
+    type="text"
+    placeholder="#Art #Nature"
+    @input="inputHandler"
+  />
+  <SearchIcon @click="searchHandler" v-if="isSearch" class="search-icon" />
+  <Transition name="main" mode="out-in">
+    <div v-if="showTips" class="hash-tips">
+      <div v-for="hash in core.hashtagsCollection" :key="hash" :data-hash="hash" class="_btn _hash">
+        <h5>{{ hash }}</h5>
       </div>
-    </Transition>
-  </div>
+      <h5 v-if="!core.hashtagsCollection.length">
+        Тегов пока нет, попробуйте пополнить коллекцию текущей директории
+      </h5>
+    </div>
+  </Transition>
+</div>
 </template>
 
 <script setup lang="ts">
@@ -27,23 +27,18 @@ import SearchIcon from '@/assets/svg/SearchIcon.vue'
 import { useCoreStore } from '@/stores/coreStore'
 import { useEventListener } from '@vueuse/core'
 
-const props = defineProps<{ modal: string, isSearch?: boolean }>()
-const emit = defineEmits<{
-  (e: 'update:hashModel', value: string): void
-  (e: 'update:addTag', value: string): void
-}>()
+const props = defineProps<{ model: string, isSearch?: boolean }>()
+const emit = defineEmits<{ (e: 'updateModel', value: string): void, (e: 'addTag', value: string): void }>()
 
-const showTips = ref<boolean>(false)
 const core = useCoreStore()
+const showTips = ref<boolean>(false)
 
-const inputHandler = (evt: any) => {
-  emit('update:hashModel', evt.target.value)
-}
+const inputHandler = (evt: any) => emit('updateModel', evt.target.value)
 
 const searchHandler = () => {
-  if (props.modal !== '') {
-    emit('update:hashModel', '')
-    core.search(props.modal)
+  if (props.model !== '') {
+    emit('updateModel', '')
+    core.search(props.model)
     showTips.value = false
   }
 }
@@ -51,9 +46,8 @@ const searchHandler = () => {
 useEventListener(document, 'click', (evt: any) => {
   if (!evt.target.closest(['.search', '.hash-input']))
     showTips.value = false
-  if (evt.target.closest(['._hash'])) {
-    emit('update:addTag', `${evt.target.dataset.hash} `)
-  }
+  if (evt.target.closest(['._hash']))
+    emit('addTag', `${evt.target.dataset.hash} `)
 })
 </script>
 
@@ -63,7 +57,7 @@ useEventListener(document, 'click', (evt: any) => {
   align-items: center;
   position: relative;
   height: auto;
-  
+
   input {
     width: 200px;
     box-sizing: border-box;
@@ -74,25 +68,19 @@ useEventListener(document, 'click', (evt: any) => {
   }
 
   @media(max-width: 525px) {
-    input {
-      width: 100%;
-    }
+    input { width: 100%; }
   }
 }
 
 .search {  
-  input {
-    padding: 0 27px 5px 0;
-  }
-
+  input { padding: 0 27px 5px 0; }
   svg { height: 22px; }
+}
 
-  &-icon {
-    position: absolute;
-    right: 0;
-    z-index: 11;
-    bottom: 5px;
-  }
+.search-icon {
+  position: absolute;
+  right: 0;
+  bottom: 5px;
 }
 
 .hash-tips {
@@ -100,7 +88,7 @@ useEventListener(document, 'click', (evt: any) => {
   max-height: 130px;
   overflow-y: scroll;
   top: 25px;
-  z-index: 30;
+  z-index: 9;
   width: 100%;
   display: flex;
   flex-wrap: wrap;

@@ -9,7 +9,8 @@
 <script setup lang="ts">
 import GlobalIcon from '@/assets/svg/GlobalIcon.vue'
 import LocalIcon from '@/assets/svg/LocalIcon.vue'
-defineProps<{type?: string, name?: string}>()
+
+defineProps<{ type: string, name: string }>()
 </script>
 
 <style scoped lang="scss">
@@ -24,8 +25,6 @@ defineProps<{type?: string, name?: string}>()
     width: auto;
   }
 
-  small, svg {
-    pointer-events: none;
-  }
+  small, svg { pointer-events: none; }
 }
 </style>

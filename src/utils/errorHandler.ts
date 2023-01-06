@@ -1,6 +1,4 @@
-interface Errors {
-  [key: string]: string
-}
+import type { Errors } from '@/types'
 
 const errorCodes: Errors = {
   EMAIL_NOT_FOUND: 'User with this E-Mail was not found',

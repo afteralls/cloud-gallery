@@ -1,21 +1,21 @@
 <template>
-  <Teleport to="body">
-    <Transition name="main">
-      <div v-if="isOpen" class="modal">
-        <div class="modal__window">
-          <div @click="$emit('closeModal')" class="modal__close"><CloseIcon /></div>
-          <slot />
-        </div>
+<Teleport to="body">
+  <Transition name="main" mode="out-in">
+    <div v-if="isOpen" class="_center modal">
+      <div class="modal-window _bg-wp">
+        <div @click="$emit('closeModal')" class="modal-close"><CloseIcon /></div>
+        <slot />
       </div>
-    </Transition>
-  </Teleport>
+    </div>
+  </Transition>
+</Teleport>
 </template>
 
 <script setup lang="ts">
 import CloseIcon from '@/assets/svg/CloseIcon.vue'
 
-defineProps(['isOpen'])
-defineEmits(['closeModal'])
+defineProps<{ isOpen: boolean }>()
+defineEmits<{ (e: 'closeModal'): void }>()
 </script>
 
 <style scoped lang="scss">
@@ -24,28 +24,20 @@ defineEmits(['closeModal'])
   backdrop-filter: blur(8px);
   position: fixed;
   top: 0;
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
   z-index: 50;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+}
 
-  &__window {
-    gap: var(--space);
-    background-color: var(--bg-c);
-    backdrop-filter: blur(8px);
-    padding: var(--space);
-    border-radius: var(--br-rad);
-    position: relative;
-    max-width: 332px;
-  }
+.modal-window {
+  position: relative;
+  max-width: 332px;
+}
 
-  &__close {
-    position: absolute;
-    top: -32px;
-    right: 0;
-    cursor: pointer;
-  }
+.modal-close {
+  position: absolute;
+  top: -32px;
+  right: 0;
+  cursor: pointer;
 }
 </style>

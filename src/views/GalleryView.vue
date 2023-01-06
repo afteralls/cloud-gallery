@@ -54,7 +54,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import DeleteIcon from '@/assets/svg/DeleteIcon.vue'
 import AppHashInput from '@/components/AppHashInput.vue'
 import EditImageIcon from '@/assets/svg/EditImageIcon.vue'
@@ -62,7 +62,7 @@ import AppModal from '@/components/AppModal.vue'
 import TheGalleryViewer from '@/components/GalleryView/TheGalleryViewer.vue'
 import { useCoreStore } from '@/stores/coreStore'
 import { useServerStore } from '@/stores/serverStore'
-import type { Image } from '@/stores/coreStore'
+import type { Image } from '@/types'
 
 const core = useCoreStore()
 const server = useServerStore()
@@ -88,6 +88,8 @@ const edit = (evt: any) => {
   updateTags.value = hashtags
   curName.value = name
 }
+
+onMounted(() => { server.getFolders(); server.getData() })
 </script>
 
 <style scoped lang="scss">

@@ -2,10 +2,7 @@ import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import { useNotfStore } from './notfStore'
 import { useStorage } from '@vueuse/core'
-
-interface Folder { name: string, type: string }
-interface PreviewInfo { name?: string, src?: string, size?: string }
-export interface Image { name: string, hashtags: string, src: string, uploader: string, created: string }
+import type { Folder, PreviewInfo, Image } from '@/types'
 
 export const useCoreStore = defineStore('core', () => {
   const notf = useNotfStore()

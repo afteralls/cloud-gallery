@@ -1,25 +1,30 @@
 <template>
 <div class="options">
-  <RouterLink to="/"><LogoIcon /></RouterLink>
+  <RouterLink class="_i" to="/"><LogoIcon /></RouterLink>
   <div class="_br"></div>
-  <NavFoldersMenu />
+  <div class="_i"><FoldersIcon @click="showFoldersModal = true" /></div>
+  <AppModal :is-open="showFoldersModal" @close-modal="showFoldersModal = false">
+    <AppFolderList @close-folder-list="showFoldersModal = false" />
+  </AppModal>
   <AppHashInput
-    :modal="searchTags"
+    :model="searchTags"
     :is-search="true"
-    @update:hashModel="(value) => searchTags = value"
-    @update:addTag="(value) => searchTags += value"
+    @update-model="(value) => searchTags = value"
+    @add-tag="(value) => searchTags += value"
   />
-  <div @click="showFilters = true" class="stable"><FilterIcon /></div>
-  <AppModal :is-open="showFilters" @close-modal="showFilters = false">
-    <div class="filters">
+  <div @click="showFiltersModal = true" class="_i"><FilterIcon /></div>
+  <AppModal :is-open="showFiltersModal" @close-modal="showFiltersModal = false">
+    <div class="_column">
       <small>Фильтр</small>
       <div class="_row">
-        <div @click="core.curFilter = 'date'" :class="{ '_btn': true, '_act': core.curFilter === 'date' }">
-          <small>По дате</small>
-        </div>
-        <div @click="core.curFilter = 'user'" :class="{ '_btn': true, '_act': core.curFilter === 'user' }">
-          <small>По пользователю</small>
-        </div>
+        <div
+          @click="core.curFilter = 'date'"
+          :class="{ '_btn': true, 'act': core.curFilter === 'date' }"
+        ><small>По дате</small></div>
+        <div
+          @click="core.curFilter = 'user'"
+          :class="{ '_btn': true, 'act': core.curFilter === 'user' }"
+        ><small>По пользователю</small></div>
       </div>
       <Transition name="main" mode="out-in">
         <TheSelect
@@ -35,11 +40,11 @@
           @update-data="(value) => core.curUploader = value"
         />
       </Transition>
-      <div @click="core.deepSearch(), showFilters = false" class="_btn">
+      <div @click="core.deepSearch(), showFiltersModal = false" class="_btn">
         <small>Поиск</small>
       </div>
       <small>Загрузка полной коллекции</small>
-      <div @click="core.galleryCollection = core.imageCollection, showFilters = false" class="_btn">
+      <div @click="core.galleryCollection = core.imageCollection, showFiltersModal = false" class="_btn">
         <small>Загрузить всё</small>
       </div>
     </div>
@@ -49,17 +54,20 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
+import AppFolderList from '../AppFolderList.vue'
 import LogoIcon from '@/assets/svg/LogoIcon.vue'
+import FoldersIcon from '@/assets/svg/FoldersIcon.vue'
 import FilterIcon from '@/assets/svg/FilterIcon.vue'
-import NavFoldersMenu from './NavFoldersMenu.vue'
 import AppHashInput from '../AppHashInput.vue'
 import AppModal from '../AppModal.vue'
 import TheSelect from './TheSelect.vue'
 import { useCoreStore } from '@/stores/coreStore'
 
 const core = useCoreStore()
+
 const searchTags = ref<string>('')
-const showFilters = ref<boolean>(false)
+const showFoldersModal = ref<boolean>(false)
+const showFiltersModal = ref<boolean>(false)
 </script>
 
 <style scoped lang="scss">
@@ -70,17 +78,8 @@ const showFilters = ref<boolean>(false)
   height: 100%;
 }
 
-.stable {
-  display: flex;
-  align-items: center;
-  svg {
-    min-width: 24px !important;
-  }
-}
-
-.filters {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space);
+.act {
+  background-color: green;
+  &:hover { background-color: rgba(0, 128, 0, 0.8); }
 }
 </style>

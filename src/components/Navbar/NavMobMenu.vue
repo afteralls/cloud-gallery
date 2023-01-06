@@ -1,7 +1,7 @@
 <template>
 <NavMenuIcon @click="isActive = !isActive" :class="{ 'active': isActive }" />
 <Transition name="main">
-  <div v-show="isActive" class="menu-wrapper">
+  <div v-show="isActive" class="menu-wrapper _column _bg-wp">
     <slot name="theme"></slot>
     <div class="_row">
       <slot name="translation"></slot>
@@ -27,17 +27,13 @@ useEventListener(document, 'click', (evt: any) => {
 <style scoped lang="scss">
 .menu-wrapper {
   position: fixed;
-  top: 76px;
-  right: 15px;
+  top: 60px;
+  right: 0;
+  margin: var(--space);
   width: 200px;
   height: 100px;
   z-index: 40;
-  display: flex;
-  background-color: var(--bg-c);
-  padding: var(--space);
-  border-radius: var(--br-rad);
-  flex-direction: column;
-  gap: var(--space);
   justify-content: center;
+  align-items: center;
 }
 </style>

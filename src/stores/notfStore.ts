@@ -6,9 +6,7 @@ export const useNotfStore = defineStore('notf', () => {
 
   const addNotification = (notification: string) => {
     notifications.value.push(notification)
-    setTimeout(() => {
-      notifications.value.shift()
-    }, 5000)
+    setTimeout(() => { notifications.value.shift() }, 5000)
   }
 
   return { notifications, addNotification }

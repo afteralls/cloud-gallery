@@ -1,19 +1,15 @@
 <template>
-  <div @click="open = !open" class="select">
-    <ArrowIcon :class="{ select__arrow: true, rotate: open }" />
-    <div class="select__selected"><small>{{ model }}</small></div>
-    <Transition name="main">
-      <div v-show="open" class="select__items">
-        <div
-          class="select__item"
-          v-for="item of items" :key="item"
-          @click="$emit('updateData', item), !open"
-        >
-          <small>{{ item }}</small>
-        </div>
+<div @click="isOpen = !isOpen" class="select">
+  <ArrowIcon :class="{ 'select-arrow': true, 'rotate': isOpen }" />
+  <div class="selected"><small>{{ model }}</small></div>
+  <Transition name="main" mode="out-in">
+    <div v-show="isOpen" class="select-items">
+      <div class="select-item" v-for="item of items" :key="item" :data-item="item">
+        <small>{{ item }}</small>
       </div>
-    </Transition>
-  </div>
+    </div>
+  </Transition>
+</div>
 </template>
 
 <script setup lang="ts">
@@ -22,17 +18,20 @@ import { ref } from 'vue'
 import { useEventListener } from '@vueuse/core'
 
 defineProps<{ model: string, items: string[] }>()
-defineEmits<{ (e: 'updateData', value: string): void }>()
+const emit = defineEmits<{ (e: 'updateData', value: string): void }>()
 
-const open = ref(false)
+const isOpen = ref(false)
 useEventListener(document, 'click', (evt: any) => {
-  if (!evt.target?.closest('.select')) {
-    open.value = false
+  if (!evt.target.closest(['.select', '.select-arrow']))
+    isOpen.value = false
+  if (evt.target.closest(['.select-item'])) {
+    emit('updateData', evt.target.dataset.item)
+    isOpen.value = false
   }
 })
 </script>
 
-<style lang="scss">
+<style scoped lang="scss">
 .select {
   display: flex;
   justify-content: center;
@@ -40,56 +39,45 @@ useEventListener(document, 'click', (evt: any) => {
   position: relative;
   outline: none;
   cursor: pointer;
+}
 
-  &__selected {
-    display: flex;
-    align-items: center;
-    width: 100%;
-    padding: var(--space);
-    background-color: var(--wrapper-c-h);
-    border-radius: var(--br-rad);
-    color: var(--txt-c);
-    user-select: none;
-    transition: var(--transition);
+.selected, .select-arrow, .select-items, .select-item {
+  border-radius: var(--br-rad);
+
+  small, svg {
     pointer-events: none;
-    z-index: 20;
-  }
-
-  &__arrow {
-    z-index: 21;
-    position: absolute;
-    right: 0;
     transition: var(--transition);
-    fill: var(--txt-c-h);
-    height: 100%;
-    pointer-events: none;
-  }
-
-  &__items {
-    display: flex;
-    flex-direction: column;
-    border-radius: var(--br-rad);
-    position: absolute;
-    top: 47px;
-    background-color: var(--wrapper-c);
-    width: 100%;
-    box-sizing: border-box;
-    z-index: 30;
-    transition: var(--transition);
-  }
-
-  &__item {
-    padding: var(--space);
-    border-radius: var(--br-rad);
-    user-select: none;
-
-    &:hover {
-      background-color: var(--wrapper-c-h);
-    }
   }
 }
 
-.rotate {
-  transform: rotate(180deg);
+.selected {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: var(--space);
+  background-color: var(--wrapper-c-h);
+  color: var(--txt-c);
 }
+
+.select-arrow {
+  position: absolute;
+  right: 0;
+  fill: var(--txt-c-h);
+  height: 100%;
+}
+
+.select-items {
+  position: absolute;
+  top: 50px;
+  background-color: var(--wrapper-c);
+  width: 100%;
+}
+
+.select-item {
+  padding: var(--space);
+
+  &:hover { background-color: var(--wrapper-c-h); }
+}
+
+.rotate { transform: rotate(180deg); }
 </style>

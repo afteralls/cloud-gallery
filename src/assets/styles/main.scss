@@ -70,6 +70,15 @@ label {
   }
 }
 
+/* Transitions */
+
+.main {
+  &-enter-from { opacity: 0; }
+  &-enter-active { transition: all 0.2s ease-out; }
+  &-leave-to { opacity: 0; }
+  &-leave-active { transition: all 0.2s ease-in; }
+}
+
 /* Pseudo-Elements */
 
 ::selection { background-color: #4f13af33; }
@@ -79,6 +88,7 @@ label {
 
 ._container {
   box-sizing: border-box;
+  width: 100%;
   max-width: 1280px;
   margin: 0 auto;
 }
@@ -97,7 +107,6 @@ label {
 ._column {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
   gap: var(--space);
 }
 
@@ -107,9 +116,21 @@ label {
   gap: var(--space);
 }
 
-._tp-bg {
+._center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+._tp-wp {
   background-color: var(--tp-c);
   backdrop-filter: blur(8px);
+  padding: var(--space);
+  border-radius: var(--br-rad);
+}
+
+._bg-wp {
+  background-color: var(--bg-c);
   padding: var(--space);
   border-radius: var(--br-rad);
 }
@@ -151,6 +172,7 @@ label {
 ._hash {
   padding: calc(var(--space) / 2);
   border-radius: calc(var(--br-rad) / 2);
+
   h5 {
     pointer-events: none;
     text-transform: uppercase;
@@ -176,16 +198,10 @@ label {
   align-items: center;
 
   svg {
+    min-height: 24px !important;
     height: 24px;
     width: auto;
-  }
-}
-
-._act {
-  background-color: green;
-
-  &:hover {
-    background-color: rgba(0, 128, 0, 0.8);
+    cursor: pointer;
   }
 }
 
@@ -206,22 +222,6 @@ label {
   background-color: rgba(128, 128, 128, 0.5);
   width: 1px;
   height: 100%;
-}
-
-._notf {
-  display: flex;
-
-  p {
-    font-weight: bold;
-    margin: 0;
-    color: red;
-  }
-
-  &-v {
-    p {
-      color: green;
-    }
-  }
 }
 
 ._delete, ._edit {
