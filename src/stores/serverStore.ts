@@ -34,6 +34,11 @@ export const useServerStore = defineStore('server', () => {
       : `users/${auth.email}/${core.curFolder.name}`
   )
 
+  const uploadBytesHandler = async (ref: StorageReference, array: Image[] | string[] | []) => {
+    const blob = new Blob([JSON.stringify(array)], { type: 'application/json' })
+    await uploadBytes(ref, blob)
+  }
+
   const getFolderList = async (foldRef: any, type: string) => {
     const folderList = await listAll(foldRef)
     folderList.prefixes.forEach((folderRef: any) => {
@@ -55,8 +60,7 @@ export const useServerStore = defineStore('server', () => {
     const imageDataRef = type === 'global'
       ? Ref(storage, `gallery/${name}/${fileName}.json`)
       : Ref(storage, `users/${auth.email}/${name}/${fileName}.json`)
-    const defBlob = new Blob([JSON.stringify([])], { type: 'application/json' })
-    uploadBytes(imageDataRef, defBlob)
+    uploadBytesHandler(imageDataRef, [])
   }
 
   const createFolder = async (name: string, type: string) => {
@@ -89,10 +93,32 @@ export const useServerStore = defineStore('server', () => {
     core.curUploader = core.uploaders[0]
   }
 
+  const interval = ref<NodeJS.Timeout>()
   const isUploading = ref<boolean>(false)
 
+  const syncDataHandler = async (tags: string) => {
+    clearTimeout(interval.value)
+    await uploadBytesHandler(imageDataRef.value as StorageReference, core.imageCollection)
+    const curCollectionLength: number = core.hashtagsCollection.length
+
+    tags.split(' ').forEach((tag: string) => {
+      if (!core.hashtagsCollection.includes(tag))
+        core.hashtagsCollection.push(tag)
+    })
+
+    if (curCollectionLength !== core.hashtagsCollection.length)
+      await uploadBytesHandler(hashDataRef.value as StorageReference, core.hashtagsCollection)
+    notf.addNotification('Данные успешно синхронизированы')
+  }
+
   const uploadImages = (file: File, blocks: NodeListOf<Element>, idx: number, tags: string) => {
-    const currentTags = tags.trim()
+    const currentTags: string = tags.trim()
+
+    let exist: boolean = false
+    core.imageCollection.forEach(image => {
+      if (file.name === image.name)
+        exist = true
+    })
 
     const metadata = {
       customMetadata: {
@@ -101,7 +127,7 @@ export const useServerStore = defineStore('server', () => {
       }
     }
 
-    const imageRef = Ref(storage, `${curPath.value}/${file.name}`)
+    const imageRef = Ref(storage, `${curPath.value}/${exist ? 'new-' : ''}${file.name}`)
     const uploadTask = uploadBytesResumable(imageRef, file, metadata)
 
     uploadTask.on('state_changed', snapshot => {
@@ -111,6 +137,8 @@ export const useServerStore = defineStore('server', () => {
       block.style.width = percentage + '%'
     }, () => {}, async () => {
       notf.addNotification('Изображение успешно загружено')
+      clearTimeout(interval.value)
+      interval.value = setTimeout(() => { syncDataHandler(currentTags) }, 5000)
 
       core.imageCollection.push({
         name: file.name,
@@ -128,16 +156,7 @@ export const useServerStore = defineStore('server', () => {
       })
 
       if (!core.clientImages?.length) {
-        const imageBlob = new Blob([JSON.stringify(core.imageCollection)], { type: 'application/json' })
-        uploadBytes(imageDataRef.value as StorageReference, imageBlob)
-
-        currentTags.split(' ').forEach((tag: string) => {
-          if (!core.hashtagsCollection.includes(tag))
-            core.hashtagsCollection.push(tag)
-        })
-
-        const tagBlob = new Blob([JSON.stringify(core.hashtagsCollection)], { type: 'application/json' })
-        uploadBytes(hashDataRef.value as StorageReference, tagBlob)
+        syncDataHandler(currentTags)
         isUploading.value = false
       }
     })

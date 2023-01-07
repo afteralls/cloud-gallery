@@ -1,34 +1,40 @@
 <template>
-<div ref="dropZoneRef" class="drop-zone">
-  <div class="drop-container">
-    <input ref="addBtn" @change="addFiles(addBtn?.files)" multiple type="file" class="add">
-    <small v-if="!isOverDropZone">Нажмите на поле или перетащите сюда необходимые файлы</small>
-    <small v-else>Бросайте!</small>
+<div ref="dropZoneRef" class="drop-zone _tp-wp">
+  <div class="drop-container _center">
+    <div @click="open({ accept: 'image/png, image/jpeg, image/webp' })" class="add _absolute"></div>
+    <small>{{ !isOverDropZone ? 'Нажмите на поле или перетащите сюда нужные файлы' : 'Бросайте!' }}</small>
   </div>
 </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
-import { useDropZone } from '@vueuse/core'
+import { ref, watch } from 'vue'
+import { useDropZone, useFileDialog  } from '@vueuse/core'
 import { bytesToSize } from '@/utils/bytesToSize'
 import { useCoreStore } from '@/stores/coreStore'
 
 const core = useCoreStore()
+const { files, open, reset } = useFileDialog()
 const dropZoneRef = ref<HTMLDivElement>()
-const addBtn = ref<any>()
 const onDrop = (files: File[] | null) => { addFiles(files) }
 const { isOverDropZone } = useDropZone(dropZoneRef, onDrop)
 
 const addFiles = (files: File[] | null | FileList) => {
-  const imgArr = Array.from((files as File[] | FileList))
-  imgArr.forEach((file: File) => { core.clientImages?.push(file) })
-  previewHandler()
+  const orderList: File[] = Array.from((files as File[] | FileList))
+  orderList.forEach((file: File) => { core.clientImages?.push(file) })
+  previewHandler(orderList)
 }
 
-const previewHandler = () => {
-  core.clientImages?.forEach(file => {
-    if (!file.type.match('image')) { return }
+watch(files, (fileList) => {
+  if (fileList)
+    addFiles(fileList)
+  reset()
+})
+
+const previewHandler = (orderlist: File[]) => {
+  orderlist.forEach(file => {
+    if (!file.type.match('image'))
+      return
     const reader = new FileReader()
 
     reader.onload = (e) => {
@@ -50,20 +56,14 @@ const previewHandler = () => {
 <style scoped lang="scss">
 .drop-zone {
   width: 350px;
-  padding: var(--space);
-  background-color: var(--tp-c);
-  backdrop-filter: blur(8px);
-  border-radius: var(--br-rad);
+  cursor: pointer;
 
-  @media(max-width: 900px) {
+  @media(max-width: 910px) {
     width: auto;
   }
 }
 
 .drop-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
   height: 100%;
   text-align: center;
   padding: var(--space);
@@ -77,12 +77,5 @@ const previewHandler = () => {
   }
 }
 
-.add {
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  opacity: 0;
-}
+.add { opacity: 0; }
 </style>

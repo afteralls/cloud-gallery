@@ -32,6 +32,7 @@ defineEmits<{ (e: 'closeModal'): void }>()
 .modal-window {
   position: relative;
   max-width: 332px;
+  margin: var(--space);
 }
 
 .modal-close {

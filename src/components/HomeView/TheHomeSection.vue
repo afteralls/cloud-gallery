@@ -8,7 +8,7 @@
       <small>Перейти к Галереи</small>
     </RouterLink>
   </div>
-  <div class="logo-wrapper"><LogoIcon /></div>
+  <div class="logo-wrapper _center"><LogoIcon /></div>
 </section>
 </template>
 
