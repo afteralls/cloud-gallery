@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { useNotfStore } from './notfStore'
 import { useStorage } from '@vueuse/core'
 import type { Folder, PreviewInfo, Image } from '@/types'

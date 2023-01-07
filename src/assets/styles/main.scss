@@ -10,6 +10,7 @@
   outline: none;
   text-decoration: none;
   border: none;
+  -webkit-tap-highlight-color: transparent; 
 }
 
 body, input, button {
@@ -246,6 +247,13 @@ label {
 
 ._edit:hover {
   svg { fill: rgba(255, 165, 0, 0.8); }
+}
+
+._full-fixed {
+  position: fixed;
+  top: 0;
+  height: 100vh;
+  width: 100vw;
 }
 
 ._absolute {

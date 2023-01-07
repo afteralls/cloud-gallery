@@ -68,6 +68,8 @@ useEventListener(document, 'click', (evt: any) => {
 
 .select-items {
   position: absolute;
+  max-height: 130px;
+  overflow-y: scroll;
   top: 50px;
   background-color: var(--wrapper-c);
   width: 100%;

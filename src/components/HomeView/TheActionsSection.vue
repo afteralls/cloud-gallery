@@ -100,7 +100,7 @@ import CheckIcon from '@/assets/svg/CheckIcon.vue'
 import { useServerStore } from '@/stores/serverStore.js'
 import { useAuthStore } from '@/stores/authStore.js'
 import { useCoreStore } from '@/stores/coreStore.js'
-import { ref, onMounted } from 'vue'
+import { ref } from 'vue'
 
 const auth = useAuthStore()
 const server = useServerStore()
@@ -124,8 +124,6 @@ const addTagToDelete = (evt: any) => {
     server.deleteTag(idx)
   }
 }
-
-onMounted(() => { server.getFolders(); server.getData() })
 </script>
 
 <style scoped lang="scss">

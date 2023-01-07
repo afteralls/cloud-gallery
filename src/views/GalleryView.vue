@@ -26,7 +26,7 @@
         </div>
       </TransitionGroup>
     </div>
-    <div v-else class="empty">
+    <div v-else class="empty _column _center">
       <h1>Показывать пока что нечего...</h1>
       <h3>Воспользуйтесь поиском или фильтрами для поиска нужного контента</h3>
     </div>
@@ -40,12 +40,12 @@
       @next="() => changeCurrentImage(++curIdx)"
     />
     <AppModal :is-open="isModalOpen" @close-modal="isModalOpen = false">
-      <div class="column">
+      <div class="_column">
         <small>Введите теги</small>
         <AppHashInput
-          :modal="updateTags"
-          @update:hashModel="(value) => updateTags = value"
-          @update:addTag="(value) => updateTags += value"
+          :model="updateTags"
+          @updateModel="(value) => updateTags = value"
+          @addTag="(value) => updateTags += value"
         />
         <div @click="server.updateImageData(curName, updateTags), isModalOpen = false" class="_btn"><small>Обновить</small></div>
       </div>
@@ -54,7 +54,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref } from 'vue'
 import DeleteIcon from '@/assets/svg/DeleteIcon.vue'
 import AppHashInput from '@/components/AppHashInput.vue'
 import EditImageIcon from '@/assets/svg/EditImageIcon.vue'
@@ -66,8 +66,10 @@ import type { Image } from '@/types'
 
 const core = useCoreStore()
 const server = useServerStore()
+
 const isViewerOpen = ref<boolean>(false)
 const isModalOpen = ref<boolean>(false)
+
 const curIdx = ref<number>(0)
 const currentImage = ref<Image>()
 const curName = ref<string>('')
@@ -88,8 +90,6 @@ const edit = (evt: any) => {
   updateTags.value = hashtags
   curName.value = name
 }
-
-onMounted(() => { server.getFolders(); server.getData() })
 </script>
 
 <style scoped lang="scss">
@@ -105,6 +105,22 @@ onMounted(() => { server.getFolders(); server.getData() })
     border-radius: var(--br-rad);
     cursor: pointer;
     object-fit: cover;
+  }
+
+  @media(max-width: 900px) {
+    img {
+      width: 130px;
+      height: 130px;
+    }
+  }
+
+  @media(max-width: 500px) {
+    gap: calc(var(--space) / 2);
+
+    img {
+      width: 80px;
+      height: 80px;
+    }
   }
 }
 
@@ -145,25 +161,18 @@ onMounted(() => { server.getFolders(); server.getData() })
   border-radius: 0 var(--br-rad) 0 var(--br-rad);
   transition: var(--transition);
   opacity: 0;
+
+  @media(max-width: 900px) {
+    display: none;
+  }
 }
 
 .image-wrapper:hover .image-options {
   opacity: 1;
 }
 
-.column {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space);
-}
-
 .empty {
-  display: flex;
   height: 50vh;
-  flex-direction: column;
-  gap: var(--space);
-  justify-content: center;
-  align-items: center;
   text-align: center;
 }
 </style>

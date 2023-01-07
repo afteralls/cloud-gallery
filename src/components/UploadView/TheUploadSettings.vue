@@ -1,5 +1,5 @@
 <template>
-  <div class="settings-row _row">
+  <div class="settings-row">
     <div class="upload-settings _tp-wp _column">
       <small>Введите общие теги</small>
       <AppHashInput
@@ -45,7 +45,7 @@ import AppFolderList from '../AppFolderList.vue'
 import AppHashInput from '../AppHashInput.vue'
 import { useCoreStore } from '@/stores/coreStore'
 import { useServerStore } from '@/stores/serverStore'
-import { ref, onMounted } from 'vue'
+import { ref } from 'vue'
 
 const core = useCoreStore()
 const server = useServerStore()
@@ -60,23 +60,24 @@ const uploadHandler = () => {
   const items = document.querySelectorAll('.progress')
   server.uploadHandler(toCompress.value, items, uploadTags.value)
 }
-
-onMounted(() => { server.getFolders(); server.getData() })
 </script>
 
 <style scoped lang="scss">
 .settings-row {
-  width: 100%;
+  display: flex;
+  gap: var(--space);
+
   @media(max-width: 525px) {
     flex-direction: column;
   }
 }
 
 .upload-settings {
-  min-height: 100%;
-  width: 100%;
+  justify-content: center;
 
   @media(max-width: 525px) {
+    width: 100%;
+  
     input {
       width: 100% !important;
     }
