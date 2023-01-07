@@ -13,7 +13,7 @@
               <small>Здравствуйте, {{ auth.email }}</small>
             </div>
             <p>У вас есть полный доступ к колекции и всему функционалу, наслаждайтесь!</p>
-            <div @click="auth.logout" class="_btn">
+            <div @click="logoutHandler" class="_btn">
               <small>Выйти</small>
             </div>
           </div>
@@ -113,6 +113,12 @@ const showFolderList = ref<boolean>(false)
 const folderName = ref<string>('')
 const folderType = ref<string>('global')
 
+const logoutHandler = async () => {
+  auth.logout()
+  await server.getFolders()
+  server.getData()
+  core.curFolder = core.foldersCollection[0]
+}
 const createHandler = () => {
   server.createFolder(folderName.value, folderType.value)
   showCreateModal.value = false

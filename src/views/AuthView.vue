@@ -31,11 +31,13 @@
 import { reactive, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/authStore'
+import { useServerStore } from '@/stores/serverStore'
 import { validateEmail } from '@/utils/validateEmail'
 import type { ClientData } from '@/types'
 
 const router = useRouter()
 const auth = useAuthStore()
+const server = useServerStore()
 
 const data: ClientData = reactive({ email: '', password: '' })
 
@@ -45,8 +47,11 @@ const isAllValid = computed<boolean>(() => isEmailValid.value && isPasswordValid
 
 const submitHandler = async () => {
   await auth.login(data)
-  if (auth.isAuthenticated)
+  if (auth.isAuthenticated) {
     router.push('/')
+    server.getFolders()
+    server.getData()
+  }
 }
 </script>
 

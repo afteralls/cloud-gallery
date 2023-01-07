@@ -4,7 +4,12 @@
     <div ref="viewer" v-if="isOpen && size" class="modal _center">
       <div
         @click="$emit('prev')"
-        :class="{ 'arrow': true, 'arrow-left': true, '_disabled': curIdx === 0, 'active': isShow }"
+        :class="{
+          'arrow': true,
+          'arrow-left': true,
+          '_disabled': curIdx === 0,
+          'active': isShow && !zoomed
+        }"
       ><ArrowLeftIcon /></div>
       <div
         @click="$emit('next')"
@@ -12,7 +17,7 @@
           'arrow': true,
           'arrow-right': true,
           '_disabled': curIdx === size - 1,
-          'active': isShow
+          'active': isShow && !zoomed
         }"
       ><ArrowRightIcon /></div>
       <div :class="{ 'interface': true, 'viewer-header': true, 'active': isShow }">
@@ -36,7 +41,7 @@
           <CloseIcon @click="$emit('closeModal')" />
         </div>
       </div>
-      <div class="active-image">
+      <div ref="curImageContainer" class="active-image">
         <img ref="curImage" :src="currentImage?.src" :alt="currentImage?.name">
       </div>
       <div :class="{ 'interface': true, 'viewer-footer': true, 'active': isShow }">
@@ -48,10 +53,10 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 import DeleteIcon from '@/assets/svg/DeleteIcon.vue'
 import EditImageIcon from '@/assets/svg/EditImageIcon.vue'
-import { useEventListener, useFullscreen } from '@vueuse/core'
+import { useEventListener, useFullscreen, useSwipe } from '@vueuse/core'
 import FullscreenEnterIcon from '@/assets/svg/FullsceenEnterIcon.vue'
 import FullscreenExitIcon from '@/assets/svg/FullscreenExitIcon.vue'
 import CloseIcon from '@/assets/svg/CloseIcon.vue'
@@ -59,7 +64,7 @@ import ArrowLeftIcon from '@/assets/svg/ArrowLeftIcon.vue'
 import ArrowRightIcon from '@/assets/svg/ArrowRightIcon.vue'
 import { useServerStore } from '@/stores/serverStore'
 import { useCoreStore } from '@/stores/coreStore'
-import type { Image } from '@/types'
+import type { Image, ZoomData } from '@/types'
 
 const props = defineProps<{
   isOpen: boolean
@@ -78,9 +83,12 @@ const core = useCoreStore()
 
 const size = computed(() => core.galleryCollection.length)
 const isShow = ref<boolean>(true)
+const curImageContainer = ref<HTMLDivElement | null>(null)
+const curImage = ref<HTMLElement | null>(null)
 const viewer = ref<HTMLDivElement | null>(null)
 const { isFullscreen, enter, exit } = useFullscreen(viewer)
 const interval = ref<NodeJS.Timeout>()
+const { direction } = useSwipe(viewer)
 
 useEventListener(viewer, 'mousemove', () => {  
   clearTimeout(interval.value)
@@ -90,15 +98,82 @@ useEventListener(viewer, 'mousemove', () => {
 
 useEventListener(document, 'keyup', (evt: any) => {  
   console.log(evt.code)
-  if (evt.code === 'ArrowLeft' && props.curIdx !== 0) emit('prev')
-  if (evt.code === 'ArrowRight' && props.curIdx !== size.value - 1) emit('next')
+  if (evt.code === 'ArrowLeft' && props.curIdx !== 0 && !zoomed.value) emit('prev')
+  if (evt.code === 'ArrowRight' && props.curIdx !== size.value - 1 && !zoomed.value) emit('next')
   if (evt.code === 'Escape') emit('closeModal')
 })
 
 useEventListener(viewer, 'wheel', (evt: any) => {
   evt.preventDefault()  
-  if (evt.deltaY < 0 && props.curIdx !== 0) emit('prev')
-  if (evt.deltaY > 0 && props.curIdx !== size.value - 1) emit('next')
+  if (evt.deltaY < 0 && props.curIdx !== 0 && !zoomed.value) emit('prev')
+  if (evt.deltaY > 0 && props.curIdx !== size.value - 1 && !zoomed.value) emit('next')
+})
+
+const zoomed = ref<boolean>(false)
+useEventListener(curImage, 'dblclick', (evt: any) => {
+  zoomed.value = !zoomed.value
+  let zoom: number = 2.5
+  const img = evt.target
+
+  if (zoomed.value) {
+    img.style.cursor = 'zoom-out'
+    img.style.transformOrigin = `${evt.offsetX}px ${evt.offsetY}px`
+    img.style.transform = `scale(${zoom})`
+  } else {
+    img.style.transformOrigin = `50% 50%`
+    img.style.transform = `scale(1)`
+    img.style.cursor = 'zoom-in'
+  }
+})
+
+let clicked: boolean = false
+const zH: ZoomData = { xAxis: 0, x: 0, yAxis: 0, y: 0 }
+
+useEventListener(curImageContainer, 'mouseup', (evt: any) => {
+  clicked = false
+  evt.target.style.cursor = 'auto'
+})
+
+useEventListener(curImageContainer, 'mousedown', (evt: any) => {
+  clicked = true
+
+  zH.xAxis = evt.offsetX - (curImage.value?.offsetLeft as number)
+  zH.yAxis = evt.offsetX - (curImage.value?.offsetTop as number)
+  evt.target.style.cursor = 'grabbing'
+})
+
+const checkSize = () => {
+  let containerOut = curImageContainer.value?.getBoundingClientRect()
+  let imgIn = curImage.value?.getBoundingClientRect()
+
+  if (parseInt(curImage.value?.style.left as string) > 0)
+    curImage.value!.style.left = '0'
+  else if ((imgIn?.right as number) < (containerOut?.right as number))
+    curImage.value!.style.left = `-${(imgIn?.width as number) - (containerOut?.width as number)}px`
+  if (parseInt(curImage.value?.style.top as string) > 0)
+    curImage.value!.style.top = '0'
+  else if ((imgIn?.right as number) < (containerOut?.right as number))
+    curImage.value!.style.top = `-${(imgIn?.height as number) - (containerOut?.height as number)}px`
+}
+
+useEventListener(curImageContainer, 'mousemove', (evt: any) => {
+  if (!clicked && zoomed.value) return
+  evt.preventDefault()
+
+  zH.x = evt.offsetX
+  zH.y = evt.offsetY
+
+  curImage.value!.style.left = `${zH.x - zH.xAxis}px`
+  curImage.value!.style.top = `${zH.y - zH.yAxis}px`
+
+  checkSize()
+})
+
+watch(direction, (value) => {
+  console.log(value);
+  if (value === 'RIGHT' && props.curIdx !== 0 && !zoomed.value) emit('prev')
+  if (value === 'LEFT' && props.curIdx !== size.value - 1 && !zoomed.value) emit('next')
+  if (value === 'UP' || value === 'DOWN') emit('closeModal')
 })
 
 const changeActiveImage = () => {
@@ -132,14 +207,22 @@ const deleteHandler = async (evt: any) => {
   display: flex;
   justify-content: center;
   align-items: center;
+  position: relative;
   height: 100%;
-  width: auto;
+  width: 100%;
+  max-width: 100%;
+  max-height: 100%;
+  // width: auto;
 
   img {
-    height: auto;
-    width: auto;
-    max-width: 100%;
-    max-height: 100%;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    object-fit: contain;
+    transition: var(--transition);
+    // max-width: 100%;
+    // max-height: 100%;
+    cursor: zoom-in;
   }
 }
 
@@ -178,6 +261,7 @@ const deleteHandler = async (evt: any) => {
 
 .active {
   opacity: 1;
+  visibility: visible !important;
 }
 
 .arrow {
@@ -186,6 +270,7 @@ const deleteHandler = async (evt: any) => {
   border-radius: var(--br-rad);
   height: 80%;
   cursor: pointer;
+  visibility: hidden;
 
   &:hover {
     background-color: var(--tp-c);
