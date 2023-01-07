@@ -1,8 +1,8 @@
 <template>
   <TheNavbar />
   <AppHotifications />
-  <AppBackground class="app-background" />
-  <div class="app-wrapper"></div>
+  <AppBackground class="app-background _full-fixed" />
+  <div class="app-wrapper _full-fixed"></div>
   <div class="_container">
     <RouterView v-slot="{ Component }">
       <Transition name="main" mode="out-in">
@@ -17,16 +17,14 @@ import { RouterView } from 'vue-router'
 import TheNavbar from '@/components/Navbar/TheNavbar.vue'
 import AppBackground from '@/components/AppBackground.vue'
 import AppHotifications from './components/AppHotifications.vue'
+import { useServerStore } from '@/stores/serverStore'
+import { onMounted } from 'vue'
+
+const server = useServerStore()
+onMounted(() => { server.getFolders(); server.getData() })
 </script>
 
 <style scoped lang="scss">
-.app-wrapper, .app-background {
-  position: fixed;
-  top: 0;
-  height: 100vh;
-  width: 100vw;
-}
-
 .app-wrapper {
   backdrop-filter: blur(40px);
   background-color: var(--tp-c);
