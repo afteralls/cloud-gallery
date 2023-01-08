@@ -41,7 +41,7 @@
           <CloseIcon @click="$emit('closeModal')" />
         </div>
       </div>
-      <div ref="curImageContainer" class="active-image">
+      <div ref="curImageContainer" class="active-image _center">
         <img ref="curImage" :src="currentImage?.src" :alt="currentImage?.name">
       </div>
       <div :class="{ 'interface': true, 'viewer-footer': true, 'active': isShow }">
@@ -64,7 +64,7 @@ import ArrowLeftIcon from '@/assets/svg/ArrowLeftIcon.vue'
 import ArrowRightIcon from '@/assets/svg/ArrowRightIcon.vue'
 import { useServerStore } from '@/stores/serverStore'
 import { useCoreStore } from '@/stores/coreStore'
-import type { Image, ZoomData } from '@/types'
+import type { Image } from '@/types'
 
 const props = defineProps<{
   isOpen: boolean
@@ -110,70 +110,92 @@ useEventListener(viewer, 'wheel', (evt: any) => {
 })
 
 const zoomed = ref<boolean>(false)
-useEventListener(curImage, 'dblclick', (evt: any) => {
+const clicked = ref<boolean>(false)
+let sX: number, sY: number
+
+const zoomHandler = (evt: any) => {
+  evt.preventDefault()
   zoomed.value = !zoomed.value
   let zoom: number = 2.5
-  const img = evt.target
 
+  sX = evt.offsetX || evt.touches[0].clientX
+  sY = evt.offsetY || evt.touches[0].clientY
+  const img = curImage.value as HTMLElement
+
+  evt.offsetX > 0 
+    ? img.style.transition = 'all 0.5s ease'
+    : img.style.transition = 'transform 0.5s ease'
+  
   if (zoomed.value) {
     img.style.cursor = 'zoom-out'
-    img.style.transformOrigin = `${evt.offsetX}px ${evt.offsetY}px`
+    img.style.transformOrigin = `${sX}px ${sY}px`
     img.style.transform = `scale(${zoom})`
   } else {
     img.style.transformOrigin = `50% 50%`
     img.style.transform = `scale(1)`
     img.style.cursor = 'zoom-in'
   }
+}
+
+useEventListener(curImageContainer, 'dblclick', (evt: any) => {
+  zoomHandler(evt)
 })
 
-let clicked: boolean = false
-const zH: ZoomData = { xAxis: 0, x: 0, yAxis: 0, y: 0 }
-
-useEventListener(curImageContainer, 'mouseup', (evt: any) => {
-  clicked = false
-  evt.target.style.cursor = 'auto'
+let counter: number = 0
+useEventListener(curImageContainer, 'touchstart', (evt: any) => {
+  counter++
+  if (counter === 2)
+    zoomHandler(evt)
+  setTimeout(() => counter = 0, 400)
 })
 
-useEventListener(curImageContainer, 'mousedown', (evt: any) => {
-  clicked = true
+let xAxis: number, yAxis: number
 
-  zH.xAxis = evt.offsetX - (curImage.value?.offsetLeft as number)
-  zH.yAxis = evt.offsetX - (curImage.value?.offsetTop as number)
+useEventListener(curImage, ['mousedown', 'touchstart'], (evt: any) => {
+  evt.preventDefault()
+
+  clicked.value = true
+  
+  xAxis = evt.offsetX || evt.touches[0].clientX
+  yAxis = evt.offsetY || evt.touches[0].clientY
+
   evt.target.style.cursor = 'grabbing'
 })
 
-const checkSize = () => {
-  let containerOut = curImageContainer.value?.getBoundingClientRect()
-  let imgIn = curImage.value?.getBoundingClientRect()
+let deltaX: number, deltaY: number
 
-  if (parseInt(curImage.value?.style.left as string) > 0)
-    curImage.value!.style.left = '0'
-  else if ((imgIn?.right as number) < (containerOut?.right as number))
-    curImage.value!.style.left = `-${(imgIn?.width as number) - (containerOut?.width as number)}px`
-  if (parseInt(curImage.value?.style.top as string) > 0)
-    curImage.value!.style.top = '0'
-  else if ((imgIn?.right as number) < (containerOut?.right as number))
-    curImage.value!.style.top = `-${(imgIn?.height as number) - (containerOut?.height as number)}px`
-}
-
-useEventListener(curImageContainer, 'mousemove', (evt: any) => {
-  if (!clicked && zoomed.value) return
+useEventListener(curImage, ['mouseup', 'touchend'], (evt: any) => {
   evt.preventDefault()
 
-  zH.x = evt.offsetX
-  zH.y = evt.offsetY
+  clicked.value = false
+  sX += (deltaX * -1) 
+  sY += (deltaY * -1)
 
-  curImage.value!.style.left = `${zH.x - zH.xAxis}px`
-  curImage.value!.style.top = `${zH.y - zH.yAxis}px`
+  evt.target.style.cursor = 'auto'
+})
 
-  checkSize()
+useEventListener(curImage, ['mousemove', 'touchmove'], (evt: any) => {
+  evt.preventDefault()
+
+  const offsetX = evt.offsetX || evt.touches[0].clientX
+  const offsetY = evt.offsetY || evt.touches[0].clientY
+  
+  if (zoomed.value && clicked.value) {
+    deltaX = (offsetX - xAxis) * 2
+    deltaY = (offsetY - yAxis) * 2
+
+    let resX = sX + (deltaX * -1)
+    let resY = sY + (deltaY * -1)
+    
+    evt.target.style.transformOrigin = `${resX}px ${resY}px`
+  }
 })
 
 watch(direction, (value) => {
   console.log(value);
   if (value === 'RIGHT' && props.curIdx !== 0 && !zoomed.value) emit('prev')
   if (value === 'LEFT' && props.curIdx !== size.value - 1 && !zoomed.value) emit('next')
-  if (value === 'UP' || value === 'DOWN') emit('closeModal')
+  if ((value === 'UP' || value === 'DOWN') && !zoomed.value) emit('closeModal')
 })
 
 const changeActiveImage = () => {
@@ -204,24 +226,12 @@ const deleteHandler = async (evt: any) => {
 }
 
 .active-image {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
   height: 100%;
   width: 100%;
-  max-width: 100%;
-  max-height: 100%;
-  // width: auto;
 
   img {
-    height: 100%;
-    width: 100%;
-    position: absolute;
-    object-fit: contain;
-    transition: var(--transition);
-    // max-width: 100%;
-    // max-height: 100%;
+    max-width: 100%;
+    max-height: 100%;
     cursor: zoom-in;
   }
 }
