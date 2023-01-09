@@ -92,11 +92,12 @@ const optionsHandler = (evt: any) => {
     changeCurrentImage(curIdx.value)
     isViewerOpen.value = true
   }
-  if (evt.target.closest(['._delete']))
+  else if (evt.target.closest(['._delete']))
     server.deleteImage(evt.target.dataset.name)
-  if (evt.target.closest(['._edit'])) {
+  else if (evt.target.closest(['._edit']))
     editHandler(evt)
-  }
+  else if (evt.target.closest(['._fav']))
+    server.favoriteHandler(evt.target.dataset.name)
 }
 </script>
 

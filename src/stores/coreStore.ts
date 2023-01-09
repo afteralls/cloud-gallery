@@ -10,6 +10,8 @@ export const useCoreStore = defineStore('core', () => {
   const foldersCollection = ref<Folder[]>([])
   const imageCollection = ref<Image[]>([])
   const hashtagsCollection = ref<string[]>([])
+  const favImageCollection = ref<Image[]>([])
+  const favHashtagsCollection = ref<string[]>([])
 
   const clientImages = ref<File[] | null | undefined>([])
   const previewImages = ref<PreviewInfo[]>([])
@@ -75,6 +77,8 @@ export const useCoreStore = defineStore('core', () => {
     clientImages,
     previewImages,
     galleryCollection,
+    favImageCollection,
+    favHashtagsCollection,
     search,
     curDate,
     dateCollection,

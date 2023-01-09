@@ -16,7 +16,7 @@ import type { StorageReference } from 'firebase/storage'
 import { useAuthStore } from './authStore'
 import { useNotfStore } from './notfStore'
 import { useCoreStore } from './coreStore'
-import type { Image } from '@/types'
+import type { Image, RefAndUpl } from '@/types'
 import Compressor from 'compressorjs'
 
 export const useServerStore = defineStore('server', () => {
@@ -56,17 +56,43 @@ export const useServerStore = defineStore('server', () => {
       await getFolderList(privatFoldersRef, 'local')
   }
 
-  const getStorageRef = async (name: string, type: string, fileName: string) => {
-    const imageDataRef = type === 'global'
-      ? Ref(storage, `gallery/${name}/${fileName}.json`)
-      : Ref(storage, `users/${auth.email}/${name}/${fileName}.json`)
-    uploadBytesHandler(imageDataRef, [])
+  const getStorageRefAndUpload = async (data: RefAndUpl) => {
+    const dataRef = data.folderType === 'global'
+      ? Ref(storage, `gallery/${data.folderName}/${data.fileName}.json`)
+      : Ref(storage, `users/${auth.email}/${data.folderName}/${data.fileName}.json`)
+    uploadBytesHandler(dataRef, data.collection)
   }
 
   const createFolder = async (name: string, type: string) => {
-    await getStorageRef(name, type, 'imageData')
-    await getStorageRef(name, type, 'hashData')
+    await getStorageRefAndUpload({
+      folderName: name,
+      folderType: type,
+      fileName: 'imageData',
+      collection: []
+    })
+    await getStorageRefAndUpload({
+      folderName: name,
+      folderType: type,
+      fileName: 'hashData',
+      collection: []
+    })
     notf.addNotification('Папка успешно создана!')
+  }
+
+  const getFavData = async () => {
+    const favHashRef = Ref(storage, `users/${auth.email}/favorites/hashData.json`)
+    const favImageRef = Ref(storage, `users/${auth.email}/favorites/imageData.json`)
+    core.favHashtagsCollection = []; core.favImageCollection = []
+
+    await getBlob(favHashRef).then(async responce => {
+      const data = await new Response(responce).text()
+      if (data) core.favHashtagsCollection = JSON.parse(data)
+    })
+
+    await getBlob(favImageRef).then(async responce => {
+      const data = await new Response(responce).text()
+      if (data) core.favImageCollection = JSON.parse(data)
+    })
   }
 
   const getData = async () => {
@@ -230,13 +256,71 @@ export const useServerStore = defineStore('server', () => {
     notf.addNotification('Тег успешно удалён')
   }
 
-  const favoriteHandler = (evt: any) => {
+  const favAddHandler = (image: Image) => {
+    core.favImageCollection.push(image)
+    core.favImageCollection.forEach(image => {
+      image.hashtags.split(' ').forEach(tag => {
+        if (!core.favHashtagsCollection.includes(tag))
+          core.favHashtagsCollection.push(tag)
+      })
+    })
+  }
 
+  const favDeleteHandler = (imageName: string) => {
+    core.favImageCollection.forEach((image, idx) => {
+      if (image.name === imageName)
+        core.favImageCollection.splice(idx, 1)
+    })
+  }
+
+  const favoriteHandler = async (name: string) => {
+    const oldLength = core.favHashtagsCollection.length
+    core.galleryCollection.forEach(image => {
+      if (image.name === name) {
+        image.isFavorite = !image.isFavorite
+        image.isFavorite
+          ? favAddHandler(image)
+          : favDeleteHandler(image.name)
+      }
+    })
+
+    await getStorageRefAndUpload({
+      folderName: 'favorites',
+      folderType: 'local',
+      fileName: 'imageData',
+      collection: core.favImageCollection
+    })
+
+    if (oldLength !== core.favHashtagsCollection.length) {
+      await getStorageRefAndUpload({
+        folderName: 'favorites',
+        folderType: 'local',
+        fileName: 'hashData',
+        collection: core.favHashtagsCollection
+      })
+    }
+
+    notf.addNotification('Данные успешно обновлены!')
+  }
+
+  const getDataHandler = async () => {
+    await getFolders()
+    await getData()
+
+    if (auth.isAuthenticated) {
+      await getFavData()
+      core.imageCollection.forEach((image, idx) => {
+        core.favImageCollection.forEach(favImage => {
+          if(image.name === favImage.name)
+          core.imageCollection[idx].isFavorite = true
+        })
+      })
+    }
   }
 
   return {
     createFolder,
-    getFolders,
+    getDataHandler,
     getData,
     uploadHandler,
     deleteImage,

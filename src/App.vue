@@ -21,7 +21,7 @@ import { useServerStore } from '@/stores/serverStore'
 import { onMounted } from 'vue'
 
 const server = useServerStore()
-onMounted(() => { server.getFolders(); server.getData() })
+onMounted(() => { server.getDataHandler() })
 </script>
 
 <style scoped lang="scss">

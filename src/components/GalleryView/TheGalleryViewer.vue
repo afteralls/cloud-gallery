@@ -24,6 +24,10 @@
         <small>{{ curIdx + 1 }} / {{ size }}</small>
         <div class="options _center">
           <div
+            :class="{ '_fav': true, '_fav-active': currentImage?.isFavorite }"
+            @click.prevent="server.favoriteHandler(currentImage?.name as string)"
+          ><DeleteIcon /></div>
+          <div
             class="_delete"
             @click.prevent="deleteHandler"
             :data-name="currentImage?.name"

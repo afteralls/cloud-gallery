@@ -242,7 +242,7 @@ label {
 }
 
 ._fav-active {
-  fill: rgba(255, 0, 0, 0.8);
+  svg { fill: rgba(255, 0, 0, 0.8); }
 }
 
 ._delete:hover {
