@@ -183,8 +183,7 @@ export const useServerStore = defineStore('server', () => {
     array.forEach((f, i) => { if (f.name === imageName) { array.splice(i, 1) } })
   }
 
-  const deleteImage = async (e: any) => {
-    const { name } = e.target.dataset
+  const deleteImage = async (name: string) => {
     const imageRef = Ref(storage, `${curPath.value}/${name}`)
     
     await deleteObject(imageRef).then(async () => {
@@ -231,6 +230,10 @@ export const useServerStore = defineStore('server', () => {
     notf.addNotification('Тег успешно удалён')
   }
 
+  const favoriteHandler = (evt: any) => {
+
+  }
+
   return {
     createFolder,
     getFolders,
@@ -239,6 +242,7 @@ export const useServerStore = defineStore('server', () => {
     deleteImage,
     updateImageData,
     isUploading,
-    deleteTag
+    deleteTag,
+    favoriteHandler
   }
 })

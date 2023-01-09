@@ -30,7 +30,7 @@
           ><DeleteIcon /></div>
           <div
             class="_edit"
-            @click.prevent="edit($event)"
+            @click.prevent="editHandler($event)"
             :data-name="currentImage?.name"
             :data-hashtags="currentImage?.hashtags"
           ><EditImageIcon /></div>
@@ -70,7 +70,7 @@ const props = defineProps<{
   isOpen: boolean
   currentImage?: Image
   curIdx: number
-  edit: Function
+  editHandler: Function
 }>()
 
 const emit = defineEmits<{
@@ -192,7 +192,6 @@ useEventListener(curImage, ['mousemove', 'touchmove'], (evt: any) => {
 })
 
 watch(direction, (value) => {
-  console.log(value);
   if (value === 'RIGHT' && props.curIdx !== 0 && !zoomed.value) emit('prev')
   if (value === 'LEFT' && props.curIdx !== size.value - 1 && !zoomed.value) emit('next')
   if ((value === 'UP' || value === 'DOWN') && !zoomed.value) emit('closeModal')
@@ -209,7 +208,7 @@ const changeActiveImage = () => {
 }
 
 const deleteHandler = async (evt: any) => {
-  await server.deleteImage(evt)
+  await server.deleteImage(evt.target.dataset.name)
   changeActiveImage()
 }
 </script>
@@ -298,11 +297,6 @@ const deleteHandler = async (evt: any) => {
   }
 }
 
-.arrow-left {
-  left: var(--space);
-}
-
-.arrow-right {
-  right: var(--space);
-}
+.arrow-left { left: var(--space); }
+.arrow-right { right: var(--space);}
 </style>

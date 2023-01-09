@@ -1,17 +1,19 @@
 <template>
-  <div @click="openGallery" class="_wrapper">
+  <div @click="optionsHandler" class="_wrapper">
     <div v-if="core.galleryCollection.length" class="collection">
       <TransitionGroup name="image">
         <div v-for="(img, idx) in core.galleryCollection" :key="idx" class="image-wrapper">
           <div class="image-options">
             <div
+              :class="{ '_fav': true, '_fav-active': img.isFavorite }"
+              :data-name="img.name"
+            ><HeartIcon /></div>
+            <div
               class="_delete"
-              @click.prevent="server.deleteImage($event)"
               :data-name="img.name"
             ><DeleteIcon /></div>
             <div
               class="_edit"
-              @click.prevent="edit($event)"
               :data-name="img.name"
               :data-hashtags="img.hashtags"
             ><EditImageIcon /></div>
@@ -34,7 +36,7 @@
       :is-open="isViewerOpen"
       :current-image="currentImage"
       :cur-idx="curIdx"
-      :edit="edit"
+      :edit-handler="editHandler"
       @close-modal="isViewerOpen = false"
       @prev="() => changeCurrentImage(--curIdx)"
       @next="() => changeCurrentImage(++curIdx)"
@@ -55,6 +57,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
+import HeartIcon from '@/assets/svg/HeartIcon.vue'
 import DeleteIcon from '@/assets/svg/DeleteIcon.vue'
 import AppHashInput from '@/components/AppHashInput.vue'
 import EditImageIcon from '@/assets/svg/EditImageIcon.vue'
@@ -75,20 +78,25 @@ const currentImage = ref<Image>()
 const curName = ref<string>('')
 const updateTags = ref<string>('')
 
+const editHandler = (evt: any) => {
+  const { name, hashtags } = evt.target.dataset
+  isModalOpen.value = true
+  updateTags.value = hashtags
+  curName.value = name
+}
+
 const changeCurrentImage = (idx: number) => currentImage.value = core.galleryCollection[idx]
-const openGallery = (evt: any) => {
+const optionsHandler = (evt: any) => {
   if (evt.target.closest(['.image-wrapper']) && !evt.target.closest(['.image-options'])) {
     curIdx.value = +evt.target.dataset.idx
     changeCurrentImage(curIdx.value)
     isViewerOpen.value = true
   }
-}
-
-const edit = (evt: any) => {
-  const { name, hashtags } = evt.target.dataset
-  isModalOpen.value = true
-  updateTags.value = hashtags
-  curName.value = name
+  if (evt.target.closest(['._delete']))
+    server.deleteImage(evt.target.dataset.name)
+  if (evt.target.closest(['._edit'])) {
+    editHandler(evt)
+  }
 }
 </script>
 

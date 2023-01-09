@@ -231,7 +231,7 @@ label {
   height: 100%;
 }
 
-._delete, ._edit {
+._delete, ._edit, ._fav {
   cursor: pointer;
 
   svg {
@@ -241,12 +241,20 @@ label {
   }
 }
 
+._fav-active {
+  fill: rgba(255, 0, 0, 0.8);
+}
+
 ._delete:hover {
   svg { fill: rgba(255, 0, 0, 0.8) }
 }
 
 ._edit:hover {
   svg { fill: rgba(255, 165, 0, 0.8); }
+}
+
+._fav:hover {
+  svg { fill: var(--accent-c) }
 }
 
 ._full-fixed {
