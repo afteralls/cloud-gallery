@@ -1,72 +1,61 @@
 <template>
-  <div @click="optionsHandler" class="_wrapper">
-    <div v-if="core.galleryCollection.length" class="collection">
-      <TransitionGroup name="image">
-        <div v-for="(img, idx) in core.galleryCollection" :key="idx" class="image-wrapper">
-          <div class="image-options">
-            <div
-              :class="{ '_fav': true, '_fav-active': img.isFavorite }"
-              :data-name="img.name"
-            ><HeartIcon /></div>
-            <div
-              class="_delete"
-              :data-name="img.name"
-            ><DeleteIcon /></div>
-            <div
-              class="_edit"
-              :data-name="img.name"
-              :data-hashtags="img.hashtags"
-            ><EditImageIcon /></div>
-          </div>
-          <img
-            :data-idx="idx"
+<div @click="optionsHandler" class="_wrapper">
+  <div v-if="core.galleryCollection.length" class="collection">
+    <TransitionGroup name="image">
+      <div v-for="(img, idx) in core.galleryCollection" :key="idx" class="image-wrapper">
+        <div class="image-options">
+          <div
+            :class="{ '_fav': true, '_fav-active': img.isFavorite }"
+            :data-name="img.name"
+          ><HeartIcon /></div>
+          <div
+            class="_delete"
+            :data-name="img.name"
+          ><DeleteIcon /></div>
+          <div
+            class="_edit"
             :data-name="img.name"
             :data-hashtags="img.hashtags"
-            :src="img.src"
-            :alt="img.name"
-          >
+          ><EditImageIcon /></div>
         </div>
-      </TransitionGroup>
-    </div>
-    <div v-else class="empty _column _center">
-      <h1>Показывать пока что нечего...</h1>
-      <h3>Воспользуйтесь поиском или фильтрами для поиска нужного контента</h3>
-    </div>
-    <TheGalleryViewer
-      :is-open="isViewerOpen"
-      :current-image="currentImage"
-      :cur-idx="curIdx"
-      :edit-handler="editHandler"
-      @close-modal="isViewerOpen = false"
-      @prev="() => changeCurrentImage(--curIdx)"
-      @next="() => changeCurrentImage(++curIdx)"
-    />
-    <AppModal :is-open="isModalOpen" @close-modal="isModalOpen = false">
-      <div class="_column">
-        <small>Введите теги</small>
-        <AppHashInput
-          :model="updateTags"
-          @updateModel="(value) => updateTags = value"
-          @addTag="(value) => updateTags += value"
-        />
-        <div @click="server.updateImageData(curName, updateTags), isModalOpen = false" class="_btn"><small>Обновить</small></div>
+        <img
+          :data-idx="idx"
+          :data-name="img.name"
+          :data-hashtags="img.hashtags"
+          :src="img.src"
+          :alt="img.name"
+        >
       </div>
-    </AppModal>
+    </TransitionGroup>
   </div>
+  <div v-else class="empty _column _center">
+    <h1>Показывать пока что нечего...</h1>
+    <h3>Воспользуйтесь поиском или фильтрами для поиска нужного контента</h3>
+  </div>
+  <TheGalleryViewer
+    :is-open="isViewerOpen"
+    :current-image="currentImage"
+    :cur-idx="curIdx"
+    :edit-handler="editHandler"
+    @close-modal="isViewerOpen = false"
+    @prev="() => changeCurrentImage(--curIdx)"
+    @next="() => changeCurrentImage(++curIdx)"
+  />
+  <AppModal :is-open="isModalOpen" @close-modal="isModalOpen = false">
+    <div class="_column">
+      <small>Введите теги</small>
+      <AppHashInput
+        :model="updateTags"
+        @updateModel="(value) => updateTags = value"
+        @addTag="(value) => updateTags += value"
+      />
+      <div @click="server.updateImageData(curName, updateTags), isModalOpen = false" class="_btn"><small>Обновить</small></div>
+    </div>
+  </AppModal>
+</div>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
-import HeartIcon from '@/assets/svg/HeartIcon.vue'
-import DeleteIcon from '@/assets/svg/DeleteIcon.vue'
-import AppHashInput from '@/components/AppHashInput.vue'
-import EditImageIcon from '@/assets/svg/EditImageIcon.vue'
-import AppModal from '@/components/AppModal.vue'
-import TheGalleryViewer from '@/components/GalleryView/TheGalleryViewer.vue'
-import { useCoreStore } from '@/stores/coreStore'
-import { useServerStore } from '@/stores/serverStore'
-import type { Image } from '@/types'
-
 const core = useCoreStore()
 const server = useServerStore()
 

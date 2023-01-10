@@ -9,9 +9,6 @@
 </template>
 
 <script setup lang="ts">
-import { useDark } from '@vueuse/core'
-import { watch, onMounted, computed } from 'vue'
-
 const isDark = useDark({ selector: 'body', attribute: 'class', valueDark: 'dark', valueLight: 'light' })
 const currentColor = computed(() => isDark.value ? '#242424' : '#ffffff')
 const selector = 'meta[name="theme-color"]'

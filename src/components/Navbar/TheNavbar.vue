@@ -29,15 +29,6 @@
 </template>
 
 <script setup lang="ts">
-import LogoIcon from '@/assets/svg/LogoIcon.vue'
-import NavContacts from './NavContacts.vue'
-import TranslateIcon from '@/assets/svg/TranslateIcon.vue'
-import NavThemeSwitcher from './NavThemeSwitcher.vue'
-import NavMobMenu from './NavMobMenu.vue'
-import NavGalleryOptions from './NavGalleryOptions.vue'
-import { useResizeObserver } from '@vueuse/core'
-import { inject, ref } from 'vue'
-
 const changeLang = inject('i18n')
 const navSize = ref<HTMLInputElement | null>(null)
 const width = ref<number>(0)

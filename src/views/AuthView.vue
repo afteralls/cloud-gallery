@@ -1,56 +1,46 @@
 <template>
 <div class="_wrapper">
-  <div class="auth _row _tp-wp">
-    <img src="../assets/img/auth.png" alt="Some">
+  <section class="auth _row _tp-wp">
+    <img src="@/assets/img/auth.png" alt="Auth Banner">
     <div class="_column auth-layout">
       <div class="_column">
-        <h1>Авторизация</h1>
-        <p>Чтобы войти в аккаунт, пожалуйста, заполните поля ниже</p>
+        <h1>{{ $i18n('auth.title') }}</h1>
+        <p>{{ $i18n('auth.desc') }}</p>
       </div>
       <div class="_column full">
         <div class="_row fields-wrapper full">
           <div class="auth-column">
-            <small>{{ !isEmailValid ? 'Введите валидный E-Mail' : 'Введите Ваш E-Mail' }}</small>
+            <small>{{ isEmailValid ? $i18n('auth.vEmail') : $i18n('auth.inEvmal') }}</small>
             <input type="email" placeholder="E-Mail" v-model="data.email">
           </div>
           <div class="auth-column">
-            <small>{{ !isPasswordValid ? 'Введите валидный пароль' : 'Введите Ваш пароль' }}</small>
-            <input type="password" placeholder="Password" v-model="data.password">
+            <small>{{ isPassValid ? $i18n('auth.vPass') : $i18n('auth.invPass') }}</small>
+            <input type="password" :placeholder="$i18n('auth.plPass')" v-model="data.password">
           </div>
         </div>
-        <div @click="submitHandler" :class="{ '_btn': true, '_disabled': !isAllValid }">
-          <small>Войти</small>
+        <div @click="submitHandler" :class="{ '_btn': true, '_disabled': isPassValid && isEmailValid }">
+          <small>{{ $i18n('auth.login') }}</small>
         </div>
       </div>
     </div>
-  </div>
+  </section>
 </div>
 </template>
 
 <script setup lang="ts">
-import { reactive, computed } from 'vue'
-import { useRouter } from 'vue-router'
-import { useAuthStore } from '@/stores/authStore'
-import { useServerStore } from '@/stores/serverStore'
-import { validateEmail } from '@/utils/validateEmail'
-import type { ClientData } from '@/types'
-
 const router = useRouter()
 const auth = useAuthStore()
-const server = useServerStore()
-
+const { getDataHandler } = useServerStore()
 const data: ClientData = reactive({ email: '', password: '' })
 
 const isEmailValid = computed<boolean>(() => !!validateEmail(data.email))
-const isPasswordValid = computed<boolean>(() => !!(data.password.length && data.password !== ' '))
-const isAllValid = computed<boolean>(() => isEmailValid.value && isPasswordValid.value)
+const isPassValid = computed<boolean>(() => !!(data.password.length && data.password !== ' '))
 
 const submitHandler = async () => {
   await auth.login(data)
   if (auth.isAuthenticated) {
     router.push('/')
-    server.getFolders()
-    server.getData()
+    getDataHandler()
   }
 }
 </script>
@@ -80,15 +70,19 @@ const submitHandler = async () => {
   gap: calc(var(--space) * 3);
 }
 
-.full { width: 100%; }
+.full {
+  width: 100%;
+}
 
 .fields-wrapper {
   justify-content: space-between;
 
   @media(max-width: 500px) {
     flex-direction: column;
-  
-    input { width: 100% }
+
+    input {
+      width: 100%;
+    }
   }
 }
 

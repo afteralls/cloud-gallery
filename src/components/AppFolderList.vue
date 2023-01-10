@@ -14,10 +14,6 @@
 </template>
 
 <script setup lang="ts">
-import AppFolderItem from '@/components/AppFolderItem.vue'
-import { useCoreStore } from '@/stores/coreStore'
-import { useServerStore } from '@/stores/serverStore'
-
 const emit = defineEmits<{ (e: 'closeFolderList'): void }>()
 
 const core = useCoreStore()

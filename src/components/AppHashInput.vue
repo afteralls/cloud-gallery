@@ -22,11 +22,6 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
-import SearchIcon from '@/assets/svg/SearchIcon.vue'
-import { useCoreStore } from '@/stores/coreStore'
-import { useEventListener } from '@vueuse/core'
-
 const props = defineProps<{ model: string, isSearch?: boolean }>()
 const emit = defineEmits<{ (e: 'updateModel', value: string): void, (e: 'addTag', value: string): void }>()
 

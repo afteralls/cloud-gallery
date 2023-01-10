@@ -1,7 +1,4 @@
-import { defineStore } from 'pinia'
-import { ref } from 'vue'
-
-export const useNotfStore = defineStore('notf', () => {
+export const useNotfStore =  defineStore('notf', () => {
   const notifications = ref<string[]>([])
 
   const addNotification = (notification: string) => {

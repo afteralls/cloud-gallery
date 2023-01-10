@@ -13,10 +13,6 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
-import NavMenuIcon from './NavMenuIcon.vue'
-import { useEventListener } from '@vueuse/core'
-
 const isActive = ref<boolean>(false)
 useEventListener(document, 'click', (evt: any) => {
   if (!evt.target.closest(['.menu-icon', '.menu-wrapper']))

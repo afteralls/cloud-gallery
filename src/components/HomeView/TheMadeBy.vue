@@ -6,10 +6,6 @@
 </div>
 </template>
 
-<script setup lang="ts">
-import HeartIcon from '@/assets/svg/HeartIcon.vue'
-</script>
-
 <style scoped lang="scss">
 .made-by {
   gap: 5px;

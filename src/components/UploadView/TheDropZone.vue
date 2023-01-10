@@ -8,11 +8,6 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue'
-import { useDropZone, useFileDialog  } from '@vueuse/core'
-import { bytesToSize } from '@/utils/bytesToSize'
-import { useCoreStore } from '@/stores/coreStore'
-
 const core = useCoreStore()
 const { files, open, reset } = useFileDialog()
 const dropZoneRef = ref<HTMLDivElement>()

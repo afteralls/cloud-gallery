@@ -7,9 +7,6 @@
 </template>
 
 <script setup lang="ts">
-import GlobalIcon from '@/assets/svg/GlobalIcon.vue'
-import LocalIcon from '@/assets/svg/LocalIcon.vue'
-
 defineProps<{ type: string, name: string }>()
 </script>
 

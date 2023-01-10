@@ -26,7 +26,7 @@
           <div
             :class="{ '_fav': true, '_fav-active': currentImage?.isFavorite }"
             @click.prevent="server.favoriteHandler(currentImage?.name as string)"
-          ><DeleteIcon /></div>
+          ><HeartIcon /></div>
           <div
             class="_delete"
             @click.prevent="deleteHandler"
@@ -57,19 +57,6 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue'
-import DeleteIcon from '@/assets/svg/DeleteIcon.vue'
-import EditImageIcon from '@/assets/svg/EditImageIcon.vue'
-import { useEventListener, useFullscreen, useSwipe } from '@vueuse/core'
-import FullscreenEnterIcon from '@/assets/svg/FullsceenEnterIcon.vue'
-import FullscreenExitIcon from '@/assets/svg/FullscreenExitIcon.vue'
-import CloseIcon from '@/assets/svg/CloseIcon.vue'
-import ArrowLeftIcon from '@/assets/svg/ArrowLeftIcon.vue'
-import ArrowRightIcon from '@/assets/svg/ArrowRightIcon.vue'
-import { useServerStore } from '@/stores/serverStore'
-import { useCoreStore } from '@/stores/coreStore'
-import type { Image } from '@/types'
-
 const props = defineProps<{
   isOpen: boolean
   currentImage?: Image
@@ -211,8 +198,8 @@ const changeActiveImage = () => {
   } else { emit('closeModal') }
 }
 
-const deleteHandler = async (evt: any) => {
-  await server.deleteImage(evt.target.dataset.name)
+const deleteHandler = async (evt: MouseEvent) => {
+  await server.deleteImage((evt.target as HTMLElement).dataset.name!)
   changeActiveImage()
 }
 </script>

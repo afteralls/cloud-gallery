@@ -13,15 +13,8 @@
 </template>
 
 <script setup lang="ts">
-import { RouterView } from 'vue-router'
-import TheNavbar from '@/components/Navbar/TheNavbar.vue'
-import AppBackground from '@/components/AppBackground.vue'
-import AppHotifications from './components/AppHotifications.vue'
-import { useServerStore } from '@/stores/serverStore'
-import { onMounted } from 'vue'
-
-const server = useServerStore()
-onMounted(() => { server.getDataHandler() })
+const { getDataHandler } = useServerStore()
+onMounted(() => { getDataHandler() })
 </script>
 
 <style scoped lang="scss">

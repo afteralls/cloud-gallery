@@ -8,13 +8,9 @@
       <small>Перейти к Галереи</small>
     </RouterLink>
   </div>
-  <div class="logo-wrapper _center"><LogoIcon /></div>
+  <div class="logo-wrapper _center"><img src="@/assets/img/main.png" alt="Home Image"></div>
 </section>
 </template>
-
-<script setup lang="ts">
-import LogoIcon from '@/assets/svg/LogoIcon.vue'
-</script>
 
 <style scoped lang="scss">
 .home {
@@ -27,15 +23,16 @@ import LogoIcon from '@/assets/svg/LogoIcon.vue'
 }
 
 .logo-wrapper {
-  min-width: 300px;
+  height: auto;
+  min-width: 350px;
 
-  svg {
+  img {
     width: 100%;
     height: 100%;
   }
 
   @media (max-width: 750px) {
-    svg { max-width: 250px; }
+    img { max-width: 300px; }
   }
 }
 

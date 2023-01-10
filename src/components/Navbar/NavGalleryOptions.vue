@@ -53,16 +53,6 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
-import AppFolderList from '../AppFolderList.vue'
-import LogoIcon from '@/assets/svg/LogoIcon.vue'
-import FoldersIcon from '@/assets/svg/FoldersIcon.vue'
-import FilterIcon from '@/assets/svg/FilterIcon.vue'
-import AppHashInput from '../AppHashInput.vue'
-import AppModal from '../AppModal.vue'
-import TheSelect from './TheSelect.vue'
-import { useCoreStore } from '@/stores/coreStore'
-
 const core = useCoreStore()
 
 const searchTags = ref<string>('')

@@ -9,8 +9,6 @@
 </template>
 
 <script setup lang="ts">
-import { useNotfStore } from '@/stores/notfStore.js'
-
 const { notifications } = useNotfStore()
 </script>
 

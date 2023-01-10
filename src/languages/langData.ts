@@ -1,13 +1,22 @@
-import type { LangProps } from '@/types'
-
 export default {
   en: {
     nav: {
-      name: 'Cloud Gallery',
-      darkMode: 'Dark Mode',
-      git: 'My page on GitHub',
-      telegram: 'My Telegram account',
-      home: 'Go to home page'
+      name: 'Облачная галерея',
+      name_sh: 'Cloud Gallery',
+      darkMode: 'Тёмная тема',
+      git: 'Моя страница на GitHub',
+      telegram: 'Мой Telegram аккаунт',
+      home: 'Вернуться на главную'
+    },
+    auth: {
+      title: 'Авторизация',
+      desc: 'Чтобы войти в аккаунт, пожалуйста, заполните поля ниже',
+      vEmail: 'Введите Ваш E-Mail',
+      invEmail: 'Введите валидный E-Mail',
+      vPass: 'Введите Ваш пароль',
+      invPass: 'Введите валидный пароль',
+      plPass: 'Пароль',
+      login: 'Войти'
     }
   },
   ru: {
@@ -15,11 +24,19 @@ export default {
       name: 'Облачная галерея',
       name_sh: 'Cloud Gallery',
       darkMode: 'Тёмная тема',
-      linkTitles: {
-        git: 'Моя страница на GitHub',
-        telegram: 'Мой Telegram аккаунт',
-        home: 'Вернуться на главную'
-      }
+      git: 'Моя страница на GitHub',
+      telegram: 'Мой Telegram аккаунт',
+      home: 'Вернуться на главную'
+    },
+    auth: {
+      title: 'Авторизация',
+      desc: 'Чтобы войти в аккаунт, пожалуйста, заполните поля ниже',
+      vEmail: 'Введите Ваш E-Mail',
+      invEmail: 'Введите валидный E-Mail',
+      vPass: 'Введите Ваш пароль',
+      invPass: 'Введите валидный пароль',
+      plPass: 'Пароль',
+      login: 'Войти'
     }
   }
 } as LangProps

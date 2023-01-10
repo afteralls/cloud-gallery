@@ -13,10 +13,6 @@
 </template>
 
 <script setup lang="ts">
-import ArrowIcon from '@/assets/svg/ArrowIcon.vue'
-import { ref } from 'vue'
-import { useEventListener } from '@vueuse/core'
-
 defineProps<{ model: string, items: string[] }>()
 const emit = defineEmits<{ (e: 'updateData', value: string): void }>()
 

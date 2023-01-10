@@ -27,11 +27,6 @@
 </template>
 
 <script setup lang="ts">
-import InfoIcon from '@/assets/svg/InfoIcon.vue'
-import CloseIcon from '@/assets/svg/CloseIcon.vue'
-import { useCoreStore } from '@/stores/coreStore'
-import { useServerStore } from '@/stores/serverStore'
-
 const core = useCoreStore()
 const server = useServerStore()
 

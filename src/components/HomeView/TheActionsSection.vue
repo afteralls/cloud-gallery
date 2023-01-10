@@ -88,20 +88,6 @@
 </template>
 
 <script setup lang="ts">
-import InfoIcon from '@/assets/svg/InfoIcon.vue'
-import AppFolderItem from '../AppFolderItem.vue'
-import AppFolderList from '../AppFolderList.vue'
-import AddFolderIcon from '@/assets/svg/AddFolderIcon.vue'
-import AddImagesIcon from '@/assets/svg/AddImagesIcon.vue'
-import HashtagIcon from '@/assets/svg/HashtagIcon.vue'
-import AccountIcon from '@/assets/svg/AccountIcon.vue'
-import AppModal from '@/components/AppModal.vue'
-import CheckIcon from '@/assets/svg/CheckIcon.vue'
-import { useServerStore } from '@/stores/serverStore.js'
-import { useAuthStore } from '@/stores/authStore.js'
-import { useCoreStore } from '@/stores/coreStore.js'
-import { ref } from 'vue'
-
 const auth = useAuthStore()
 const server = useServerStore()
 const core = useCoreStore()
@@ -115,8 +101,7 @@ const folderType = ref<string>('global')
 
 const logoutHandler = async () => {
   auth.logout()
-  await server.getFolders()
-  server.getData()
+  await server.getDataHandler()
   core.curFolder = core.foldersCollection[0]
 }
 const createHandler = () => {

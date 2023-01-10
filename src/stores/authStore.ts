@@ -1,10 +1,3 @@
-import { defineStore } from 'pinia'
-import { useStorage } from '@vueuse/core'
-import axios from 'axios'
-import { error } from '@/utils/errorHandler'
-import { computed } from 'vue'
-import { useNotfStore } from './notfStore'
-
 export const useAuthStore = defineStore('auth', () => {
   const notf = useNotfStore()
   const authToken = useStorage<string>('auth-token', null)
@@ -19,10 +12,10 @@ export const useAuthStore = defineStore('auth', () => {
       authToken.value = data.idToken
       email.value = payload.email.split('@')[0]
       notf.addNotification(`Добро пожаловать, ${email.value}`)
-    } catch (e: any) { notf.addNotification(error(e.response.data.error.message)) }
+    } catch (e: any) { notf.addNotification(errorHandler(e.response.data.error.message)) }
   }
 
-  const logout = () => { authToken.value = null }
+  const logout = () => authToken.value = null
 
   return { email, isAuthenticated, login, logout }
 })

@@ -37,16 +37,6 @@
 </template>
 
 <script setup lang="ts">
-import CheckIcon from '@/assets/svg/CheckIcon.vue'
-import InfoIcon from '@/assets/svg/InfoIcon.vue'
-import AppFolderItem from '@/components/AppFolderItem.vue'
-import AppModal from '../AppModal.vue'
-import AppFolderList from '../AppFolderList.vue'
-import AppHashInput from '../AppHashInput.vue'
-import { useCoreStore } from '@/stores/coreStore'
-import { useServerStore } from '@/stores/serverStore'
-import { ref } from 'vue'
-
 const core = useCoreStore()
 const server = useServerStore()
 

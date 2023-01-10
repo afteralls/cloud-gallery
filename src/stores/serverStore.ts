@@ -1,22 +1,4 @@
-import { defineStore } from 'pinia'
-import { computed, ref } from 'vue'
-import {
-  getStorage,
-  ref as Ref,
-  listAll,
-  uploadBytesResumable,
-  getBlob,
-  uploadBytes,
-  getDownloadURL,
-  getMetadata,
-  deleteObject,
-  updateMetadata
-} from 'firebase/storage'
 import type { StorageReference } from 'firebase/storage'
-import { useAuthStore } from './authStore'
-import { useNotfStore } from './notfStore'
-import { useCoreStore } from './coreStore'
-import type { Image, RefAndUpl } from '@/types'
 import Compressor from 'compressorjs'
 
 export const useServerStore = defineStore('server', () => {
@@ -259,7 +241,7 @@ export const useServerStore = defineStore('server', () => {
   const favAddHandler = (image: Image) => {
     core.favImageCollection.push(image)
     core.favImageCollection.forEach(image => {
-      image.hashtags.split(' ').forEach(tag => {
+      image.hashtags.split(' ').forEach((tag: string) => {
         if (!core.favHashtagsCollection.includes(tag))
           core.favHashtagsCollection.push(tag)
       })
