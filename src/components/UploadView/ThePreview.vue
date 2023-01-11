@@ -1,5 +1,5 @@
 <template>
-<div class="preview _center _tp-wp">
+<section class="preview _center _tp-wp">
   <transition name="main" mode="out-in">
     <div class="preview-wrapper" v-if="core.previewImages.length">
       <div @click="deleteImage" class="preview-row">
@@ -18,22 +18,23 @@
     </div>
     <div v-else class="preview-tip _center">
       <InfoIcon />
-      <h3>Здесь будут ваши изображения, как только вы добавите их</h3>
-      <p>Попробуйте добавить несколько изображений для их дальнейшего редактирования и отбора</p>
-      <h5>(Удерживайте Shift для горизонтального скролла)</h5>
+      <h3>{{ $i18n('upload.previewTitle') }}</h3>
+      <p>{{ $i18n('upload.previewDesc') }}</p>
+      <h5>{{ $i18n('upload.previewTip') }}</h5>
     </div>
   </transition>
-</div>
+</section>
 </template>
 
 <script setup lang="ts">
 const core = useCoreStore()
 const server = useServerStore()
 
-const deleteImage = (evt: any) => {
-  const idx: number = parseInt(evt.target.dataset.idx)
+const deleteImage = (evt: MouseEvent) => {
+  const target = evt.target as HTMLElement
 
-  if (idx || idx === 0) {
+  if (target.closest('.remove')) {
+    const idx: number = +target.dataset.idx!
     core.previewImages.splice(idx, 1)
     core.clientImages?.splice(idx, 1)
   }

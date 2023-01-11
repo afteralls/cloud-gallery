@@ -14,7 +14,7 @@
         <h5>{{ hash }}</h5>
       </div>
       <h5 v-if="!core.hashtagsCollection.length">
-        Тегов пока нет, попробуйте пополнить коллекцию текущей директории
+        {{ $i18n('app.hashErr') }}
       </h5>
     </div>
   </Transition>
@@ -22,13 +22,21 @@
 </template>
 
 <script setup lang="ts">
-const props = defineProps<{ model: string, isSearch?: boolean }>()
-const emit = defineEmits<{ (e: 'updateModel', value: string): void, (e: 'addTag', value: string): void }>()
+const props = defineProps<{
+  model: string
+  isSearch?: boolean
+}>()
+
+const emit = defineEmits<{
+  (e: 'updateModel', value: string): void
+  (e: 'addTag', value: string): void
+}>()
 
 const core = useCoreStore()
 const showTips = ref<boolean>(false)
 
-const inputHandler = (evt: any) => emit('updateModel', evt.target.value)
+const inputHandler = (evt: Event) => 
+  emit('updateModel', (evt.target as HTMLInputElement).value)
 
 const searchHandler = () => {
   if (props.model !== '') {
@@ -38,10 +46,10 @@ const searchHandler = () => {
   }
 }
 
-useEventListener(document, 'click', (evt: any) => {
-  if (!evt.target.closest(['.search', '.hash-input']))
+useEventListener(document, 'click', (evt: MouseEvent & { target: HTMLElement }) => {
+  if (!evt.target.closest('.hash-input'))
     showTips.value = false
-  if (evt.target.closest(['._hash']))
+  if (evt.target.closest('._hash'))
     emit('addTag', `${evt.target.dataset.hash} `)
 })
 </script>

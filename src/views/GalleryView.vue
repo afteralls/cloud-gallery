@@ -29,8 +29,8 @@
     </TransitionGroup>
   </div>
   <div v-else class="empty _column _center">
-    <h1>Показывать пока что нечего...</h1>
-    <h3>Воспользуйтесь поиском или фильтрами для поиска нужного контента</h3>
+    <h1>{{ $i18n('gallery.title') }}</h1>
+    <h3>{{ $i18n('gallery.desc') }}</h3>
   </div>
   <TheGalleryViewer
     :is-open="isViewerOpen"
@@ -43,13 +43,15 @@
   />
   <AppModal :is-open="isModalOpen" @close-modal="isModalOpen = false">
     <div class="_column">
-      <small>Введите теги</small>
+      <small>{{ $i18n('gallery.inputTags') }}</small>
       <AppHashInput
         :model="updateTags"
         @updateModel="(value) => updateTags = value"
         @addTag="(value) => updateTags += value"
       />
-      <div @click="server.updateImageData(curName, updateTags), isModalOpen = false" class="_btn"><small>Обновить</small></div>
+      <div @click="server.updateImageData(curName, updateTags), isModalOpen = false" class="_btn">
+        <small>{{ $i18n('gallery.update') }}</small>
+      </div>
     </div>
   </AppModal>
 </div>

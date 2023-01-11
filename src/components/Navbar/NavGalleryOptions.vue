@@ -15,16 +15,16 @@
   <div @click="showFiltersModal = true" class="_i"><FilterIcon /></div>
   <AppModal :is-open="showFiltersModal" @close-modal="showFiltersModal = false">
     <div class="_column">
-      <small>Фильтр</small>
+      <small>{{ $i18n('nav.filter') }}</small>
       <div class="_row">
         <div
           @click="core.curFilter = 'date'"
           :class="{ '_btn': true, 'act': core.curFilter === 'date' }"
-        ><small>По дате</small></div>
+        ><small>{{ $i18n('nav.dateFilter') }}</small></div>
         <div
           @click="core.curFilter = 'user'"
           :class="{ '_btn': true, 'act': core.curFilter === 'user' }"
-        ><small>По пользователю</small></div>
+        ><small>{{ $i18n('nav.userFilter') }}</small></div>
       </div>
       <Transition name="main" mode="out-in">
         <TheSelect
@@ -41,11 +41,11 @@
         />
       </Transition>
       <div @click="core.deepSearch(), showFiltersModal = false" class="_btn">
-        <small>Поиск</small>
+        <small>{{ $i18n('nav.search') }}</small>
       </div>
-      <small>Загрузка полной коллекции</small>
+      <small>{{ $i18n('nav.load') }}</small>
       <div @click="core.galleryCollection = core.imageCollection, showFiltersModal = false" class="_btn">
-        <small>Загрузить всё</small>
+        <small>{{ $i18n('nav.loadAll') }}</small>
       </div>
     </div>
   </AppModal>
@@ -54,7 +54,6 @@
 
 <script setup lang="ts">
 const core = useCoreStore()
-
 const searchTags = ref<string>('')
 const showFoldersModal = ref<boolean>(false)
 const showFiltersModal = ref<boolean>(false)
@@ -70,6 +69,9 @@ const showFiltersModal = ref<boolean>(false)
 
 .act {
   background-color: green;
-  &:hover { background-color: rgba(0, 128, 0, 0.8); }
+
+  &:hover {
+    background-color: rgba(0, 128, 0, 0.8);
+  }
 }
 </style>

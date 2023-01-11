@@ -10,16 +10,18 @@
 
 <script setup lang="ts">
 const isDark = useDark({ selector: 'body', attribute: 'class', valueDark: 'dark', valueLight: 'light' })
-const currentColor = computed(() => isDark.value ? '#242424' : '#ffffff')
+const currentColor = computed<string>(() => isDark.value ? '#242424' : '#ffffff')
 const selector = 'meta[name="theme-color"]'
 const docMeta = () => document.querySelector(selector)?.setAttribute('content', currentColor.value)
 
-watch(isDark, () => { docMeta() })
-onMounted(() => { docMeta() })
+watch(isDark, () => docMeta())
+onMounted(() => docMeta())
 </script>
 
 <style scoped lang="scss">
-.switch { position: relative; }
+.switch {
+  position: relative;
+}
 
 .switch-input {
   position: absolute;

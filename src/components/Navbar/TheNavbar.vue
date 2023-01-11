@@ -29,11 +29,10 @@
 </template>
 
 <script setup lang="ts">
-const changeLang = inject('i18n')
+const changeLang: any = inject('i18n')
 const navSize = ref<HTMLInputElement | null>(null)
 const width = ref<number>(0)
-
-useResizeObserver(navSize, entries => { width.value = entries[0].contentRect.width })
+useResizeObserver(navSize, entries => width.value = entries[0].contentRect.width)
 </script>
 
 <style scoped lang="scss">
@@ -56,6 +55,8 @@ useResizeObserver(navSize, entries => { width.value = entries[0].contentRect.wid
   gap: var(--space);
   padding: var(--space);
 
-  h3 { text-transform: uppercase; }
+  h3 {
+    text-transform: uppercase;
+  }
 }
 </style>

@@ -49,7 +49,10 @@
         <img ref="curImage" :src="currentImage?.src" :alt="currentImage?.name">
       </div>
       <div :class="{ 'interface': true, 'viewer-footer': true, 'active': isShow }">
-        <h5>Хэштеги: </h5><div class="_btn _hash"><h5>{{ currentImage?.hashtags }}</h5></div>
+        <h5>{{ $i18n('gallery.hashtags') }}</h5>
+        <div class="_btn _hash">
+          <h5>{{ currentImage?.hashtags }}</h5>
+        </div>
       </div>
     </div>
   </Transition>

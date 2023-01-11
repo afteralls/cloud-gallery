@@ -5,59 +5,59 @@
       <div class="scroll-wrapper">
         <RouterLink to="/auth" v-if="!auth.isAuthenticated" class="card _column _tp-wp _center act">
           <AccountIcon />
-          <h3>Войти в аккаунт</h3>
+          <h3>{{ $i18n('home.login') }}</h3>
         </RouterLink>
         <div v-else class="_row">
           <div class="card _tp-wp _center _column">
             <div class="_column">
-              <small>Здравствуйте, {{ auth.email }}</small>
+              <small>{{ $i18n('home.hello') }}{{ auth.email }}</small>
             </div>
-            <p>У вас есть полный доступ к колекции и всему функционалу, наслаждайтесь!</p>
+            <p>{{ $i18n('home.accTip') }}</p>
             <div @click="logoutHandler" class="_btn">
-              <small>Выйти</small>
+              <small>{{ $i18n('home.logout') }}</small>
             </div>
           </div>
           <RouterLink to="/upload" class="card _tp-wp _center _column act">
             <AddImagesIcon />
-            <h3>Пополнить коллекцию</h3>
+            <h3>{{ $i18n('home.addImages') }}</h3>
           </RouterLink>
           <div @click="showCreateModal = true" class="card _tp-wp _center _column act">
             <AddFolderIcon />
-            <h3>Создать новую папку</h3>
+            <h3>{{ $i18n('home.createFolder') }}</h3>
           </div>
           <div @click="showTagModal = true" class="card _tp-wp _center _column act">
             <HashtagIcon />
-            <h3>Редактировать хештеги</h3>
+            <h3>{{ $i18n('home.editHash') }}</h3>
           </div>
         </div>
         <div v-if="!auth.isAuthenticated" class="_tip">
           <InfoIcon />
-          <h3>Для разблокировки новых действий необходимо авторизоваться</h3>
-          <p>Это откроет вам доступ к разделу с избранным, позволит создавать новые личные/глобальные папки и редактировать данные</p>
+          <h3>{{ $i18n('home.accTipTitle') }}</h3>
+          <p>{{ $i18n('home.accTipDesc') }}</p>
         </div>
         <AppModal :isOpen="showCreateModal" @close-modal="showCreateModal = false">
           <div class="_column">
-            <small>Название</small>
+            <small>{{ $i18n('home.name') }}</small>
             <input v-model="folderName" type="text" placeholder="Mounts">
-            <small>Тип</small>
+            <small>{{ $i18n('home.type') }}</small>
             <div class="_cb-wrapper">
               <Transition name="main"><CheckIcon v-if="folderType === 'global'" /></Transition>
               <input v-model="folderType" id="gl" type="radio" value="global">
-              <label for="gl"><small>Глобальная</small></label>
+              <label for="gl"><small>{{ $i18n('home.global') }}</small></label>
             </div>
             <div class="_cb-wrapper">
               <Transition name="main"><CheckIcon v-if="folderType === 'local'" /></Transition>
               <input v-model="folderType" id="lc" type="radio" value="local">
-              <label for="lc"><small>Личная</small></label>
+              <label for="lc"><small>{{ $i18n('home.privat') }}</small></label>
             </div>
             <div @click="createHandler" class="_btn">
-              <small>Создать</small>
+              <small>{{ $i18n('home.create') }}</small>
             </div>
           </div>
         </AppModal>
         <AppModal :isOpen="showTagModal" @close-modal="showTagModal = false">
           <div @click="addTagToDelete" class="_column left">
-            <small>Текущая папка</small>
+            <small>{{ $i18n('app.curColder') }}</small>
             <AppFolderItem
               @click="showFolderList = true"
               data-idx="0"
@@ -65,7 +65,7 @@
               :name="core.curFolder.name"
             />
             <div v-if="core.hashtagsCollection.length" class="_column">
-              <small>Выберите теги для удаления</small>
+              <small>{{ $i18n('home.tagsToDelete') }}</small>
               <div class="_hash-row">
                 <div
                   v-for="(tag, idx) in core.hashtagsCollection"
@@ -75,7 +75,7 @@
                 ><h5>{{ tag }}</h5></div>
               </div>
             </div>
-            <h5 v-else>Тегов пока нет, попробуйте пополнить коллекцию текущей директории</h5>
+            <h5 v-else>{{ $i18n('app.hashErr') }}</h5>
           </div>
         </AppModal>
         <AppModal :is-open="showFolderList" @close-modal="showFolderList = false">

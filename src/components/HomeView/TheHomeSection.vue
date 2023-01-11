@@ -1,14 +1,16 @@
 <template>
 <section class="home _row">
   <div class="_column headers">
-    <h1>Облачная Галерея</h1>
-    <h2>Галерея для комфортного просмотра фотографий</h2>
-    <p>Загружайте изображения и просматривайте их в любое время. А чтобы быстрее находить нужный контент — укажите парочку тегов для поиска в будущем</p>
+    <h1>{{ $i18n('home.title') }}</h1>
+    <h2>{{ $i18n('home.subTitle') }}</h2>
+    <p>{{ $i18n('home.desc') }}</p>
     <RouterLink class="_btn" to="/gallery">
-      <small>Перейти к Галереи</small>
+      <small>{{ $i18n('home.goToGallery') }}</small>
     </RouterLink>
   </div>
-  <div class="logo-wrapper _center"><img src="@/assets/img/main.png" alt="Home Image"></div>
+  <div class="logo-wrapper _center">
+    <img src="@/assets/img/main.png" alt="Home Image">
+  </div>
 </section>
 </template>
 

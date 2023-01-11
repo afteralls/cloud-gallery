@@ -1,22 +1,23 @@
 <template>
-<div ref="dropZoneRef" class="drop-zone _tp-wp">
+<section ref="dropZoneRef" class="drop-zone _tp-wp">
   <div class="drop-container _center">
     <div @click="open({ accept: 'image/png, image/jpeg, image/webp' })" class="add _absolute"></div>
-    <small>{{ !isOverDropZone ? 'Нажмите на поле или перетащите сюда нужные файлы' : 'Бросайте!' }}</small>
+    <small>{{ !isOverDropZone ? $i18n('upload.isNotOverDZ') : $i18n('upload.isOverDZ') }}</small>
   </div>
-</div>
+</section>
 </template>
 
 <script setup lang="ts">
 const core = useCoreStore()
 const { files, open, reset } = useFileDialog()
-const dropZoneRef = ref<HTMLDivElement>()
-const onDrop = (files: File[] | null) => { addFiles(files) }
+
+const dropZoneRef = ref<HTMLDivElement | null>(null)
+const onDrop = (files: File[] | null) => addFiles(files)
 const { isOverDropZone } = useDropZone(dropZoneRef, onDrop)
 
 const addFiles = (files: File[] | null | FileList) => {
   const orderList: File[] = Array.from((files as File[] | FileList))
-  orderList.forEach((file: File) => { core.clientImages?.push(file) })
+  orderList.forEach((file: File) => core.clientImages?.push(file))
   previewHandler(orderList)
 }
 
@@ -72,5 +73,7 @@ const previewHandler = (orderlist: File[]) => {
   }
 }
 
-.add { opacity: 0; }
+.add {
+  opacity: 0;
+}
 </style>

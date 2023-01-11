@@ -1,39 +1,42 @@
 <template>
-  <div class="settings-row">
-    <div class="upload-settings _tp-wp _column">
-      <small>Введите общие теги</small>
-      <AppHashInput
-        :model="uploadTags"
-        @update-model="(value) => { uploadTags = value }"
-        @add-tag="(value) => { uploadTags += value }"
-      />
-      <small>Папка для загрузки</small>
-      <AppFolderItem
-        @click="showFolderList = true"
-        data-idx="0"
-        :type="core.curFolder.type"
-        :name="core.curFolder.name"
-      />
-    </div>
-    <div class="upload-settings _tp-wp _column">
-      <div class="_cb-wrapper">
-        <Transition name="core"><CheckIcon v-if="toCompress" /></Transition>
-        <input v-model="toCompress" id="min" type="checkbox">
-        <label for="min"><small>Сжать изображения</small></label>
-      </div>
-      <div class="_row">
-        <InfoIcon />
-        <h5>Опция применяется<br />ко всем изображениям</h5>
-      </div>
-      <div
-        @click="uploadHandler"
-        :class="{ _btn: true, _disabled: server.isUploading || !uploadTags || !core.clientImages?.length }"
-      ><small>Загрузить</small></div>
-    </div>
+<section class="settings-row">
+  <div class="upload-settings _tp-wp _column">
+    <small>{{ $i18n('upload.setTags') }}</small>
+    <AppHashInput
+      :model="uploadTags"
+      @update-model="(value) => { uploadTags = value }"
+      @add-tag="(value) => { uploadTags += value }"
+    />
+    <small>{{ $i18n('upload.setFold') }}</small>
+    <AppFolderItem
+      @click="showFolderList = true"
+      data-idx="0"
+      :type="core.curFolder.type"
+      :name="core.curFolder.name"
+    />
   </div>
-  <AppModal :is-open="showFolderList" @close-modal="showFolderList = false">
-    <AppFolderList @close-folder-list="showFolderList = false" />
-  </AppModal>
+  <div class="upload-settings _tp-wp _column">
+    <div class="_cb-wrapper">
+      <Transition name="core"><CheckIcon v-if="toCompress" /></Transition>
+      <input v-model="toCompress" id="min" type="checkbox">
+      <label for="min"><small>{{ $i18n('upload.compress') }}</small></label>
+    </div>
+    <div class="_row">
+      <InfoIcon />
+      <h5>{{ $i18n('upload.setTip') }}</h5>
+    </div>
+    <div
+      @click="uploadHandler"
+      :class="{
+        '_btn': true,
+        '_disabled': server.isUploading || !uploadTags || !core.clientImages?.length
+      }"
+    ><small>{{ $i18n('upload.setUpload') }}</small></div>
+  </div>
+</section>
+<AppModal :is-open="showFolderList" @close-modal="showFolderList = false">
+  <AppFolderList @close-folder-list="showFolderList = false" />
+</AppModal>
 </template>
 
 <script setup lang="ts">

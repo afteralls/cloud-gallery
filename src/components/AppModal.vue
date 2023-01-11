@@ -11,11 +11,16 @@
 </template>
 
 <script setup lang="ts">
-defineProps<{ isOpen: boolean }>()
-const emit = defineEmits<{ (e: 'closeModal'): void }>()
+defineProps<{
+  isOpen: boolean
+}>()
 
-const closeHandler = (evt: any) => {
-  if(!evt.target.closest(['.modal-window']))
+const emit = defineEmits<{
+  (e: 'closeModal'): void
+}>()
+
+const closeHandler = (evt: MouseEvent) => {
+  if(!(evt.target as HTMLElement).closest('.modal-window'))
     emit('closeModal')
 }
 </script>

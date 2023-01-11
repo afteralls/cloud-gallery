@@ -18,7 +18,7 @@
             <input type="password" :placeholder="$i18n('auth.plPass')" v-model="data.password">
           </div>
         </div>
-        <div @click="submitHandler" :class="{ '_btn': true, '_disabled': isPassValid && isEmailValid }">
+        <div @click="submitHandler" :class="{ '_btn': true, '_disabled': !allValid }">
           <small>{{ $i18n('auth.login') }}</small>
         </div>
       </div>
@@ -35,6 +35,7 @@ const data: ClientData = reactive({ email: '', password: '' })
 
 const isEmailValid = computed<boolean>(() => !!validateEmail(data.email))
 const isPassValid = computed<boolean>(() => !!(data.password.length && data.password !== ' '))
+const allValid = computed<boolean>((() => isEmailValid.value && isPassValid.value))
 
 const submitHandler = async () => {
   await auth.login(data)

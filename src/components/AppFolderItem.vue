@@ -7,7 +7,10 @@
 </template>
 
 <script setup lang="ts">
-defineProps<{ type: string, name: string }>()
+defineProps<{
+  type: string
+  name: string
+}>()
 </script>
 
 <style scoped lang="scss">

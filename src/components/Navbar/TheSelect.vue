@@ -13,15 +13,24 @@
 </template>
 
 <script setup lang="ts">
-defineProps<{ model: string, items: string[] }>()
-const emit = defineEmits<{ (e: 'updateData', value: string): void }>()
+defineProps<{
+  model: string
+  items: string[]
+}>()
+
+const emit = defineEmits<{
+  (e: 'updateData', value: string): void
+}>()
 
 const isOpen = ref(false)
-useEventListener(document, 'click', (evt: any) => {
-  if (!evt.target.closest(['.select', '.select-arrow']))
+
+useEventListener(document, 'click', (evt: MouseEvent) => {
+  const target = evt.target as HTMLElement
+
+  if (!target.closest('.select'))
     isOpen.value = false
-  if (evt.target.closest(['.select-item'])) {
-    emit('updateData', evt.target.dataset.item)
+  if (target.closest('.select-item')) {
+    emit('updateData', target.dataset.item!)
     isOpen.value = false
   }
 })

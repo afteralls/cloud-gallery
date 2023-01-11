@@ -11,8 +11,16 @@
   gap: 5px;
   flex-wrap: wrap;
 
-  svg { fill: red; }
-  a { transition: var(--transition); }
-  a:hover { color: var(--accent-c); }
+  svg {
+    fill: red;
+  }
+  
+  a {
+    transition: var(--transition);
+  }
+
+  a:hover {
+    color: var(--accent-c);
+  }
 }
 </style>

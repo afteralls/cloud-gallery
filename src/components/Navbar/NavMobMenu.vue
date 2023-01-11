@@ -14,8 +14,8 @@
 
 <script setup lang="ts">
 const isActive = ref<boolean>(false)
-useEventListener(document, 'click', (evt: any) => {
-  if (!evt.target.closest(['.menu-icon', '.menu-wrapper']))
+useEventListener(document, 'click', (evt: MouseEvent & { target: HTMLElement }) => {
+  if (!evt.target.closest('.menu-wrapper'))
     isActive.value = false
 })
 </script>

@@ -1,8 +1,8 @@
 <template>
   <div @click="changeFolder" class="_column">
-    <small>Текущая</small>
+    <small>{{ $i18n('app.curColder') }}</small>
     <AppFolderItem data-idx="0" :type="core.curFolder.type" :name="core.curFolder.name" />
-    <small>Доступные</small>
+    <small>{{ $i18n('app.avColder') }}</small>
     <AppFolderItem
       v-for="(folder, idx) in core.foldersCollection"
       :key="folder.name"
@@ -14,14 +14,17 @@
 </template>
 
 <script setup lang="ts">
-const emit = defineEmits<{ (e: 'closeFolderList'): void }>()
+const emit = defineEmits<{
+  (e: 'closeFolderList'): void 
+}>()
 
 const core = useCoreStore()
 const server = useServerStore()
 
-const changeFolder = (evt: any) => {
-  if (evt.target.closest(['.folder'])) {
-    core.curFolder = core.foldersCollection[evt.target.dataset.idx]
+const changeFolder = (evt: MouseEvent) => {
+  const target = evt.target as HTMLElement
+  if (target.closest('.folder')) {
+    core.curFolder = core.foldersCollection[+target.dataset.idx!]
     server.getData()
     emit('closeFolderList')
   }
