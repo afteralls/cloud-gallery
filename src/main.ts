@@ -19,4 +19,4 @@ const firebaseConfig = {
 initializeApp(firebaseConfig)
 
 const app = createApp(App)
-app.use(createPinia()).use(router).use(i18n).mount('#app')
+app.use(router).use(createPinia()).use(i18n).mount('#app')

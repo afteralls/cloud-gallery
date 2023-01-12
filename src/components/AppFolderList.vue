@@ -2,7 +2,7 @@
   <div @click="changeFolder" class="_column">
     <small>{{ $i18n('app.curColder') }}</small>
     <AppFolderItem data-idx="0" :type="core.curFolder.type" :name="core.curFolder.name" />
-    <small>{{ $i18n('app.avColder') }}</small>
+    <small>{{ $i18n('app.avFolders') }}</small>
     <AppFolderItem
       v-for="(folder, idx) in core.foldersCollection"
       :key="folder.name"

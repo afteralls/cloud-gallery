@@ -123,6 +123,16 @@ label {
   align-items: center;
 }
 
+._app-info {
+  height: 50vh;
+  text-align: center;
+
+  svg {
+    height: 100px;
+    width: auto;
+  }
+}
+
 ._tp-wp {
   background-color: var(--tp-c);
   backdrop-filter: blur(8px);

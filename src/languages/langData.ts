@@ -11,7 +11,7 @@ export default {
       userFilter: 'By user',
       search: 'Search',
       load: 'Download the complete collection',
-      loaAll: 'Download all'
+      loadAll: 'Download all'
     },
     home: {
       title: 'Cloud Gallery',
@@ -55,7 +55,9 @@ export default {
     app: {
       hashErr: 'There are no tags yet, try to add to the collection of the current directory',
       curColder: 'Current',
-      avFolders: 'Available'
+      avFolders: 'Available',
+      offlineTitle: 'You don\'t seem to be connected to the internet...',
+      offlineDesc: 'Check your network settings'
     },
     upload: {
       isNotOverDZ: 'Click on the field or drag and drop the files you need here',
@@ -83,7 +85,7 @@ export default {
       userFilter: 'По пользователю',
       search: 'Поиск',
       load: 'Загрузка полной коллекции',
-      loaAll: 'Загрузить всё'
+      loadAll: 'Загрузить всё'
     },
     home: {
       title: 'Облачная Галерея',
@@ -109,7 +111,7 @@ export default {
     },
     gallery: {
       title: 'Показывать пока что нечего...',
-      desc: 'Воспользуйтесь поиском или фильтрами для поиска нужного контента',
+      desc: 'Воспользуйтесь поиском или фильтрами для получения нужного контента',
       inputTags: 'Введите теги',
       update: 'Обновить',
       hashtags: 'Хэштеги:'
@@ -127,7 +129,9 @@ export default {
     app: {
       hashErr: 'Тегов пока нет, попробуйте пополнить коллекцию текущей директории',
       curColder: 'Текущая',
-      avFolders: 'Доступные'
+      avFolders: 'Доступные',
+      offlineTitle: 'Кажется, у вас нет соединения с интернетом...',
+      offlineDesc: 'Проверьте настройки вашей сети'
     },
     upload: {
       isNotOverDZ: 'Нажмите на поле или перетащите сюда нужные файлы',

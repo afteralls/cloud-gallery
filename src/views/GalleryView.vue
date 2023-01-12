@@ -1,6 +1,6 @@
 <template>
-<div @click="optionsHandler" class="_wrapper">
-  <div v-if="core.galleryCollection.length" class="collection">
+<div class="_wrapper">
+  <div @click="optionsHandler" v-if="core.galleryCollection.length" class="collection">
     <TransitionGroup name="image">
       <div v-for="(img, idx) in core.galleryCollection" :key="idx" class="image-wrapper">
         <div class="image-options">
@@ -18,17 +18,12 @@
             :data-hashtags="img.hashtags"
           ><EditImageIcon /></div>
         </div>
-        <img
-          :data-idx="idx"
-          :data-name="img.name"
-          :data-hashtags="img.hashtags"
-          :src="img.src"
-          :alt="img.name"
-        >
+        <AppImage :idx="idx" :hashtags="img.hashtags" :name="img.name" :alt="img.name" :src="img.src" />
       </div>
     </TransitionGroup>
   </div>
-  <div v-else class="empty _column _center">
+  <div v-else class="_app-info _column _center">
+    <NoImagesIcon />
     <h1>{{ $i18n('gallery.title') }}</h1>
     <h3>{{ $i18n('gallery.desc') }}</h3>
   </div>
@@ -77,18 +72,20 @@ const editHandler = (evt: any) => {
 }
 
 const changeCurrentImage = (idx: number) => currentImage.value = core.galleryCollection[idx]
-const optionsHandler = (evt: any) => {
-  if (evt.target.closest(['.image-wrapper']) && !evt.target.closest(['.image-options'])) {
-    curIdx.value = +evt.target.dataset.idx
+const optionsHandler = (evt: MouseEvent) => {
+  const target = evt.target as HTMLElement
+  
+  if (target.dataset.idx) {
+    curIdx.value = +target.dataset.idx!
     changeCurrentImage(curIdx.value)
     isViewerOpen.value = true
   }
-  else if (evt.target.closest(['._delete']))
-    server.deleteImage(evt.target.dataset.name)
-  else if (evt.target.closest(['._edit']))
+  else if (target.closest('._delete'))
+    server.deleteImage(target.dataset.name!)
+  else if (target.closest('._edit'))
     editHandler(evt)
-  else if (evt.target.closest(['._fav']))
-    server.favoriteHandler(evt.target.dataset.name)
+  else if (target.closest('._fav'))
+    server.favoriteHandler(target.dataset.name!)
 }
 </script>
 
@@ -169,10 +166,5 @@ const optionsHandler = (evt: any) => {
 
 .image-wrapper:hover .image-options {
   opacity: 1;
-}
-
-.empty {
-  height: 50vh;
-  text-align: center;
 }
 </style>

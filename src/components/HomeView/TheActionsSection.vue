@@ -109,9 +109,10 @@ const createHandler = () => {
   showCreateModal.value = false
 }
 
-const addTagToDelete = (evt: any) => {
-  if(evt.target.closest(['._hash'])) {
-    const idx = evt.target.dataset.idx
+const addTagToDelete = (evt: MouseEvent) => {
+  const target = evt.target as HTMLElement
+  if(target.closest('._hash')) {
+    const idx = +target.dataset.idx!
     server.deleteTag(idx)
   }
 }

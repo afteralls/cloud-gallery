@@ -193,12 +193,12 @@ export const useServerStore = defineStore('server', () => {
 
   const deleteImage = async (name: string) => {
     const imageRef = Ref(storage, `${curPath.value}/${name}`)
-    
+
     await deleteObject(imageRef).then(async () => {
       deleteHandler(core.imageCollection, name)
       deleteHandler(core.galleryCollection, name)
-      const imageDataBlob = new Blob([JSON.stringify(core.imageCollection)], { type: 'application/json' })
-      uploadBytes(imageDataRef.value as StorageReference, imageDataBlob)
+
+      await uploadBytesHandler(imageDataRef.value as StorageReference, core.imageCollection)
       notf.addNotification('Изображение успешно удалено')
     }).catch(() => { notf.addNotification('Упс... Что-то пошло не так') })
   }
@@ -213,28 +213,25 @@ export const useServerStore = defineStore('server', () => {
       }
     }
 
-    updateMetadata(imageRef, newMetadata).then(() => {
+    updateMetadata(imageRef, newMetadata).then(async () => {
       core.imageCollection.forEach(image => {
         if (image.name === name) { image.hashtags = tags }
       })
 
-      const imageDataBlob = new Blob([JSON.stringify(core.imageCollection)], { type: 'application/json' })
-      uploadBytes(imageDataRef.value as StorageReference, imageDataBlob)
+      await uploadBytesHandler(imageDataRef.value as StorageReference, core.imageCollection)
 
       currentTags.forEach((tag: string) => {
         if (!core.hashtagsCollection.includes(tag)) core.hashtagsCollection.push(tag)
       })
 
-      const tagBlob = new Blob([JSON.stringify(core.hashtagsCollection)], { type: 'application/json' })
-      uploadBytes(hashDataRef.value as StorageReference, tagBlob)
+      await uploadBytesHandler(hashDataRef.value as StorageReference, core.hashtagsCollection)
       notf.addNotification('Метаданные успешно обновлены')
     }).catch(() => { notf.addNotification('Упс... Что-то пошло не так') })
   }
 
-  const deleteTag = (idx: number) => {
+  const deleteTag = async (idx: number) => {
     core.hashtagsCollection.splice(idx, 1)
-    const tagBlob = new Blob([JSON.stringify(core.hashtagsCollection)], { type: 'application/json' })
-    uploadBytes(hashDataRef.value as StorageReference, tagBlob)
+    await uploadBytesHandler(hashDataRef.value as StorageReference, core.hashtagsCollection)
     notf.addNotification('Тег успешно удалён')
   }
 

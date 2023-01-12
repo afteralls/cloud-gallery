@@ -1,7 +1,7 @@
 <template>
 <NavMenuIcon @click="isActive = !isActive" :class="{ 'active': isActive }" />
 <Transition name="main">
-  <div v-show="isActive" class="menu-wrapper _column _bg-wp">
+  <div id="menu" v-show="isActive" class="menu-wrapper _column _bg-wp">
     <slot name="theme"></slot>
     <div class="_row">
       <slot name="translation"></slot>
@@ -15,7 +15,7 @@
 <script setup lang="ts">
 const isActive = ref<boolean>(false)
 useEventListener(document, 'click', (evt: MouseEvent & { target: HTMLElement }) => {
-  if (!evt.target.closest('.menu-wrapper'))
+  if (!evt.target.closest('#menu'))
     isActive.value = false
 })
 </script>

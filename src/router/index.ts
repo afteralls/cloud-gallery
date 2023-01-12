@@ -31,8 +31,10 @@ const router = createRouter({
 })
 
 router.beforeEach((to, _, next) => {
-  document.title = to.name
-  next()
+  const go = () => { document.title = to.name as string; next() }
+  if (to.path === '/upload') {
+    localStorage.getItem('auth-token') ? go() : next({ path: '/' })
+  } else { go() }
   setTimeout(() => { window.scrollTo(0, 0) }, 250)
 })
 

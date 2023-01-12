@@ -1,4 +1,4 @@
-import 'vue'
+/// <reference types="vite/client" />
 
 export {}
 

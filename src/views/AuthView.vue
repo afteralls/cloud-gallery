@@ -10,7 +10,7 @@
       <div class="_column full">
         <div class="_row fields-wrapper full">
           <div class="auth-column">
-            <small>{{ isEmailValid ? $i18n('auth.vEmail') : $i18n('auth.inEvmal') }}</small>
+            <small>{{ isEmailValid ? $i18n('auth.vEmail') : $i18n('auth.invEmail') }}</small>
             <input type="email" placeholder="E-Mail" v-model="data.email">
           </div>
           <div class="auth-column">

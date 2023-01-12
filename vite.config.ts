@@ -26,7 +26,9 @@ export default defineConfig({
             'useNavigatorLanguage',
             'useResizeObserver',
             'useFileDialog',
-            'useDropZone'
+            'useDropZone',
+            'useOnline',
+            'useImage'
           ],
           'firebase/storage': [
             'getStorage',

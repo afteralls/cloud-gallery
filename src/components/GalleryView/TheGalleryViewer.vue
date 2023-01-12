@@ -20,7 +20,7 @@
           'active': isShow && !zoomed
         }"
       ><ArrowRightIcon /></div>
-      <div :class="{ 'interface': true, 'viewer-header': true, 'active': isShow }">
+      <div :class="{ 'interface': true, 'viewer-header': true, 'active': isShow && !zoomed }">
         <small>{{ curIdx + 1 }} / {{ size }}</small>
         <div class="options _center">
           <div
@@ -48,7 +48,7 @@
       <div ref="curImageContainer" class="active-image _center">
         <img ref="curImage" :src="currentImage?.src" :alt="currentImage?.name">
       </div>
-      <div :class="{ 'interface': true, 'viewer-footer': true, 'active': isShow }">
+      <div :class="{ 'interface': true, 'viewer-footer': true, 'active': isShow && !zoomed }">
         <h5>{{ $i18n('gallery.hashtags') }}</h5>
         <div class="_btn _hash">
           <h5>{{ currentImage?.hashtags }}</h5>
@@ -68,7 +68,8 @@ const props = defineProps<{
 }>()
 
 const emit = defineEmits<{
-  (e: 'closeModal'): void, (e: 'prev'): void
+  (e: 'closeModal'): void
+  (e: 'prev'): void
   (e: 'next'): void
 }>()
 
