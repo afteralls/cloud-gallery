@@ -48,7 +48,7 @@ export default {
       vEmail: 'Enter your E-Mail',
       invEmail: 'Enter a valid E-Mail',
       vPass: 'Enter your password',
-      invPass: 'Please enter a valid password',
+      invPass: 'Enter a valid password',
       plPass: 'Password',
       login: 'Log in'
     },
@@ -70,6 +70,20 @@ export default {
       compress: 'Compress image',
       setTip: 'The option applies to all images',
       setUpload: 'Upload'
+    },
+    notf: {
+      noMatches: 'No matches found...',
+      create: 'Folder created successfully!',
+      sync: 'Data synced successfully',
+      upload: 'Image uploaded successfully',
+      delete: 'Image deleted successfully',
+      err: 'Oops, something went wrong',
+      updateMeta: 'Metadata updated successfully',
+      removeTag: 'Tag removed successfully',
+      update: 'Data updated successfully!',
+      emailNF: 'User with this E-Mail was not found',
+      passNF: 'You entered the wrong password',
+      welcome: 'Welcome'
     }
   },
   ru: {
@@ -144,6 +158,20 @@ export default {
       compress: 'Сжать изображения',
       setTip: 'Опция применяется ко всем изображениям',
       setUpload: 'Загрузить'
+    },
+    notf: {
+      noMatches: 'Совпадений не найдено...',
+      create: 'Папка успешно создана!',
+      sync: 'Данные успешно синхронизированы',
+      upload: 'Изображение успешно загружено',
+      delete: 'Изображение успешно удалено',
+      err: 'Упс... Что-то пошло не так',
+      updateMeta: 'Метаданные успешно обновлены',
+      removeTag: 'Тег успешно удалён',
+      update: 'Данные успешно обновлены!',
+      emailNF: 'Пользователь с таким E-Mail не найден',
+      passNF: 'Вы ввели неверный пароль',
+      welcome: 'Добро пожаловать'
     }
   }
 } as LangProps

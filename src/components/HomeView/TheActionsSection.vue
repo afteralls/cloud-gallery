@@ -50,13 +50,13 @@
               <input v-model="folderType" id="lc" type="radio" value="local">
               <label for="lc"><small>{{ $i18n('home.privat') }}</small></label>
             </div>
-            <div @click="createHandler" class="_btn">
+            <div @click="createHandler" :class="{'_btn': true, '_disabled': !isValid }">
               <small>{{ $i18n('home.create') }}</small>
             </div>
           </div>
         </AppModal>
         <AppModal :isOpen="showTagModal" @close-modal="showTagModal = false">
-          <div @click="addTagToDelete" class="_column left">
+          <div class="_column left">
             <small>{{ $i18n('app.curColder') }}</small>
             <AppFolderItem
               @click="showFolderList = true"
@@ -66,7 +66,7 @@
             />
             <div v-if="core.hashtagsCollection.length" class="_column">
               <small>{{ $i18n('home.tagsToDelete') }}</small>
-              <div class="_hash-row">
+              <div @click="addTagToDelete" class="_hash-row">
                 <div
                   v-for="(tag, idx) in core.hashtagsCollection"
                   :key="idx"
@@ -104,6 +104,9 @@ const logoutHandler = async () => {
   await server.getDataHandler()
   core.curFolder = core.foldersCollection[0]
 }
+
+const isValid = computed(() => !folderName.value.match(' ')  && folderName.value.length)
+
 const createHandler = () => {
   server.createFolder(folderName.value, folderType.value)
   showCreateModal.value = false
@@ -111,7 +114,7 @@ const createHandler = () => {
 
 const addTagToDelete = (evt: MouseEvent) => {
   const target = evt.target as HTMLElement
-  if(target.closest('._hash')) {
+  if (target.closest('._hash')) {
     const idx = +target.dataset.idx!
     server.deleteTag(idx)
   }

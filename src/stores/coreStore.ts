@@ -1,22 +1,23 @@
 export const useCoreStore = defineStore('core', () => {
   const notf = useNotfStore()
+  const i18n: any = inject('func')
 
   const foldersCollection = ref<Folder[]>([])
   const imageCollection = ref<Image[]>([])
   const hashtagsCollection = ref<string[]>([])
   const favImageCollection = ref<Image[]>([])
   const favHashtagsCollection = ref<string[]>([])
+  const galleryCollection = ref<Image[]>([])
 
   const clientImages = ref<File[] | null | undefined>([])
   const previewImages = ref<PreviewInfo[]>([])
-  const galleryCollection = ref<Image[]>([])
-
+  
   const curFilter = ref<string>('date')
   const curFolder = useStorage<Folder>('curFolder', { name: 'images', type: 'global' })
 
-  const dateCollection = ref<string[]>(['Не выбрано'])
+  const dateCollection = ref<string[]>(['No Data'])
   const curDate = ref<string>(dateCollection.value[0])
-  const uploaders = ref<string[]>(['Не выбрано'])
+  const uploaders = ref<string[]>(['No Data'])
   const curUploader = ref<string>(uploaders.value[0])
 
   const getValidTagsCollection = (hashtags: string) => hashtags.trim().split(' ')
@@ -43,7 +44,7 @@ export const useCoreStore = defineStore('core', () => {
     })
 
     if (!galleryCollection.value.length)
-      notf.addNotification('Совпадений не найдено...')
+      notf.addNotification(i18n('notf.noMatches'))
   }
   
   const deepSearch = () => {
@@ -60,7 +61,7 @@ export const useCoreStore = defineStore('core', () => {
       })
     }
     if (!galleryCollection.value.length)
-      notf.addNotification('Совпадений не найдено...')
+      notf.addNotification(i18n('notf.noMatches'))
   }
 
   return {

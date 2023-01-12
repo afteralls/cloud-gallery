@@ -30,7 +30,7 @@
 <script setup lang="ts">
 const router = useRouter()
 const auth = useAuthStore()
-const { getDataHandler } = useServerStore()
+const server = useServerStore()
 const data: ClientData = reactive({ email: '', password: '' })
 
 const isEmailValid = computed<boolean>(() => !!validateEmail(data.email))
@@ -41,7 +41,7 @@ const submitHandler = async () => {
   await auth.login(data)
   if (auth.isAuthenticated) {
     router.push('/')
-    getDataHandler()
+    server.getDataHandler()
   }
 }
 </script>

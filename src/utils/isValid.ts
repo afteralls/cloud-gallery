@@ -1,0 +1,1 @@
+export const isValid = computed<string>((value) => !value.match(' ')  && value.length)

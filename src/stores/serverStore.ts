@@ -6,6 +6,7 @@ export const useServerStore = defineStore('server', () => {
   const notf = useNotfStore()
   const core = useCoreStore()
   const storage = getStorage()
+  const i18n: any = inject('func')
 
   const hashDataRef = ref<StorageReference>()
   const imageDataRef = ref<StorageReference>()
@@ -58,7 +59,7 @@ export const useServerStore = defineStore('server', () => {
       fileName: 'hashData',
       collection: []
     })
-    notf.addNotification('Папка успешно создана!')
+    notf.addNotification(i18n('notf.create'))
   }
 
   const getFavData = async () => {
@@ -116,7 +117,7 @@ export const useServerStore = defineStore('server', () => {
 
     if (curCollectionLength !== core.hashtagsCollection.length)
       await uploadBytesHandler(hashDataRef.value as StorageReference, core.hashtagsCollection)
-    notf.addNotification('Данные успешно синхронизированы')
+    notf.addNotification(i18n('notf.sync'))
   }
 
   const uploadImages = (file: File, blocks: NodeListOf<Element>, idx: number, tags: string) => {
@@ -144,7 +145,7 @@ export const useServerStore = defineStore('server', () => {
       if (percentage > 30) { block.textContent = percentage + '%' }
       block.style.width = percentage + '%'
     }, () => {}, async () => {
-      notf.addNotification('Изображение успешно загружено')
+      notf.addNotification(i18n('notf.upload'))
       clearTimeout(interval.value)
       interval.value = setTimeout(() => { syncDataHandler(currentTags) }, 5000)
 
@@ -199,8 +200,8 @@ export const useServerStore = defineStore('server', () => {
       deleteHandler(core.galleryCollection, name)
 
       await uploadBytesHandler(imageDataRef.value as StorageReference, core.imageCollection)
-      notf.addNotification('Изображение успешно удалено')
-    }).catch(() => { notf.addNotification('Упс... Что-то пошло не так') })
+      notf.addNotification(i18n('notf.delete'))
+    }).catch(() => { notf.addNotification(i18n('notf.err')) })
   }
 
   const updateImageData = (name: string, tags: string) => {
@@ -225,14 +226,14 @@ export const useServerStore = defineStore('server', () => {
       })
 
       await uploadBytesHandler(hashDataRef.value as StorageReference, core.hashtagsCollection)
-      notf.addNotification('Метаданные успешно обновлены')
-    }).catch(() => { notf.addNotification('Упс... Что-то пошло не так') })
+      notf.addNotification(i18n('notf.updateMeta'))
+    }).catch(() => { notf.addNotification(i18n('notf.err')) })
   }
 
   const deleteTag = async (idx: number) => {
     core.hashtagsCollection.splice(idx, 1)
     await uploadBytesHandler(hashDataRef.value as StorageReference, core.hashtagsCollection)
-    notf.addNotification('Тег успешно удалён')
+    notf.addNotification(i18n('notf.removeTag'))
   }
 
   const favAddHandler = (image: Image) => {
@@ -279,7 +280,7 @@ export const useServerStore = defineStore('server', () => {
       })
     }
 
-    notf.addNotification('Данные успешно обновлены!')
+    notf.addNotification(i18n('notf.update'))
   }
 
   const getDataHandler = async () => {
