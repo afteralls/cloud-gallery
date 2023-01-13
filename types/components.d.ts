@@ -46,7 +46,6 @@ declare module '@vue/runtime-core' {
     NavThemeSwitcher: typeof import('./../src/components/Navbar/NavThemeSwitcher.vue')['default']
     NoConnectionIcon: typeof import('./../src/assets/svg/NoConnectionIcon.vue')['default']
     NoImagesIcon: typeof import('./../src/assets/svg/NoImagesIcon.vue')['default']
-    NotFoundIcon: typeof import('./../src/assets/svg/NotFoundIcon.vue')['default']
     ReloadIcon: typeof import('./../src/assets/svg/ReloadIcon.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
