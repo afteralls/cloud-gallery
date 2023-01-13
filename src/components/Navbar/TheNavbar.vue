@@ -4,7 +4,7 @@
     <div class="nav">
       <div class="_row">
         <Transition name="main" mode="out-in">
-          <RouterLink v-if="$route.path !== '/gallery'" to="/" class="_row">
+          <RouterLink v-if="$route.path !== '/gallery'" to="/" :title="$i18n('nav.home')" class="_row">
             <div class="_i"><LogoIcon /></div>
             <h3>{{ $i18n('nav.name') }}</h3>
           </RouterLink>
@@ -30,10 +30,12 @@
 
 <script setup lang="ts">
 const changeLang = inject('i18n') as any
+const curLang = inject('curLang') as string
 const navSize = ref<HTMLInputElement | null>(null)
 const width = ref<number>(0)
+
 useResizeObserver(navSize, entries => width.value = entries[0].contentRect.width)
-onMounted(() => document.documentElement.lang = localStorage.getItem('lang') as string)
+onMounted(() => document.documentElement.lang = curLang)
 </script>
 
 <style scoped lang="scss">

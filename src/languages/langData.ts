@@ -4,7 +4,8 @@ export default {
       home: 'Home | Cloud Gallery',
       auth: 'Authorization Page',
       gallery: 'Gallery Page',
-      upload: 'Upload Page'
+      upload: 'Upload Page',
+      notFound: 'You are lost!'
     },
     nav: {
       name: 'Cloud Gallery',
@@ -94,6 +95,11 @@ export default {
       emailNF: 'User with this E-Mail was not found',
       passNF: 'You entered the wrong password',
       welcome: 'Welcome'
+    },
+    nFound: {
+      title: 'You seem to be lost...',
+      desc: 'How did you even get here?',
+      goHome: 'Go back to the main page'
     }
   },
   ru: {
@@ -101,7 +107,8 @@ export default {
       home: 'Главная | Cloud Gallery',
       auth: 'Авторизация',
       gallery: 'Галерея',
-      upload: 'Пополнить коллекцию'
+      upload: 'Пополнить коллекцию',
+      notFound: 'Вы потерялись!'
     },
     nav: {
       name: 'Облачная галерея',
@@ -192,6 +199,11 @@ export default {
       emailNF: 'Пользователь с таким E-Mail не найден',
       passNF: 'Вы ввели неверный пароль',
       welcome: 'Добро пожаловать'
+    },
+    nFound: {
+      title: 'Кажется, вы потерялись...',
+      desc: 'Как вы вообще сюда попали?',
+      goHome: 'Вернуться на главную'
     }
   }
 } as LangProps
