@@ -51,6 +51,7 @@ const uploadHandler = () => {
   document.querySelectorAll('.remove').forEach(e => e.remove())
   server.isUploading = true
   const items = document.querySelectorAll('.progress')
+  uploadTags.value = ''
   server.uploadHandler(toCompress.value, items, uploadTags.value)
 }
 </script>
