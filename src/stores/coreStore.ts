@@ -1,6 +1,6 @@
 export const useCoreStore = defineStore('core', () => {
   const notf = useNotfStore()
-  const i18n: any = inject('func')
+  const i18n = inject('func') as LangFunc
 
   const foldersCollection = ref<Folder[]>([])
   const imageCollection = ref<Image[]>([])
@@ -11,30 +11,30 @@ export const useCoreStore = defineStore('core', () => {
 
   const clientImages = ref<File[] | null | undefined>([])
   const previewImages = ref<PreviewInfo[]>([])
-  
+
   const curFilter = ref<string>('date')
   const curFolder = useStorage<Folder>('curFolder', { name: 'images', type: 'global' })
 
   const dateCollection = ref<string[]>(['No Data'])
-  const curDate = ref<string>(dateCollection.value[0])
   const uploaders = ref<string[]>(['No Data'])
+  const curDate = ref<string>(dateCollection.value[0])
   const curUploader = ref<string>(uploaders.value[0])
-
-  const getValidTagsCollection = (hashtags: string) => hashtags.trim().split(' ')
 
   const search = (modal: string) => {
     galleryCollection.value = []
     const currentTagsCollection: string[] = getValidTagsCollection(modal)
-      currentTagsCollection.forEach((tag, idx) => {
-        if(!tag)
-          currentTagsCollection.splice(idx, 1)
-      })
-    
+
+    currentTagsCollection.forEach((tag, idx) => {
+      if(!tag) currentTagsCollection.splice(idx, 1)
+    })
+
     imageCollection.value.forEach(image => {
-      const imageHashtagsCollection: string[] = getValidTagsCollection(image.hashtags)    
+      const imageHashtagsCollection: string[] = getValidTagsCollection(image.hashtags)
+
       if (currentTagsCollection.length > 1) {
         const allTags = [imageHashtagsCollection, currentTagsCollection]
         const deepValidate = allTags.reduce((p, c) => p.filter(e => c.includes(e)))
+
         if (deepValidate.length === currentTagsCollection.length)
           galleryCollection.value.push(image)
       } else if (currentTagsCollection.length === 1) {
@@ -46,7 +46,7 @@ export const useCoreStore = defineStore('core', () => {
     if (!galleryCollection.value.length)
       notf.addNotification(i18n('notf.noMatches'))
   }
-  
+
   const deepSearch = () => {
     galleryCollection.value = []
     if (curFilter.value === 'date') {
@@ -74,13 +74,12 @@ export const useCoreStore = defineStore('core', () => {
     galleryCollection,
     favImageCollection,
     favHashtagsCollection,
-    search,
     curDate,
     dateCollection,
     curUploader,
     uploaders,
-    deepSearch,
     curFilter,
-    getValidTagsCollection
+    search,
+    deepSearch
   }
 })

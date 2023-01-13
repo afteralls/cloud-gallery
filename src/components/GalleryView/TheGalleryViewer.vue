@@ -85,21 +85,20 @@ const { isFullscreen, enter, exit } = useFullscreen(viewer)
 const interval = ref<NodeJS.Timeout>()
 const { direction } = useSwipe(viewer)
 
-useEventListener(viewer, 'mousemove', () => {  
+useEventListener(viewer, ['mousemove', 'touchstart'], () => {  
   clearTimeout(interval.value)
   isShow.value = true
   interval.value = setTimeout(() => { isShow.value = false }, 3000)
 })
 
-useEventListener(document, 'keyup', (evt: any) => {  
-  console.log(evt.code)
+useEventListener(document, 'keyup', (evt: KeyboardEvent) => {  
   if (evt.code === 'ArrowLeft' && props.curIdx !== 0 && !zoomed.value) emit('prev')
   if (evt.code === 'ArrowRight' && props.curIdx !== size.value - 1 && !zoomed.value) emit('next')
   if (evt.code === 'Escape') emit('closeModal')
 })
 
-useEventListener(viewer, 'wheel', (evt: any) => {
-  evt.preventDefault()  
+useEventListener(viewer, 'wheel', (evt: WheelEvent) => {
+  evt.preventDefault()
   if (evt.deltaY < 0 && props.curIdx !== 0 && !zoomed.value) emit('prev')
   if (evt.deltaY > 0 && props.curIdx !== size.value - 1 && !zoomed.value) emit('next')
 })
@@ -110,6 +109,8 @@ let sX: number, sY: number
 
 const zoomHandler = (evt: any) => {
   evt.preventDefault()
+
+  evt.touches as TouchEvent
   zoomed.value = !zoomed.value
   let zoom: number = 2.5
 
@@ -132,12 +133,12 @@ const zoomHandler = (evt: any) => {
   }
 }
 
-useEventListener(curImageContainer, 'dblclick', (evt: any) => {
+useEventListener(curImage, 'dblclick', (evt: MouseEvent) => {
   zoomHandler(evt)
 })
 
 let counter: number = 0
-useEventListener(curImageContainer, 'touchstart', (evt: any) => {
+useEventListener(curImage, 'touchstart', (evt: TouchEvent) => {
   counter++
   if (counter === 2)
     zoomHandler(evt)
@@ -145,27 +146,22 @@ useEventListener(curImageContainer, 'touchstart', (evt: any) => {
 })
 
 let xAxis: number, yAxis: number
-
 useEventListener(curImage, ['mousedown', 'touchstart'], (evt: any) => {
   evt.preventDefault()
 
   clicked.value = true
-  
   xAxis = evt.offsetX || evt.touches[0].clientX
   yAxis = evt.offsetY || evt.touches[0].clientY
-
   evt.target.style.cursor = 'grabbing'
 })
 
 let deltaX: number, deltaY: number
-
 useEventListener(curImage, ['mouseup', 'touchend'], (evt: any) => {
   evt.preventDefault()
 
   clicked.value = false
   sX += (deltaX * -1) 
   sY += (deltaY * -1)
-
   evt.target.style.cursor = 'auto'
 })
 

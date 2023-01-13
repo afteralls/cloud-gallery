@@ -21,11 +21,18 @@
 
 <script setup lang="ts">
 const isOnline = useOnline()
-console.log(isOnline.value)
+const router = useRouter()
+const i18n = inject('func') as LangFunc
 
-watch(isOnline, () => console.log(isOnline.value))
-const { getDataHandler } = useServerStore()
-onMounted(() => { getDataHandler() })
+router.beforeEach((to, _, next) => {
+  const go = () => { document.title = i18n(to.name as string); next() }
+  to.path === '/upload'
+    ? localStorage.getItem('auth-token') ? go() : next({ path: '/' })
+    : go()
+})
+
+const server = useServerStore()
+onMounted(() => { server.getDataHandler() })
 </script>
 
 <style scoped lang="scss">
@@ -35,7 +42,5 @@ onMounted(() => { getDataHandler() })
   z-index: -1;
 }
 
-.app-background {
-  z-index: -2;
-}
+.app-background { z-index: -2; }
 </style>

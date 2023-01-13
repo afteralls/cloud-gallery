@@ -1,41 +1,39 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '@/views/HomeView.vue'
 import GalleryView from '@/views/GalleryView.vue'
-import UploadView from '@/views/UploadView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
+  scrollBehavior(to, from, savedPosition) {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve({ top: 0 })
+      }, 250)
+    })
+  },
   routes: [
     {
-      path: '/',
-      name: 'Cloud Gallery',
+      path: '/home',
+      name: 'route.home',
       component: HomeView,
       alias: '/'
     },
     {
       path: '/auth',
-      name: 'Auth',
+      name: 'route.auth',
       component: () => import('@/views/AuthView.vue')
     },
     {
       path: '/gallery',
-      name: 'Gallery',
+      name: 'route.gallery',
       component: GalleryView
     },
     {
       path: '/upload',
-      name: 'Upload',
-      component: UploadView
+      name: 'route.upload',
+      component: () => import('@/views/UploadView.vue')
     },
   ]
-})
-
-router.beforeEach((to, _, next) => {
-  const go = () => { document.title = to.name as string; next() }
-  if (to.path === '/upload') {
-    localStorage.getItem('auth-token') ? go() : next({ path: '/' })
-  } else { go() }
-  setTimeout(() => { window.scrollTo(0, 0) }, 250)
 })
 
 export default router

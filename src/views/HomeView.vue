@@ -2,6 +2,6 @@
 <div class="_wrapper">
   <TheHomeSection />
   <TheActionsSection />
-  <TheMadeBy />
+  <TheCopyright />
 </div>
 </template>

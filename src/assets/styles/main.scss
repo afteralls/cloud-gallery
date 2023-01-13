@@ -103,6 +103,10 @@ label {
   padding: var(--space);
   box-sizing: border-box;
   gap: calc(var(--space) * 3);
+
+  @media(max-width: 900px) {
+    margin: 3.75rem auto 0 auto;
+  }
 }
 
 ._column {

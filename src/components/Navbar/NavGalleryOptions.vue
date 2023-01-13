@@ -1,5 +1,5 @@
 <template>
-<div class="options">
+<div class="options _row">
   <RouterLink class="_i" to="/"><LogoIcon /></RouterLink>
   <div class="_br"></div>
   <div class="_i"><FoldersIcon @click="showFoldersModal = true" /></div>
@@ -61,9 +61,6 @@ const showFiltersModal = ref<boolean>(false)
 
 <style scoped lang="scss">
 .options {
-  display: flex;
-  align-items: center;
-  gap: var(--space);
   height: 100%;
 }
 

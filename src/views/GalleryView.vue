@@ -18,7 +18,13 @@
             :data-hashtags="img.hashtags"
           ><EditImageIcon /></div>
         </div>
-        <AppImage :idx="idx" :hashtags="img.hashtags" :name="img.name" :alt="img.name" :src="img.src" />
+        <AppImage
+          :idx="idx"
+          :hashtags="img.hashtags"
+          :name="img.name"
+          :alt="img.name"
+          :src="img.src"
+        />
       </div>
     </TransitionGroup>
   </div>
@@ -26,6 +32,10 @@
     <NoImagesIcon />
     <h1>{{ $i18n('gallery.title') }}</h1>
     <h3>{{ $i18n('gallery.desc') }}</h3>
+    <div class="copy-row">
+      <div class="_i"><CopyrightIcon /></div>
+      <h5>{{ $i18n('home.copyright') }}</h5>
+    </div>
   </div>
   <TheGalleryViewer
     :is-open="isViewerOpen"
@@ -64,11 +74,11 @@ const currentImage = ref<Image>()
 const curName = ref<string>('')
 const updateTags = ref<string>('')
 
-const editHandler = (evt: any) => {
-  const { name, hashtags } = evt.target.dataset
+const editHandler = (evt: MouseEvent) => {
+  const { name, hashtags } = (evt.target as HTMLElement).dataset
   isModalOpen.value = true
-  updateTags.value = hashtags
-  curName.value = name
+  updateTags.value = hashtags as string
+  curName.value = name as string
 }
 
 const changeCurrentImage = (idx: number) => currentImage.value = core.galleryCollection[idx]
@@ -87,6 +97,8 @@ const optionsHandler = (evt: MouseEvent) => {
   else if (target.closest('._fav'))
     server.favoriteHandler(target.dataset.name!)
 }
+
+onMounted(() => core.galleryCollection = [])
 </script>
 
 <style scoped lang="scss">
@@ -139,9 +151,7 @@ const optionsHandler = (evt: MouseEvent) => {
   }
 }
 
-.image-wrapper {
-  position: relative;
-}
+.image-wrapper { position: relative; }
 
 .image-options {
   position: absolute;
@@ -162,6 +172,12 @@ const optionsHandler = (evt: MouseEvent) => {
   @media(max-width: 900px) {
     display: none;
   }
+}
+
+.copy-row {
+  display: flex;
+  align-items: center;
+  gap: 5px;
 }
 
 .image-wrapper:hover .image-options {

@@ -1,7 +1,7 @@
 <template>
 <Teleport to="body">
   <Transition name="main" mode="out-in">
-    <div v-if="isOpen" @click="closeHandler" class="_center modal _full-fixed">
+    <div data-target="modal" v-if="isOpen" @click="closeHandler" class="_center modal _full-fixed">
       <div class="modal-window _bg-wp">
         <slot />
       </div>
@@ -20,7 +20,7 @@ const emit = defineEmits<{
 }>()
 
 const closeHandler = (evt: MouseEvent) => {
-  if(!(evt.target as HTMLElement).closest('.modal-window'))
+  if((evt.target as HTMLElement).dataset.target!)
     emit('closeModal')
 }
 </script>
@@ -36,5 +36,7 @@ const closeHandler = (evt: MouseEvent) => {
   position: relative;
   max-width: 332px;
   margin: var(--space);
+  max-height: 70vh;
+  overflow-y: scroll;
 }
 </style>

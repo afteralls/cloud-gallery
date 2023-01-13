@@ -1,7 +1,7 @@
 <template>
 <div class="_wrapper">
   <section class="auth _row _tp-wp">
-    <img src="@/assets/img/auth.png" alt="Auth Banner">
+    <img src="@/assets/img/auth.png" :alt="$i18n('auth.bannerAlt')">
     <div class="_column auth-layout">
       <div class="_column">
         <h1>{{ $i18n('auth.title') }}</h1>
@@ -31,11 +31,12 @@
 const router = useRouter()
 const auth = useAuthStore()
 const server = useServerStore()
+
 const data: ClientData = reactive({ email: '', password: '' })
 
 const isEmailValid = computed<boolean>(() => !!validateEmail(data.email))
-const isPassValid = computed<boolean>(() => !!(data.password.length && data.password !== ' '))
-const allValid = computed<boolean>((() => isEmailValid.value && isPassValid.value))
+const isPassValid = computed<boolean>(() => isValid(data.password))
+const allValid = computed<boolean>(() => isEmailValid.value && isPassValid.value)
 
 const submitHandler = async () => {
   await auth.login(data)
@@ -71,9 +72,7 @@ const submitHandler = async () => {
   gap: calc(var(--space) * 3);
 }
 
-.full {
-  width: 100%;
-}
+.full { width: 100%; }
 
 .fields-wrapper {
   justify-content: space-between;

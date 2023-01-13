@@ -6,7 +6,7 @@ export const useServerStore = defineStore('server', () => {
   const notf = useNotfStore()
   const core = useCoreStore()
   const storage = getStorage()
-  const i18n: any = inject('func')
+  const i18n = inject('func') as LangFunc
 
   const hashDataRef = ref<StorageReference>()
   const imageDataRef = ref<StorageReference>()
@@ -205,7 +205,7 @@ export const useServerStore = defineStore('server', () => {
   }
 
   const updateImageData = (name: string, tags: string) => {
-    const currentTags = core.getValidTagsCollection(tags)
+    const currentTags = getValidTagsCollection(tags)
     const imageRef = Ref(storage, `${curPath.value}/${name}`)
 
     const newMetadata = {
@@ -216,13 +216,15 @@ export const useServerStore = defineStore('server', () => {
 
     updateMetadata(imageRef, newMetadata).then(async () => {
       core.imageCollection.forEach(image => {
-        if (image.name === name) { image.hashtags = tags }
+        if (image.name === name)
+          image.hashtags = tags
       })
 
       await uploadBytesHandler(imageDataRef.value as StorageReference, core.imageCollection)
 
       currentTags.forEach((tag: string) => {
-        if (!core.hashtagsCollection.includes(tag)) core.hashtagsCollection.push(tag)
+        if (!core.hashtagsCollection.includes(tag))
+          core.hashtagsCollection.push(tag)
       })
 
       await uploadBytesHandler(hashDataRef.value as StorageReference, core.hashtagsCollection)
@@ -305,8 +307,8 @@ export const useServerStore = defineStore('server', () => {
     uploadHandler,
     deleteImage,
     updateImageData,
-    isUploading,
     deleteTag,
-    favoriteHandler
+    favoriteHandler,
+    isUploading
   }
 })

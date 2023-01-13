@@ -1,5 +1,11 @@
 export default {
   en: {
+    route: {
+      home: 'Home | Cloud Gallery',
+      auth: 'Authorization Page',
+      gallery: 'Gallery Page',
+      upload: 'Upload Page'
+    },
     nav: {
       name: 'Cloud Gallery',
       darkMode: 'Dark Mode',
@@ -14,10 +20,12 @@ export default {
       loadAll: 'Download all'
     },
     home: {
+      bannerAlt: 'Home Image',
       title: 'Cloud Gallery',
       subTitle: 'Gallery for comfortable viewing of images',
       desc: 'Upload images and view them at any time. And to find the content you need faster, specify a couple of tags to search for in the future',
       goToGallery: 'Go to Gallery',
+      galleryLink: 'Go to gallery page',
       login: 'Sign in',
       hello: 'Hello, ',
       accTip: 'You have full access to the collection and all the functionality, enjoy!',
@@ -33,7 +41,8 @@ export default {
       privat: 'Privat',
       create: 'Create',
       curColder: 'Current folder',
-      tagsToDelete: 'Select tags to remove'
+      tagsToDelete: 'Select tag to remove',
+      copyright: 'All images belong to their respective authors'
     },
     gallery: {
       title: 'Nothing to show yet...',
@@ -43,6 +52,7 @@ export default {
       hashtags: 'Hashtags:'
     },
     auth: {
+      bannerAlt: 'Auth Banner',
       title: 'Authorization',
       desc: 'To login to your account, please complete the fields below',
       vEmail: 'Enter your E-Mail',
@@ -87,6 +97,12 @@ export default {
     }
   },
   ru: {
+    route: {
+      home: 'Главная | Cloud Gallery',
+      auth: 'Авторизация',
+      gallery: 'Галерея',
+      upload: 'Пополнить коллекцию'
+    },
     nav: {
       name: 'Облачная галерея',
       name_sh: 'Cloud Gallery',
@@ -102,10 +118,12 @@ export default {
       loadAll: 'Загрузить всё'
     },
     home: {
+      bannerAlt: 'Баннер главной страницы',
       title: 'Облачная Галерея',
       subTitle: 'Галерея для комфортного просмотра фотографий',
       desc: 'Загружайте изображения и просматривайте их в любое время. А чтобы быстрее находить нужный контент — укажите парочку тегов для поиска в будущем',
       goToGallery: 'Перейти к Галереи',
+      galleryLink: 'Перейти к странице Галереи',
       login: 'Войти в аккаунт',
       hello: 'Здравствуйте, ',
       accTip: 'У вас есть полный доступ к колекции и всему функционалу, наслаждайтесь!',
@@ -121,7 +139,8 @@ export default {
       privat: 'Личная',
       create: 'Создать',
       curColder: 'Текущая папка',
-      tagsToDelete: 'Выберите теги для удаления'
+      tagsToDelete: 'Выберите тег для удаления',
+      copyright: 'Все изображения принадлежат их авторам'
     },
     gallery: {
       title: 'Показывать пока что нечего...',
@@ -131,6 +150,7 @@ export default {
       hashtags: 'Хэштеги:'
     },
     auth: {
+      bannerAlt: 'Баннер Авторизации',
       title: 'Авторизация',
       desc: 'Чтобы войти в аккаунт, пожалуйста, заполните поля ниже',
       vEmail: 'Введите Ваш E-Mail',

@@ -3,7 +3,12 @@
   <div class="scroll">
     <div class="scroll-container">
       <div class="scroll-wrapper">
-        <RouterLink to="/auth" v-if="!auth.isAuthenticated" class="card _column _tp-wp _center act">
+        <RouterLink
+          to="/auth"
+          v-if="!auth.isAuthenticated"
+          class="card _column _tp-wp _center act"
+          :title="$i18n('home.login')"
+        >
           <AccountIcon />
           <h3>{{ $i18n('home.login') }}</h3>
         </RouterLink>
@@ -17,7 +22,11 @@
               <small>{{ $i18n('home.logout') }}</small>
             </div>
           </div>
-          <RouterLink to="/upload" class="card _tp-wp _center _column act">
+          <RouterLink
+            to="/upload"
+            :title="$i18n('home.addImages')"
+            class="card _tp-wp _center _column act"
+          >
             <AddImagesIcon />
             <h3>{{ $i18n('home.addImages') }}</h3>
           </RouterLink>
@@ -50,7 +59,7 @@
               <input v-model="folderType" id="lc" type="radio" value="local">
               <label for="lc"><small>{{ $i18n('home.privat') }}</small></label>
             </div>
-            <div @click="createHandler" :class="{'_btn': true, '_disabled': !isValid }">
+            <div @click="createHandler" :class="{'_btn': true, '_disabled': !isValidHandler }">
               <small>{{ $i18n('home.create') }}</small>
             </div>
           </div>
@@ -105,7 +114,7 @@ const logoutHandler = async () => {
   core.curFolder = core.foldersCollection[0]
 }
 
-const isValid = computed(() => !folderName.value.match(' ')  && folderName.value.length)
+const isValidHandler = computed(() => isValid(folderName.value))
 
 const createHandler = () => {
   server.createFolder(folderName.value, folderType.value)
@@ -153,7 +162,9 @@ const addTagToDelete = (evt: MouseEvent) => {
   justify-content: center;
   align-items: center;
 
-  &:hover { background-color: var(--wrapper-c-h); }
+  &:hover {
+    background-color: var(--wrapper-c-h);
+  }
 }
 
 .left { align-items: flex-start; }
@@ -164,9 +175,7 @@ const addTagToDelete = (evt: MouseEvent) => {
   max-width: 100%;
 }
 
-.scroll-container {
-  display: inline-block;
-}
+.scroll-container { display: inline-block; }
 
 .scroll-wrapper {
   display: flex;

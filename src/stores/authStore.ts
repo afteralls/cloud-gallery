@@ -1,10 +1,11 @@
 export const useAuthStore = defineStore('auth', () => {
   const notf = useNotfStore()
+  const i18n = inject('func') as LangFunc
+
   const authToken = useStorage<string>('auth-token', null)
   const email = useStorage<string>('email', null)
   const isAuthenticated = computed<boolean>(() => !!authToken.value)
   const KEY = 'AIzaSyDbP389NOWDFZ4oAz8lMLDlm2TdrzCdUbg'
-  const i18n: any = inject('func')
 
   const errorCodes: Errors = {
     EMAIL_NOT_FOUND: i18n('notf.emailNF'),
@@ -12,6 +13,7 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   const errorHandler = (errCode: string) => errorCodes[errCode] || i18n('notf.err')
+  const logout = () => authToken.value = null
 
   const login = async (payload: any) => {
     try {
@@ -20,10 +22,8 @@ export const useAuthStore = defineStore('auth', () => {
       authToken.value = data.idToken
       email.value = payload.email.split('@')[0]
       notf.addNotification(`${i18n('notf.welcome')}, ${email.value}`)
-    } catch (e: any) { notf.addNotification(errorHandler(e.response.data.error.message)) }
+    } catch (e) { notf.addNotification(errorHandler(e.response.data.error.message)) }
   }
-
-  const logout = () => authToken.value = null
 
   return { email, isAuthenticated, login, logout }
 })

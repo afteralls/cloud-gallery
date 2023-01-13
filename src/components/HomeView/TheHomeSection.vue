@@ -4,12 +4,12 @@
     <h1>{{ $i18n('home.title') }}</h1>
     <h2>{{ $i18n('home.subTitle') }}</h2>
     <p>{{ $i18n('home.desc') }}</p>
-    <RouterLink class="_btn" to="/gallery">
+    <RouterLink class="_btn" to="/gallery" :title="$i18n('home.galleryLink')">
       <small>{{ $i18n('home.goToGallery') }}</small>
     </RouterLink>
   </div>
   <div class="logo-wrapper _center">
-    <img src="@/assets/img/main.png" alt="Home Image">
+    <img src="@/assets/img/main.png" :alt="$i18n('home.bannerAlt')">
   </div>
 </section>
 </template>
