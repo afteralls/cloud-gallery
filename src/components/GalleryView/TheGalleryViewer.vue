@@ -133,9 +133,7 @@ const zoomHandler = (evt: any) => {
   }
 }
 
-useEventListener(curImage, 'dblclick', (evt: MouseEvent) => {
-  zoomHandler(evt)
-})
+useEventListener(curImage, 'dblclick', (evt: MouseEvent) => { zoomHandler(evt) })
 
 let counter: number = 0
 useEventListener(curImage, 'touchstart', (evt: TouchEvent) => {
@@ -249,9 +247,7 @@ const deleteHandler = async (evt: MouseEvent) => {
   top: 0;
 }
 
-.options {
-  gap: var(--space);
-}
+.options { gap: var(--space); }
 
 .viewer-footer {
   justify-content: center;
