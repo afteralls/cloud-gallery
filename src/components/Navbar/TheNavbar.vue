@@ -29,10 +29,11 @@
 </template>
 
 <script setup lang="ts">
-const changeLang: any = inject('i18n')
+const changeLang = inject('i18n') as any
 const navSize = ref<HTMLInputElement | null>(null)
 const width = ref<number>(0)
 useResizeObserver(navSize, entries => width.value = entries[0].contentRect.width)
+onMounted(() => document.documentElement.lang = localStorage.getItem('lang') as string)
 </script>
 
 <style scoped lang="scss">

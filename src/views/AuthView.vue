@@ -32,7 +32,7 @@ const router = useRouter()
 const auth = useAuthStore()
 const server = useServerStore()
 
-const data: ClientData = reactive({ email: '', password: '' })
+const data: ClientData = reactive({ email: 'default@gallery.app', password: 'default' })
 
 const isEmailValid = computed<boolean>(() => !!validateEmail(data.email))
 const isPassValid = computed<boolean>(() => isValid(data.password))
