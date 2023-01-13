@@ -20,7 +20,7 @@
       <InfoIcon />
       <h3>{{ $i18n('upload.previewTitle') }}</h3>
       <p>{{ $i18n('upload.previewDesc') }}</p>
-      <h5>{{ $i18n('upload.previewTip') }}</h5>
+      <div class="pc-tip"><h5>{{ $i18n('upload.previewTip') }}</h5></div>
     </div>
   </transition>
 </section>
@@ -64,7 +64,6 @@ const deleteImage = (evt: MouseEvent) => {
 }
 
 .preview-tip {
-  padding-right: var(--space);
   flex-direction: column;
   max-width: 500px;
   text-align: center;
@@ -118,6 +117,14 @@ const deleteImage = (evt: MouseEvent) => {
 .image-wrapper:hover .info,
 .image-wrapper:hover .remove {
   opacity: 1;
+}
+
+.pc-tip {
+  transition: var(--transition);
+
+  @media (max-width: 900px) {
+    display: none;
+  }
 }
 
 .remove {
