@@ -3,7 +3,7 @@
   <div @click="optionsHandler" v-if="core.galleryCollection.length" class="collection">
     <TransitionGroup name="image">
       <div v-for="(img, idx) in core.galleryCollection" :key="idx" class="image-wrapper">
-        <div class="image-options">
+        <div v-if="auth.isAuthenticated" class="image-options">
           <div
             :class="{ '_fav': true, '_fav-active': img.isFavorite }"
             :data-name="img.name"
@@ -64,6 +64,7 @@
 
 <script setup lang="ts">
 const core = useCoreStore()
+const auth = useAuthStore()
 const server = useServerStore()
 
 const isViewerOpen = ref<boolean>(false)

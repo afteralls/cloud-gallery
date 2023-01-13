@@ -22,22 +22,24 @@
       ><ArrowRightIcon /></div>
       <div :class="{ 'interface': true, 'viewer-header': true, 'active': isShow && !zoomed }">
         <small>{{ curIdx + 1 }} / {{ size }}</small>
-        <div class="options _center">
-          <div
-            :class="{ '_fav': true, '_fav-active': currentImage?.isFavorite }"
-            @click.prevent="server.favoriteHandler(currentImage?.name as string)"
-          ><HeartIcon /></div>
-          <div
-            class="_delete"
-            @click.prevent="deleteHandler"
-            :data-name="currentImage?.name"
-          ><DeleteIcon /></div>
-          <div
-            class="_edit"
-            @click.prevent="editHandler($event)"
-            :data-name="currentImage?.name"
-            :data-hashtags="currentImage?.hashtags"
-          ><EditImageIcon /></div>
+        <div class="_row _center">
+          <div v-if="auth.isAuthenticated" class="_row">
+            <div
+              :class="{ '_fav': true, '_fav-active': currentImage?.isFavorite }"
+              @click.prevent="server.favoriteHandler(currentImage?.name as string)"
+            ><HeartIcon /></div>
+            <div
+              class="_delete"
+              @click.prevent="deleteHandler"
+              :data-name="currentImage?.name"
+            ><DeleteIcon /></div>
+            <div
+              class="_edit"
+              @click.prevent="editHandler($event)"
+              :data-name="currentImage?.name"
+              :data-hashtags="currentImage?.hashtags"
+            ><EditImageIcon /></div>
+          </div>
           <Transition name="main" mode="out-in">
             <FullscreenEnterIcon v-if="!isFullscreen" @click="enter" />
             <FullscreenExitIcon v-else @click="exit" />
@@ -74,6 +76,7 @@ const emit = defineEmits<{
 }>()
 
 const server = useServerStore()
+const auth = useAuthStore()
 const core = useCoreStore()
 
 const size = computed(() => core.galleryCollection.length)
@@ -246,8 +249,6 @@ const deleteHandler = async (evt: MouseEvent) => {
   gap: var(--space);
   top: 0;
 }
-
-.options { gap: var(--space); }
 
 .viewer-footer {
   justify-content: center;
