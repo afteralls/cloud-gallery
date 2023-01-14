@@ -25,6 +25,7 @@ const router = useRouter()
 const i18n = inject('func') as LangFunc
 
 router.beforeEach((to, _, next) => {
+  server.getDataHandler()
   const go = () => { document.title = i18n(to.name as string); next() }
   to.path === '/upload'
     ? localStorage.getItem('auth-token') ? go() : next({ path: '/' })

@@ -30,7 +30,6 @@
 <script setup lang="ts">
 const router = useRouter()
 const auth = useAuthStore()
-const server = useServerStore()
 
 const data: ClientData = reactive({ email: 'default@gallery.app', password: 'default' })
 
@@ -40,10 +39,8 @@ const allValid = computed<boolean>(() => isEmailValid.value && isPassValid.value
 
 const submitHandler = async () => {
   await auth.login(data)
-  if (auth.isAuthenticated) {
+  if (auth.isAuthenticated)
     router.push('/')
-    server.getDataHandler()
-  }
 }
 </script>
 

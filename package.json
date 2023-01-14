@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "vite",
     "dev-h": "vite --host",
+    "deploy": "firebase deploy --only hosting:cloud-gallery",
     "build": "run-p type-check build-only",
     "preview": "vite preview",
     "build-only": "vite build",
