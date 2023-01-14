@@ -93,6 +93,8 @@ export const useServerStore = defineStore('server', () => {
       if (data) core.imageCollection = JSON.parse(data)
     })
 
+    core.dateCollection = ['NO DATA']; core.uploaders = ['NO DATA']
+
     core.imageCollection.map(img => {
       if (!core.dateCollection.includes(img.created)) core.dateCollection.push(img.created)
       if (!core.uploaders.includes(img.uploader)) core.uploaders.push(img.uploader)

@@ -22,6 +22,7 @@
 <script setup lang="ts">
 const isOnline = useOnline()
 const router = useRouter()
+const server = useServerStore()
 const i18n = inject('func') as LangFunc
 
 router.beforeEach((to, _, next) => {
@@ -31,9 +32,6 @@ router.beforeEach((to, _, next) => {
     ? localStorage.getItem('auth-token') ? go() : next({ path: '/' })
     : go()
 })
-
-const server = useServerStore()
-onMounted(() => { server.getDataHandler() })
 </script>
 
 <style scoped lang="scss">

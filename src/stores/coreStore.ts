@@ -15,10 +15,10 @@ export const useCoreStore = defineStore('core', () => {
   const curFilter = ref<string>('date')
   const curFolder = useStorage<Folder>('curFolder', { name: 'images', type: 'global' })
 
-  const dateCollection = ref<string[]>(['No Data'])
-  const uploaders = ref<string[]>(['No Data'])
-  const curDate = ref<string>(dateCollection.value[0])
-  const curUploader = ref<string>(uploaders.value[0])
+  const dateCollection = ref<string[]>([])
+  const uploaders = ref<string[]>([])
+  const curDate = ref<string>('')
+  const curUploader = ref<string>('')
 
   const search = (modal: string) => {
     galleryCollection.value = []
