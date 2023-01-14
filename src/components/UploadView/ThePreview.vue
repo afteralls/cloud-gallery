@@ -5,7 +5,7 @@
       <div @click="deleteImage" class="preview-row">
         <TransitionGroup name="images">
           <div class="image-wrapper _center" v-for="(item, idx) in core.previewImages" :key="idx">
-            <div class="remove _delete _center" :data-idx="idx"><CloseIcon /></div>
+            <div class="remove _center _i" :data-idx="idx"><CloseIcon /></div>
             <img :src="item.src" :alt="item.name" :title="item.name">
             <div :class="{ 'info': true, '_center': true, 'uploading': server.isUploading }">
               <div v-show="server.isUploading" class="progress _center _absolute"></div>
@@ -95,13 +95,14 @@ const deleteImage = (evt: MouseEvent) => {
   bottom: 0;
   width: 100%;
   height: 32px;
-  color: white;
   transition: var(--transition);
   backdrop-filter: blur(8px);
   background-color: var(--tp-c);
   border-radius: 0 0 var(--space) var(--space);
   opacity: 0;
   overflow: hidden;
+
+  small { color: var(--txt-c); }
 }
 
 .progress {
@@ -136,11 +137,15 @@ const deleteImage = (evt: MouseEvent) => {
   backdrop-filter: blur(8px);
   background-color: var(--tp-c);
   font-size: 30px;
-  cursor: pointer;
-  color: white;
   text-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.2);
   opacity: 0;
   transition: var(--transition);
+
+  svg { fill: var(--txt-c); }
+
+  &:hover {
+    svg { fill: red; }
+  }
 }
 
 .progress {
