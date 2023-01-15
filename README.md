@@ -13,6 +13,9 @@
 - Full data editing: after uploading photos, you can edit the tags by which they can be found, you can also delete pictures.
 Absolute synchronization: any completed operations are instantly synchronized with the server, after which the changed data can be accessed without reloading the page.
 
+## Demo
+https://user-images.githubusercontent.com/106645309/212560798-faa3e41d-370d-47b0-b20f-0c9fe054b4f9.mp4
+
 ## Stack
 This app is built with [Vue](https://github.com/vuejs) along with [Pinia](https://github.com/vuejs/pinia), [Vue Router](https://github.com/vuejs/router) and [VueUse](https://github.com/vueuse) from the framework ecosystem.
 ___
