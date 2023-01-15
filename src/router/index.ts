@@ -5,7 +5,7 @@ import GalleryView from '@/views/GalleryView.vue'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   scrollBehavior() {
-    return new Promise((resolve, reject) => {
+    return new Promise(resolve => {
       setTimeout(() => {
         resolve({ top: 0 })
       }, 250)
