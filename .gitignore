@@ -1,10 +1,26 @@
+<<<<<<< HEAD
 # Logs
 logs
 *.log
+=======
+.DS_Store
+node_modules
+/dist
+/.firebase
+.firebaserc
+firebase.json
+
+# local env files
+.env.local
+.env.*.local
+
+# Log files
+>>>>>>> b91aaa256301ce0539285245553802220f174f4a
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
+<<<<<<< HEAD
 lerna-debug.log*
 
 node_modules
@@ -22,6 +38,13 @@ coverage
 .vscode/*
 !.vscode/extensions.json
 .idea
+=======
+firebae-debug.log*
+
+# Editor directories and files
+.idea
+.vscode
+>>>>>>> b91aaa256301ce0539285245553802220f174f4a
 *.suo
 *.ntvs*
 *.njsproj
