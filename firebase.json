@@ -1,7 +1,7 @@
 {
   "hosting": {
-    "site": "cloud-gallery",
-    "public": "dist",
+    "site": "bypass-reporting",
+    "public": "output",
     "headers": [
       {
         "source": "/**",

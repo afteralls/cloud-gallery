@@ -4,7 +4,6 @@
     <small>{{ $i18n('upload.setTags') }}</small>
     <AppHashInput
       :model="uploadTags"
-      @update-model="(value) => { uploadTags = value }"
       @add-tag="(value) => { uploadTags += value }"
     />
     <small>{{ $i18n('upload.setFold') }}</small>
