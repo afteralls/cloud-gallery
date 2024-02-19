@@ -5,10 +5,9 @@
     "./types/components.d.ts",
     "./types/env.d.ts",
     "./src/**/*"
-  ],  
+  ],
   "compilerOptions": {
     "baseUrl": ".",
-    "ignoreDeprecations": "5.0",
     "useUnknownInCatchVariables": false,
     "paths": {
       "@/*": ["./src/*"]
